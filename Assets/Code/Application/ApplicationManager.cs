@@ -15,6 +15,13 @@ public class ApplicationManager : MonoBehaviour
 
     private void Awake()
     {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
         screenResolutionChecker.CheckForResolutionChange();
     }
 
