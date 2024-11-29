@@ -31,12 +31,20 @@ public class PlayerViewModeAutomaticSettings : PlayerViewModeSettingsBase
 
     private ViewModeSettings generateView(int _playerCount)
     {
+        if (_playerCount <= 1)
+        {
+            return new ViewModeSettings(new List<ViewAnchors>()
+            {
+                new ViewAnchors(new MinMax(0f, 1f), new MinMax(0f, 1f))
+            });
+        }
+
         int _playersHorizontal = Mathf.CeilToInt(Mathf.Sqrt(_playerCount));
         int _playersVertical = Mathf.CeilToInt(_playerCount / (float)_playersHorizontal);
 
         float _currentMinVertical = 0f;
         float _verticalDelta = 1f / _playersVertical;
-        List<ViewModeSettings.ViewAnchors> _viewAnchors = new List<ViewAnchors>();
+        List<ViewAnchors> _viewAnchors = new List<ViewAnchors>();
 
         while (_viewAnchors.Count < _playerCount)
         {

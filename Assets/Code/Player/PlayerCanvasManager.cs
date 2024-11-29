@@ -42,10 +42,15 @@ public class PlayerCanvasManager : MonoBehaviour
 
     private void Start()
     {
-        resolutionChecker.CheckForRectChange(rectTransform);
+        checkResolutionAndAdjust();
     }
 
     private void Update()
+    {
+        checkResolutionAndAdjust();
+    }
+
+    private void checkResolutionAndAdjust()
     {
         if (resolutionChecker.CheckForRectChange(rectTransform))
         {

@@ -132,3 +132,4 @@ MonoBehaviour:
   viewModeSettings: {fileID: 11400000, guid: 013ed18b811c10346bbab7ef9e7deca8, type: 2}
   automaticViewModeSettings: {fileID: 11400000, guid: 5cb59c7662cb57540a495de6da445753, type: 2}
   useAutomatic: 1
+  playersToSpawnAtStart: 4

@@ -366,6 +366,9 @@ public static class RenderTextureExtensions
 
     public static void UpdateSpawnedRenderTextureSize(ref RenderTexture _texture, string _name, int _width, int _height, string _logPrefix = "", UnityAction<RenderTexture> _onNewCreated = null, int _depth = 0, GraphicsFormat _format = GraphicsFormat.R32G32B32A32_SFloat, bool _logCondition = true)
     {
+        _width = _width.ClampMin(1);
+        _height = _height.ClampMin(1);
+
         if (_texture != null)
         {
             if (_texture.width == _width && _texture.height == _height)

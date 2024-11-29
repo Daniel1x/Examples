@@ -18,6 +18,7 @@ public class PlayerSpawner : MonoBehaviour
     [SerializeField] private PlayerViewModeSettings viewModeSettings = null;
     [SerializeField] private PlayerViewModeAutomaticSettings automaticViewModeSettings = null;
     [SerializeField] private bool useAutomatic = false;
+    [SerializeField, Range(1, 9)] private int playersToSpawnAtStart = 1;
 
     private PlayerViewModeSettingsBase settings => useAutomatic ? automaticViewModeSettings : viewModeSettings;
 
@@ -33,7 +34,10 @@ public class PlayerSpawner : MonoBehaviour
 
     private void Start()
     {
-        spawnPlayer();
+        for (int i = 0; i < playersToSpawnAtStart; i++)
+        {
+            spawnPlayer();
+        }
     }
 
     private void Update()
@@ -61,14 +65,24 @@ public class PlayerSpawner : MonoBehaviour
 #if UNITY_EDITOR
     private void OnGUI()
     {
-        string _rightSideInfo = $"Spawn New Player: N\nKill Player: K\nNext Player: {RIGHT_ARROW_SLIM}\nPrevious Player: {LEFT_ARROW_SLIM}";
+        string _rightSideInfo = $"Spawn: N" +
+            $"\nKill: K" +
+            $"\nNext: {RIGHT_ARROW_SLIM}" +
+            $"\nPrevious: {LEFT_ARROW_SLIM}";
 
         if (overlayTexture == null)
         {
             overlayTexture = RenderTextureExtensions.CreateTexture2D(1, 1, Color.black.WithAlpha(0.5f));
         }
 
-        GUIStyle _overlayStyle = new GUIStyle(GUI.skin.label) { fontSize = 40 };
+        float _fontSizeMultiplier = Mathf.Min(Screen.width, Screen.height) / 1080f;
+
+        GUIStyle _overlayStyle = new GUIStyle(GUI.skin.label)
+        {
+            fontSize = (40 * _fontSizeMultiplier).RoundToInt(),
+            alignment = TextAnchor.MiddleRight,
+        };
+
         _overlayStyle.normal.background = overlayTexture;
 
         Color _defaultColor = GUI.color;
