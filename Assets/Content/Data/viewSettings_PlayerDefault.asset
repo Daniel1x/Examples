@@ -1,0 +1,303 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373090764d767de4889ac610773b7edb, type: 3}
+  m_Name: viewSettings_PlayerDefault
+  m_EditorClassIdentifier: 
+  viewModes:
+  - requiredPlayerCount: 1
+    viewAnchors:
+    - HorizontalAnchor:
+        Min: 0
+        Max: 1
+      VerticalAnchor:
+        Min: 0
+        Max: 1
+  - requiredPlayerCount: 2
+    viewAnchors:
+    - HorizontalAnchor:
+        Min: 0
+        Max: 0.5
+      VerticalAnchor:
+        Min: 0
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0.5
+        Max: 1
+      VerticalAnchor:
+        Min: 0
+        Max: 1
+  - requiredPlayerCount: 3
+    viewAnchors:
+    - HorizontalAnchor:
+        Min: 0
+        Max: 0.33333334
+      VerticalAnchor:
+        Min: 0
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0.33333334
+        Max: 0.6666667
+      VerticalAnchor:
+        Min: 0
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0.6666667
+        Max: 1
+      VerticalAnchor:
+        Min: 0
+        Max: 1
+  - requiredPlayerCount: 4
+    viewAnchors:
+    - HorizontalAnchor:
+        Min: 0
+        Max: 0.5
+      VerticalAnchor:
+        Min: 0.5
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0.5
+        Max: 1
+      VerticalAnchor:
+        Min: 0.5
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0
+        Max: 0.5
+      VerticalAnchor:
+        Min: 0
+        Max: 0.5
+    - HorizontalAnchor:
+        Min: 0.5
+        Max: 1
+      VerticalAnchor:
+        Min: 0
+        Max: 0.5
+  - requiredPlayerCount: 5
+    viewAnchors:
+    - HorizontalAnchor:
+        Min: 0
+        Max: 0.5
+      VerticalAnchor:
+        Min: 0.5
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0.5
+        Max: 1
+      VerticalAnchor:
+        Min: 0.5
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0
+        Max: 0.33333334
+      VerticalAnchor:
+        Min: 0
+        Max: 0.5
+    - HorizontalAnchor:
+        Min: 0.33333334
+        Max: 0.6666667
+      VerticalAnchor:
+        Min: 0
+        Max: 0.5
+    - HorizontalAnchor:
+        Min: 0.6666667
+        Max: 1
+      VerticalAnchor:
+        Min: 0
+        Max: 0.5
+  - requiredPlayerCount: 6
+    viewAnchors:
+    - HorizontalAnchor:
+        Min: 0
+        Max: 0.3333333
+      VerticalAnchor:
+        Min: 0.5
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0.33333334
+        Max: 0.6666667
+      VerticalAnchor:
+        Min: 0.5
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0.6666667
+        Max: 1
+      VerticalAnchor:
+        Min: 0.5
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0
+        Max: 0.33333334
+      VerticalAnchor:
+        Min: 0
+        Max: 0.5
+    - HorizontalAnchor:
+        Min: 0.33333334
+        Max: 0.6666667
+      VerticalAnchor:
+        Min: 0
+        Max: 0.5
+    - HorizontalAnchor:
+        Min: 0.6666667
+        Max: 1
+      VerticalAnchor:
+        Min: 0
+        Max: 0.5
+  - requiredPlayerCount: 7
+    viewAnchors:
+    - HorizontalAnchor:
+        Min: 0
+        Max: 0.3333333
+      VerticalAnchor:
+        Min: 0.5
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0.33333334
+        Max: 0.6666667
+      VerticalAnchor:
+        Min: 0.5
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0.6666667
+        Max: 1
+      VerticalAnchor:
+        Min: 0.5
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0
+        Max: 0.25
+      VerticalAnchor:
+        Min: 0
+        Max: 0.5
+    - HorizontalAnchor:
+        Min: 0.25
+        Max: 0.5
+      VerticalAnchor:
+        Min: 0
+        Max: 0.5
+    - HorizontalAnchor:
+        Min: 0.5
+        Max: 0.75
+      VerticalAnchor:
+        Min: 0
+        Max: 0.5
+    - HorizontalAnchor:
+        Min: 0.75
+        Max: 1
+      VerticalAnchor:
+        Min: 0
+        Max: 0.5
+  - requiredPlayerCount: 8
+    viewAnchors:
+    - HorizontalAnchor:
+        Min: 0
+        Max: 0.25
+      VerticalAnchor:
+        Min: 0.5
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0.25
+        Max: 0.5
+      VerticalAnchor:
+        Min: 0.5
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0.5
+        Max: 0.75
+      VerticalAnchor:
+        Min: 0.5
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0.75
+        Max: 1
+      VerticalAnchor:
+        Min: 0.5
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0
+        Max: 0.25
+      VerticalAnchor:
+        Min: 0
+        Max: 0.5
+    - HorizontalAnchor:
+        Min: 0.25
+        Max: 0.5
+      VerticalAnchor:
+        Min: 0
+        Max: 0.5
+    - HorizontalAnchor:
+        Min: 0.5
+        Max: 0.75
+      VerticalAnchor:
+        Min: 0
+        Max: 0.5
+    - HorizontalAnchor:
+        Min: 0.75
+        Max: 1
+      VerticalAnchor:
+        Min: 0
+        Max: 0.5
+  - requiredPlayerCount: 9
+    viewAnchors:
+    - HorizontalAnchor:
+        Min: 0
+        Max: 0.33333334
+      VerticalAnchor:
+        Min: 0.6666667
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0.33333334
+        Max: 0.6666667
+      VerticalAnchor:
+        Min: 0.6666667
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0.6666667
+        Max: 1
+      VerticalAnchor:
+        Min: 0.6666667
+        Max: 1
+    - HorizontalAnchor:
+        Min: 0
+        Max: 0.33333334
+      VerticalAnchor:
+        Min: 0.33333334
+        Max: 0.6666667
+    - HorizontalAnchor:
+        Min: 0.33333334
+        Max: 0.6666667
+      VerticalAnchor:
+        Min: 0.33333334
+        Max: 0.6666667
+    - HorizontalAnchor:
+        Min: 0.6666667
+        Max: 1
+      VerticalAnchor:
+        Min: 0.33333334
+        Max: 0.6666667
+    - HorizontalAnchor:
+        Min: 0
+        Max: 0.33333334
+      VerticalAnchor:
+        Min: 0
+        Max: 0.33333334
+    - HorizontalAnchor:
+        Min: 0.33333334
+        Max: 0.6666667
+      VerticalAnchor:
+        Min: 0
+        Max: 0.33333334
+    - HorizontalAnchor:
+        Min: 0.6666667
+        Max: 1
+      VerticalAnchor:
+        Min: 0
+        Max: 0.33333334
