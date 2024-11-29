@@ -88,7 +88,7 @@
 
         public static void DrawBoldLabel(string _label, float _width)
         {
-            DrawBoldLabel(_label, GetFixedElementWidth(_width));
+            DrawBoldLabel(_label, GetElementWidth(_width));
         }
 
         public static void DrawBoldLabelWithCenteredText(string _label)
@@ -104,7 +104,7 @@
             GUIStyle _centeredLabel = new GUIStyle(EditorStyles.boldLabel);
             _centeredLabel.alignment = TextAnchor.MiddleCenter;
 
-            GUILayout.Label(_label, _centeredLabel, GetFixedElementWidth(_width));
+            GUILayout.Label(_label, _centeredLabel, GetElementWidth(_width));
         }
 
         public static void DrawBoldLabel(string _label, params GUILayoutOption[] _options)
@@ -239,7 +239,7 @@
             {
                 FlexibleSpace();
 
-                using (new EditorGUILayout.HorizontalScope(GetFixedElementWidth(_fixedWidth)))
+                using (new EditorGUILayout.HorizontalScope(GetElementWidth(_fixedWidth)))
                 {
                     DrawCenteredBoldLabel(_labelString);
                 }
@@ -283,14 +283,14 @@
                 GUIStyle _labelStyle = new GUIStyle(EditorStyles.boldLabel);
                 _labelStyle.alignment = _labelAlignment;
 
-                EditorGUILayout.LabelField(_label, _labelStyle, GetFixedElementWidth(_width));
+                EditorGUILayout.LabelField(_label, _labelStyle, GetElementWidth(_width));
 
                 GUIStyle _symbolStyle = new GUIStyle(EditorStyles.label);
                 _symbolStyle.alignment = TextAnchor.MiddleRight;
 
                 string _buttonName = _open == true ? UP_ARROW : DOWN_ARROW;
 
-                if (GUILayout.Button(_buttonName, _symbolStyle, GetFixedElementWidth(_width)))
+                if (GUILayout.Button(_buttonName, _symbolStyle, GetElementWidth(_width)))
                 {
                     return !_open;
                 }
@@ -309,7 +309,7 @@
 
         public static bool FoldoutWithBackground(bool _foldout, string _label, Color _backgroundColor, bool _toggleOnLabelClick = true, bool _drawLine = true, UnityEngine.Object _objectToPreview = null)
         {
-            using (HorizontalScope _scope = new HorizontalScope(GetFixedElementHeight(20f)))
+            using (HorizontalScope _scope = new HorizontalScope(GetElementHeight(20f)))
             {
                 float _width = EditorGUIUtility.currentViewWidth;
 
@@ -339,7 +339,7 @@
 
                 if (_objectToPreview != null)
                 {
-                    EditorGUILayout.ObjectField(_objectToPreview, _objectToPreview.GetType(), false, GetFixedElementWidth(_width / 2f));
+                    EditorGUILayout.ObjectField(_objectToPreview, _objectToPreview.GetType(), false, GetElementWidth(_width / 2f));
                 }
             }
 
@@ -648,7 +648,7 @@
         {
             using (new GUIBackgroundColorScope(_guiBackgroundColor))
             {
-                return GUILayout.Button(_buttonLabel, GetFixedElementWidth(_width));
+                return GUILayout.Button(_buttonLabel, GetElementWidth(_width));
             }
         }
 
@@ -656,7 +656,7 @@
         {
             using (new GUIBackgroundColorScope(_guiBackgroundColor))
             {
-                return GUILayout.Button(_buttonLabel, _style, GetFixedElementWidth(_width));
+                return GUILayout.Button(_buttonLabel, _style, GetElementWidth(_width));
             }
         }
 
@@ -682,7 +682,7 @@
                 using (new EditorGUILayout.HorizontalScope(GUILayout.ExpandWidth(false)))
                 {
                     FlexibleSpace();
-                    _button = GUILayout.Button(_buttonLabel, _style, GetFixedElementWidth(_width));
+                    _button = GUILayout.Button(_buttonLabel, _style, GetElementWidth(_width));
                     FlexibleSpace();
                 }
             }
@@ -743,17 +743,17 @@
             return _style;
         }
 
-        public static GUILayoutOption[] GetFixedElementWidth(float _width)
+        public static GUILayoutOption[] GetElementWidth(float _width)
         {
             return new GUILayoutOption[] { GUILayout.MaxWidth(_width), GUILayout.MinWidth(_width) };
         }
 
-        public static GUILayoutOption[] GetFixedElementHeight(float _height)
+        public static GUILayoutOption[] GetElementHeight(float _height)
         {
             return new GUILayoutOption[] { GUILayout.MinHeight(_height), GUILayout.MaxHeight(_height) };
         }
 
-        public static GUILayoutOption[] GetFixedElementWidthAndHeight(float _width, float _height)
+        public static GUILayoutOption[] GetElementWidthAndHeight(float _width, float _height)
         {
             return new GUILayoutOption[] { GUILayout.MaxWidth(_width), GUILayout.MinWidth(_width), GUILayout.MinHeight(_height), GUILayout.MaxHeight(_height) };
         }
@@ -767,7 +767,7 @@
         {
             using (new DisabledScope(_objectToPing != null))
             {
-                if (GUILayout.Button(_label, GetFixedElementWidth(_buttonWidth)))
+                if (GUILayout.Button(_label, GetElementWidth(_buttonWidth)))
                 {
                     AssetsUtility.PingObject(_objectToPing, _select);
                 }
@@ -810,7 +810,7 @@
             float _emptySpaceWidth = _calculateSpacingSize(out float _widthTakenByEmptySpaces);
             float _singleButtonWidth = (_rangeWidth - _widthTakenByEmptySpaces) / _count;
 
-            GUILayoutOption[] _fixedElementWidth = GetFixedElementWidth(_singleButtonWidth);
+            GUILayoutOption[] _fixedElementWidth = GetElementWidth(_singleButtonWidth);
 
             if (_style == null)
             {
