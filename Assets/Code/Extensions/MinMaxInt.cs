@@ -26,17 +26,19 @@
 
         public int GetValueFromRange(float _normalizedPercentage01)
         {
-            return UnityEngine.Mathf.RoundToInt(Min + (Range * UnityEngine.Mathf.Clamp01(_normalizedPercentage01)));
+            return Mathf.RoundToInt(Min + (Range * Mathf.Clamp01(_normalizedPercentage01)));
         }
 
         public int Clamp(int _value)
         {
-            return UnityEngine.Mathf.Clamp(_value, Min, Max);
+            return Mathf.Clamp(_value, Min, Max);
         }
 
         public float Normalize(int _value)
         {
-            return Range == 0f ? 0f : (Clamp(_value) - Min) / (float)Range;
+            return Range == 0f
+                ? 0f
+                : (Clamp(_value) - Min) / (float)Range;
         }
 
         public void TryExpandMinRange(int _min)
@@ -63,7 +65,11 @@
 
         public static MinMaxInt Lerp(MinMaxInt _form, MinMaxInt _to, float _t)
         {
-            return new MinMaxInt(Mathf.Lerp(_form.Min, _to.Min, _t).RoundToInt(), Mathf.Lerp(_form.Max, _to.Max, _t).RoundToInt());
+            return new MinMaxInt
+            {
+                Min = Mathf.Lerp(_form.Min, _to.Min, _t).RoundToInt(),
+                Max = Mathf.Lerp(_form.Max, _to.Max, _t).RoundToInt()
+            };
         }
 
         public static bool operator ==(MinMaxInt _this, MinMaxInt _other)
@@ -85,11 +91,7 @@
                 && Max == _minMax.Max;
         }
 
-        public override int GetHashCode()
-        {
-            return System.HashCode.Combine(Min, Max);
-        }
-
+        public override int GetHashCode() => System.HashCode.Combine(Min, Max);
         public override string ToString() => $"({Min}, {Max})";
     }
 }

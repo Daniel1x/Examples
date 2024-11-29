@@ -10,7 +10,7 @@
 
         public float RandomValue => UnityEngine.Random.Range(Min, Max);
         public float Range => Max - Min;
-        public float Middle => 0.5f * (Min + Max);
+        public float Middle => (Min + Max) * 0.5f;
 
         public MinMax(float _min, float _max)
         {
@@ -92,7 +92,6 @@
         }
 
         public override int GetHashCode() => System.HashCode.Combine(Min, Max);
-
         public override string ToString() => $"({Min}, {Max})";
     }
 }

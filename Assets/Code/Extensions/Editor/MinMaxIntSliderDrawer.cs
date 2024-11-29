@@ -10,7 +10,6 @@
         {
             SerializedProperty _relativeMin = _property.FindPropertyRelative("Min");
             SerializedProperty _relativeMax = _property.FindPropertyRelative("Max");
-            EditorGUI.BeginProperty(_position, _label, _property);
 
             MinMaxIntSliderAttribute _attribute = attribute as MinMaxIntSliderAttribute;
 
