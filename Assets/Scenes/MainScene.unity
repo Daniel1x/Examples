@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 672456824}
   - component: {fileID: 672456823}
   - component: {fileID: 672456822}
+  - component: {fileID: 672456826}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -183,7 +184,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 66d46564178eace448358af520e59e83, type: 2}
+  - {fileID: 2100000, guid: 8027be33cb5280a4f86d65efa70c7045, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -228,6 +229,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &672456826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 672456821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93db714828553bb41b48cdd5e1ae8286, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distanceProperty: _Distance
+  thicknessProperty: _Thickness
+  startPointProperty: _StartPoint
+  thickness: 5
+  maxDistance: 100
+  movementSpeed: 100
 --- !u!108 &705507994 stripped
 Light:
   m_CorrespondingSourceObject: {fileID: 3505086615974124249, guid: 98b64bc353dc562409893461c20d61d1, type: 3}

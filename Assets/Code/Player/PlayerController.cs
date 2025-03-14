@@ -59,6 +59,7 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                GroundAnimator.ShowCircle(transform.position);
                 rb.AddForce(Vector3.up * JumpStrength, ForceMode.Impulse);
             }
         }
