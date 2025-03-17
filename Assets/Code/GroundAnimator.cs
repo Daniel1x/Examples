@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(MeshRenderer))]
 public class GroundAnimator : MonoBehaviour
 {
     public static event UnityAction<Vector3> OnCircleStarted = null;
@@ -13,6 +12,8 @@ public class GroundAnimator : MonoBehaviour
     [SerializeField] private string startPointProperty = "_StartPoint";
 
     [Header("Settings")]
+    [SerializeField] private Renderer rendererToModify = null;
+    [SerializeField] private Terrain terrainToModify = null;
     [SerializeField] private float thickness = 3f;
     [SerializeField, Min(1f)] private float maxDistance = 100f;
     [SerializeField, Min(0.01f)] private float movementSpeed = 1f;
@@ -20,14 +21,24 @@ public class GroundAnimator : MonoBehaviour
     private float distance = 0f;
     private Vector3 startPoint = Vector3.zero;
 
-    private MeshRenderer groundRenderer = null;
     private MaterialPropertyBlock materialPropertyBlock = null;
+    private MaterialPropertyBlock terrainPropertyBlock = null;
     private Coroutine animationCoroutine = null;
 
     private void Awake()
     {
-        groundRenderer = GetComponent<MeshRenderer>();
+        if (rendererToModify == null)
+        {
+            rendererToModify = GetComponent<Renderer>();
+        }
+
+        if (terrainToModify == null)
+        {
+            terrainToModify = GetComponent<Terrain>();
+        }
+
         materialPropertyBlock = new();
+        terrainPropertyBlock = new();
 
         OnCircleStarted += resetAnimation;
     }
@@ -39,20 +50,42 @@ public class GroundAnimator : MonoBehaviour
 
     private void updateProperties()
     {
-        if (groundRenderer == null)
+        MyLog.Log($"UpdateProperties :: D:{distance} :: T:{thickness} :: S:{startPoint}");
+
+        updateTerrain();
+        updateRenderer();
+    }
+
+    private void updateTerrain()
+    {
+        if (terrainToModify == null)
         {
             return;
         }
 
-        MyLog.Log($"UpdateProperties :: D:{distance} :: T:{thickness} :: S:{startPoint}");
+        terrainToModify.GetSplatMaterialPropertyBlock(terrainPropertyBlock);
 
-        groundRenderer.GetPropertyBlock(materialPropertyBlock);
+        terrainPropertyBlock.SetFloat(distanceProperty, distance);
+        terrainPropertyBlock.SetFloat(thicknessProperty, thickness);
+        terrainPropertyBlock.SetVector(startPointProperty, startPoint);
+
+        terrainToModify.SetSplatMaterialPropertyBlock(terrainPropertyBlock);
+    }
+
+    private void updateRenderer()
+    {
+        if (rendererToModify == null)
+        {
+            return;
+        }
+
+        rendererToModify.GetPropertyBlock(materialPropertyBlock);
 
         materialPropertyBlock.SetFloat(distanceProperty, distance);
         materialPropertyBlock.SetFloat(thicknessProperty, thickness);
         materialPropertyBlock.SetVector(startPointProperty, startPoint);
 
-        groundRenderer.SetPropertyBlock(materialPropertyBlock);
+        rendererToModify.SetPropertyBlock(materialPropertyBlock);
     }
 
     private void resetProperties()
