@@ -69,7 +69,9 @@ Material:
     - _QueueOffset: 0
     - _Smoothness: 0.5
     - _Thickness: 0
+    - _Use3DPosition: 0
     m_Colors:
+    - _BaseColor: {r: 0.41509432, g: 0.32698467, b: 0.32698467, a: 1}
     - _LineColor: {r: 1, g: 0.087764196, b: 0, a: 0}
     - _StartPoint: {r: 0, g: 0, b: 0, a: 0}
     - _Tiling: {r: 20, g: 20, b: 0, a: 0}
