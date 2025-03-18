@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41b33777d144d4e4fbc5b50e1faa58d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 1412343677891506006, guid: 542d1bc2ea6023241abd09c6cfc46753, type: 3}
+  playerPrefab: {fileID: -7702863135292777267, guid: 65d3cc6d4e2614d45bda59eac51ea620, type: 3}
   viewModeSettings: {fileID: 11400000, guid: 013ed18b811c10346bbab7ef9e7deca8, type: 2}
   automaticViewModeSettings: {fileID: 11400000, guid: 5cb59c7662cb57540a495de6da445753, type: 2}
   useAutomatic: 1

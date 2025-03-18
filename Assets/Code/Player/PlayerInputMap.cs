@@ -1,9 +1,7 @@
 ﻿using DL.Enum;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using static Input_Actions;
 
 [System.Serializable]
 public class PlayerInputMap
@@ -59,47 +57,7 @@ public class PlayerInputMap
         protected abstract void setMapEnabled(bool _enabled);
     }
 
-    [System.Serializable]
-    public class PlayerMap : InputMapModule, IPlayerActions
-    {
-        public event UnityAction<Vector2> OnMovement_Performed = null;
-        public event UnityAction<Vector2> OnRotation_Performed = null;
-
-        public PlayerMap(Input_Actions _inputActions) : base(_inputActions) { }
-
-        public override InputMap MapType => InputMap.Player;
-
-        protected override void setCallbacks()
-        {
-            inputActions.Player.SetCallbacks(this);
-        }
-
-        protected override void setMapEnabled(bool _enabled)
-        {
-            if (_enabled)
-            {
-                inputActions.Player.Enable();
-            }
-            else
-            {
-                inputActions.Player.Disable();
-            }
-        }
-
-        public void OnMovement(InputAction.CallbackContext _context)
-        {
-            OnMovement_Performed?.Invoke(_context.ReadValue<Vector2>());
-        }
-
-        public void OnRotation(InputAction.CallbackContext _context)
-        {
-            OnRotation_Performed?.Invoke(_context.ReadValue<Vector2>());
-        }
-    }
-
     public event UnityAction<InputMap> OnInputMapChanged = null;
-
-    public PlayerMap Player = null;
 
     private List<InputMapModule> modules = null;
     private InputMap enabledMaps = InputMap.All;
@@ -122,12 +80,8 @@ public class PlayerInputMap
 
     public PlayerInputMap(PlayerInput _playerInput, Input_Actions _actions)
     {
-        Player = new PlayerMap(_actions);
-
-        modules = new List<InputMapModule>()
-        {
-            Player,
-        };
+        //Create modules
+        modules = new List<InputMapModule>() { };
     }
 
     public void UpdateEnabledMaps(bool _forceUpdate = false)

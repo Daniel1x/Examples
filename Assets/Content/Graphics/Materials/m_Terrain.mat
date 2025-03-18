@@ -51,10 +51,10 @@ Material:
     m_Floats:
     - _AmbientOcclusion: 1
     - _Distance: 0
-    - _LerpHeight: 8
-    - _LerpThickness: 2
+    - _LerpHeight: 7
+    - _LerpThickness: 5
     - _Metallic: 0
-    - _NoiseAmplitude: 3
+    - _NoiseAmplitude: 1
     - _NoiseScale: 1
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -68,7 +68,7 @@ Material:
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _LineColor: {r: 1, g: 0, b: 0, a: 0}
     - _StartPoint: {r: 0, g: 0, b: 0, a: 0}
-    - _TopColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
+    - _TopColor: {r: 0.3207547, g: 0, b: 0, a: 1}
     - _TopTiling: {r: 40, g: 40, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &6570840441011655180
