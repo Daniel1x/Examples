@@ -23,16 +23,24 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BaseNormalMap:
+        m_Texture: {fileID: 2800000, guid: b6ef510880e3ffd44add629a0fee5987, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseTexture:
-        m_Texture: {fileID: 2800000, guid: abcd9ed6c8cce834aa3b548859634032, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8f2fd594062bbb24e9952d80924b8378, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _TopNormalMap:
+        m_Texture: {fileID: 2800000, guid: 09665af28e5e39040913ad94393256a1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _TopTexture:
-        m_Texture: {fileID: 2800000, guid: 9fc4bf6f6dbb78e44af389d18abfa7f3, type: 3}
+        m_Texture: {fileID: 2800000, guid: 47185fa1845cc324b89a85d63834e967, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -50,8 +58,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _AmbientOcclusion: 1
+    - _BaseNormalStrength: 1
     - _Distance: 0
     - _LerpHeight: 7
+    - _LerpStrength: 1
     - _LerpThickness: 5
     - _Metallic: 0
     - _NoiseAmplitude: 1
@@ -60,16 +70,17 @@ Material:
     - _QueueOffset: 0
     - _Smoothness: 0
     - _Thickness: 0
+    - _TopNormalStrength: 1
     - _Use3DPosition: 0
     m_Colors:
-    - _BaseColor: {r: 0.31048334, g: 0.5377358, b: 0.2663314, a: 1}
-    - _BaseTiling: {r: 20, g: 20, b: 0, a: 0}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseTiling: {r: 10, g: 10, b: 0, a: 0}
     - _Emissive: {r: 0, g: 0, b: 0, a: 0}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
-    - _LineColor: {r: 1, g: 0, b: 0, a: 0}
+    - _LineColor: {r: 0.22763608, g: 0.121885024, b: 0.7830189, a: 1}
     - _StartPoint: {r: 0, g: 0, b: 0, a: 0}
-    - _TopColor: {r: 0.3207547, g: 0, b: 0, a: 1}
-    - _TopTiling: {r: 40, g: 40, b: 0, a: 0}
+    - _TopColor: {r: 0.3773585, g: 0.3755785, b: 0.3755785, a: 1}
+    - _TopTiling: {r: 10, g: 10, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &6570840441011655180
 MonoBehaviour:
