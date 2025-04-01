@@ -60,27 +60,28 @@ Material:
     - _AmbientOcclusion: 1
     - _BaseNormalStrength: 1
     - _Distance: 0
-    - _LerpHeight: 7
+    - _LerpHeight: 15
     - _LerpStrength: 1
-    - _LerpThickness: 5
+    - _LerpThickness: 10
     - _Metallic: 0
-    - _NoiseAmplitude: 1
+    - _NoiseAmplitude: 5
     - _NoiseScale: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Smoothness: 0
     - _Thickness: 0
     - _TopNormalStrength: 1
+    - _UVScale: 0.2
     - _Use3DPosition: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BaseTiling: {r: 10, g: 10, b: 0, a: 0}
+    - _BaseTiling: {r: 1, g: 1, b: 0, a: 0}
     - _Emissive: {r: 0, g: 0, b: 0, a: 0}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _LineColor: {r: 0.22763608, g: 0.121885024, b: 0.7830189, a: 1}
     - _StartPoint: {r: 0, g: 0, b: 0, a: 0}
     - _TopColor: {r: 0.3773585, g: 0.3755785, b: 0.3755785, a: 1}
-    - _TopTiling: {r: 10, g: 10, b: 0, a: 0}
+    - _TopTiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &6570840441011655180
 MonoBehaviour:
