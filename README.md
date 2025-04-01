@@ -9,6 +9,8 @@ Example class:
 Example terrain shader with scanning effect and multiple height based textures with added noise.
 Basic weather system with directional light rotation and cloud animation.
 
+[Terrain Shader Example Video](https://www.youtube.com/watch?v=8upf36Ew92E)
+
 <img src="https://github.com/Daniel1x/Examples/blob/main/Assets/Content/Preview/t_Preview1.png" alt="Zdjęcie 1" width="500"/>
 
 <img src="https://github.com/Daniel1x/Examples/blob/main/Assets/Content/Preview/t_Preview2.png" alt="Zdjęcie 2" width="500"/>
