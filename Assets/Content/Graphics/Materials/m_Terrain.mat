@@ -58,20 +58,20 @@ Material:
     m_Ints: []
     m_Floats:
     - _AmbientOcclusion: 1
-    - _BaseNormalStrength: 1
+    - _BaseNormalStrength: 2
     - _Distance: 0
-    - _LerpHeight: 15
+    - _LerpHeight: 12
     - _LerpStrength: 1
-    - _LerpThickness: 10
+    - _LerpThickness: 4
     - _Metallic: 0
-    - _NoiseAmplitude: 5
-    - _NoiseScale: 1
+    - _NoiseAmplitude: 6
+    - _NoiseScale: 0.5
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Smoothness: 0
     - _Thickness: 0
     - _TopNormalStrength: 1
-    - _UVScale: 0.2
+    - _UVScale: 0.08
     - _Use3DPosition: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
