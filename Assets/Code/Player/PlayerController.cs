@@ -69,6 +69,7 @@ public class PlayerController : MonoBehaviour
 
     private void onNewRTCreated(RenderTexture _rt)
     {
+        _rt.depthStencilFormat = UnityEngine.Experimental.Rendering.GraphicsFormat.D32_SFloat;
         playerCamera.targetTexture = _rt;
     }
 }

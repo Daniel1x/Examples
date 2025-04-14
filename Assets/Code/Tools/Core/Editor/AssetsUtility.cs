@@ -549,7 +549,7 @@ namespace DL.Editor
             }
         }
 
-        public static T FindObjectOfType<T>(bool _onlyAtRuntime = true, bool _includeInactive = false) where T : UnityEngine.Object
+        public static T FindObjectOfType<T>(bool _onlyAtRuntime = true, FindObjectsInactive _includeInactive = FindObjectsInactive.Exclude) where T : UnityEngine.Object
         {
             if (_onlyAtRuntime == true && Application.isPlaying == false)
             {
@@ -557,7 +557,7 @@ namespace DL.Editor
                 return null;
             }
 
-            T _object = UnityEngine.Object.FindObjectOfType<T>(_includeInactive);
+            T _object = UnityEngine.Object.FindFirstObjectByType<T>(_includeInactive);
 
             if (_object == null)
             {
@@ -567,7 +567,7 @@ namespace DL.Editor
             return _object;
         }
 
-        public static T[] FindObjectsOfType<T>(bool _onlyAtRuntime = true, bool _includeInactive = false) where T : UnityEngine.Object
+        public static T[] FindObjectsOfType<T>(bool _onlyAtRuntime = true, FindObjectsInactive _includeInactive = FindObjectsInactive.Exclude, FindObjectsSortMode _sortMode = FindObjectsSortMode.None) where T : UnityEngine.Object
         {
             if (_onlyAtRuntime == true && Application.isPlaying == false)
             {
@@ -575,7 +575,7 @@ namespace DL.Editor
                 return null;
             }
 
-            T[] _objects = UnityEngine.Object.FindObjectsOfType<T>(_includeInactive);
+            T[] _objects = UnityEngine.Object.FindObjectsByType<T>(_includeInactive, _sortMode);
 
             if (_objects == null || _objects.Length < 1)
             {

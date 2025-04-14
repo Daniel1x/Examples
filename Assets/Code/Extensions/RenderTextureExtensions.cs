@@ -9,25 +9,6 @@ public static class RenderTextureExtensions
     public const string GENERIC_RT_NAME = "rt_Generic";
 
     [System.Serializable]
-    public struct FormatInfo
-    {
-        [SerializeField] private bool supported;
-        [SerializeField] private GraphicsFormat format;
-        [SerializeField] private FormatUsage usage;
-
-        public bool Supported => supported;
-        public GraphicsFormat Format => format;
-        public FormatUsage Usage => usage;
-
-        public FormatInfo(GraphicsFormat _format, FormatUsage _usage = FormatUsage.Render)
-        {
-            supported = SystemInfo.IsFormatSupported(_format, _usage);
-            format = _format;
-            usage = _usage;
-        }
-    }
-
-    [System.Serializable]
     public class RenderTextureLerpController : System.IDisposable
     {
         protected const string GENERIC_RT_NAME = "generic_NewLerpTexture";
@@ -179,35 +160,6 @@ public static class RenderTextureExtensions
     public class RenderTextureLerpControllerRealtime : RenderTextureLerpController
     {
         protected override float DeltaTime => Time.unscaledDeltaTime;
-    }
-
-    public static List<FormatInfo> GetFormatInfos(FormatUsage _usage = FormatUsage.Render)
-    {
-        List<FormatInfo> _infos = new List<FormatInfo>();
-        GraphicsFormat[] _formats = (GraphicsFormat[])System.Enum.GetValues(typeof(GraphicsFormat));
-
-        for (int i = 0; i < _formats.Length; i++)
-        {
-            _infos.Add(new FormatInfo(_formats[i], _usage));
-        }
-
-        return _infos;
-    }
-
-    public static List<GraphicsFormat> GetSupportedFormats(FormatUsage _usage = FormatUsage.Render)
-    {
-        List<GraphicsFormat> _supported = new List<GraphicsFormat>();
-        GraphicsFormat[] _formats = (GraphicsFormat[])System.Enum.GetValues(typeof(GraphicsFormat));
-
-        for (int i = 0; i < _formats.Length; i++)
-        {
-            if (SystemInfo.IsFormatSupported(_formats[i], _usage))
-            {
-                _supported.Add(_formats[i]);
-            }
-        }
-
-        return _supported;
     }
 
     public static void GetUVMinMax(this Sprite _sprite, out Vector2 _minUV, out Vector2 _maxUV)
@@ -364,7 +316,7 @@ public static class RenderTextureExtensions
 #endif
     }
 
-    public static void UpdateSpawnedRenderTextureSize(ref RenderTexture _texture, string _name, int _width, int _height, string _logPrefix = "", UnityAction<RenderTexture> _onNewCreated = null, int _depth = 0, GraphicsFormat _format = GraphicsFormat.R32G32B32A32_SFloat, bool _logCondition = true)
+    public static void UpdateSpawnedRenderTextureSize(ref RenderTexture _texture, string _name, int _width, int _height, string _logPrefix = "", UnityAction<RenderTexture> _onNewCreated = null, int _depth = 0, GraphicsFormat _format = GraphicsFormat.R32G32B32A32_SFloat, GraphicsFormat _depthFormat = GraphicsFormat.D32_SFloat, bool _logCondition = true)
     {
         _width = _width.ClampMin(1);
         _height = _height.ClampMin(1);
@@ -384,7 +336,7 @@ public static class RenderTextureExtensions
 
         MyLog.Log(_logPrefix + $"Creating new Render Texture with size: {_width}x{_height}", _condition: _logCondition);
 
-        _texture = new RenderTexture(_width, _height, _depth, _format);
+        _texture = new RenderTexture(_width, _height, _format, _depthFormat);
         _texture.name = _name;
         _texture.Create();
 
