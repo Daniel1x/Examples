@@ -24,6 +24,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BaseHeightMap:
+        m_Texture: {fileID: 2800000, guid: f4a7707700fcf6544a5797bea2a2dcfa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseNormalMap:
         m_Texture: {fileID: 2800000, guid: b6ef510880e3ffd44add629a0fee5987, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -34,6 +38,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _EmissionTexture:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TopHeightMap:
+        m_Texture: {fileID: 2800000, guid: c382f68ac68f5cf41a307419007fa8e6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TopNormalMap:
@@ -59,6 +67,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AmbientOcclusion: 1
+    - _BaseDisplacementStrength: 1
     - _BaseNormalStrength: 2
     - _Distance: 0
     - _LerpHeight: 12
@@ -71,7 +80,8 @@ Material:
     - _QueueOffset: 0
     - _Smoothness: 0
     - _Thickness: 0
-    - _TopNormalStrength: 1
+    - _TopDisplacementStrength: 1
+    - _TopNormalStrength: 5
     - _UVScale: 0.08
     - _Use3DPosition: 0
     m_Colors:
