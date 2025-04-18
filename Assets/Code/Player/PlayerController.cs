@@ -29,6 +29,14 @@ public class PlayerController : MonoBehaviour
 
     public Vector2Int RenderTextureSize { get; private set; } = new Vector2Int(16, 16);
 
+    private void Update()
+    {
+        if (canHandleInputs)
+        {
+            GroundAnimator.UpdateGridStartPoint(transform.position);
+        }
+    }
+
     private void Awake()
     {
         playerCamera = GetComponentInChildren<Camera>();

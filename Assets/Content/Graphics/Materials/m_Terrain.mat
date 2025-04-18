@@ -70,6 +70,10 @@ Material:
     - _BaseDisplacementStrength: 1
     - _BaseNormalStrength: 2
     - _Distance: 0
+    - _GRIDEFFECT: 0
+    - _GridRadius: 5
+    - _GridScale: 1
+    - _GridThickness: 0.1
     - _LerpHeight: 12
     - _LerpStrength: 1
     - _LerpThickness: 4
@@ -84,11 +88,14 @@ Material:
     - _TopNormalStrength: 5
     - _UVScale: 0.08
     - _Use3DPosition: 0
+    - _UseGridEffect: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseTiling: {r: 1, g: 1, b: 0, a: 0}
     - _Emissive: {r: 0, g: 0, b: 0, a: 0}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
+    - _GridColor: {r: 0.04624176, g: 0, b: 1, a: 1}
+    - _GridStartPoint: {r: 0, g: 0, b: 0, a: 0}
     - _LineColor: {r: 0.22763608, g: 0.121885024, b: 0.7830189, a: 1}
     - _StartPoint: {r: 0, g: 0, b: 0, a: 0}
     - _TopColor: {r: 0.3773585, g: 0.3755785, b: 0.3755785, a: 1}

@@ -5,11 +5,13 @@ using UnityEngine.Events;
 public class GroundAnimator : MonoBehaviour
 {
     public static event UnityAction<Vector3> OnCircleStarted = null;
+    public static event UnityAction<Vector3> OnGridPointUpdate = null;
 
     [Header("Material Properties")]
     [SerializeField] private string distanceProperty = "_Distance";
     [SerializeField] private string thicknessProperty = "_Thickness";
     [SerializeField] private string startPointProperty = "_StartPoint";
+    [SerializeField] private string gridPointProperty = "_GridStartPoint";
 
     [Header("Settings")]
     [SerializeField] private Renderer rendererToModify = null;
@@ -20,6 +22,7 @@ public class GroundAnimator : MonoBehaviour
 
     private float distance = 0f;
     private Vector3 startPoint = Vector3.zero;
+    private Vector3 gridPoint = Vector3.zero;
 
     private MaterialPropertyBlock materialPropertyBlock = null;
     private MaterialPropertyBlock terrainPropertyBlock = null;
@@ -41,17 +44,23 @@ public class GroundAnimator : MonoBehaviour
         terrainPropertyBlock = new();
 
         OnCircleStarted += resetAnimation;
+        OnGridPointUpdate += onGridPointUpdate;
     }
 
     private void OnDestroy()
     {
         OnCircleStarted -= resetAnimation;
+        OnGridPointUpdate -= onGridPointUpdate;
+    }
+
+    private void onGridPointUpdate(Vector3 _point)
+    {
+        gridPoint = _point;
+        updateProperties();
     }
 
     private void updateProperties()
     {
-        MyLog.Log($"UpdateProperties :: D:{distance} :: T:{thickness} :: S:{startPoint}");
-
         updateTerrain();
         updateRenderer();
     }
@@ -68,6 +77,7 @@ public class GroundAnimator : MonoBehaviour
         terrainPropertyBlock.SetFloat(distanceProperty, distance);
         terrainPropertyBlock.SetFloat(thicknessProperty, thickness);
         terrainPropertyBlock.SetVector(startPointProperty, startPoint);
+        terrainPropertyBlock.SetVector(gridPointProperty, gridPoint);
 
         terrainToModify.SetSplatMaterialPropertyBlock(terrainPropertyBlock);
     }
@@ -84,6 +94,7 @@ public class GroundAnimator : MonoBehaviour
         materialPropertyBlock.SetFloat(distanceProperty, distance);
         materialPropertyBlock.SetFloat(thicknessProperty, thickness);
         materialPropertyBlock.SetVector(startPointProperty, startPoint);
+        materialPropertyBlock.SetVector(gridPointProperty, gridPoint);
 
         rendererToModify.SetPropertyBlock(materialPropertyBlock);
     }
@@ -131,5 +142,10 @@ public class GroundAnimator : MonoBehaviour
     public static void ShowCircle(Vector3 _startPoint)
     {
         OnCircleStarted?.Invoke(_startPoint);
+    }
+
+    public static void UpdateGridStartPoint(Vector3 _gridPoint)
+    {
+        OnGridPointUpdate?.Invoke(_gridPoint);
     }
 }
