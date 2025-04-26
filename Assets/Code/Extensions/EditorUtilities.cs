@@ -429,7 +429,7 @@ public static class EditorUtilities
             string _path = AssetDatabase.GUIDToAssetPath(_guids[i]);
             string _fileName = _path.Split('/', '\\').Last();
 
-            if (_fileNamesToFind.Contains(_fileName) == true)
+            if (_fileNamesToFind.Contains(_fileName))
             {
                 _fileNamesToFind.Remove(_fileName);
                 _files.Add(AssetDatabase.LoadAssetAtPath<T>(_path));
@@ -559,7 +559,7 @@ public static class EditorUtilities
     public static T FindObjectOfType<T>(bool _onlyAtRuntime = true, FindObjectsInactive _includeInactive = FindObjectsInactive.Exclude) where T : UnityEngine.Object
     {
 #if UNITY_EDITOR
-        if (_onlyAtRuntime == true && Application.isPlaying == false)
+        if (_onlyAtRuntime && Application.isPlaying == false)
         {
             MyLog.Log("ASSETS UTILITY :: This action can be performed only at runtime!");
             return null;
@@ -581,7 +581,7 @@ public static class EditorUtilities
     public static T[] FindObjectsOfType<T>(bool _onlyAtRuntime = true, FindObjectsInactive _includeInactive = FindObjectsInactive.Exclude, FindObjectsSortMode _sortMode = FindObjectsSortMode.None) where T : UnityEngine.Object
     {
 #if UNITY_EDITOR
-        if (_onlyAtRuntime == true && Application.isPlaying == false)
+        if (_onlyAtRuntime && Application.isPlaying == false)
         {
             MyLog.Log("ASSETS UTILITY :: This action can be performed only at runtime!");
             return null;

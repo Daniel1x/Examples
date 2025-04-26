@@ -9,18 +9,10 @@ public class SelectionEventController
     public enum SelectionEventMode
     {
         None = 0,
-        SetObjectActiveOnSelect = 1,
-        SetBehaviourEnabledOnSelect = 2,
-        SetObjectDisabledOnSelect = 4,
-        SetBehaviourDisabledOnSelect = 8
-    }
-
-    public interface INavigationItem
-    {
-        bool IsObjectSelectedByEventSystem();
-        bool ForceSelectEventOnEnable { get; }
-        bool ForceDeselectEventOnDisable { get; }
-        bool SelectInProgressTriggeredFromOnEnable { get; set; }
+        ObjectActive = 1,
+        BehaviourEnabled = 2,
+        ObjectDisabled = 4,
+        BehaviourDisabled = 8
     }
 
     public event UnityAction<bool> OnSelectionUpdated = null;
@@ -45,21 +37,21 @@ public class SelectionEventController
         }
     }
 
-    public void UpdateIsSelectedOnEnable<T>(Selectable _selectable, T _naviItem) where T : INavigationItem
+    public void UpdateIsSelectedOnEnable<T>(T _selectable) where T : Selectable, INavigationItem
     {
-        IsSelected = _naviItem.IsObjectSelectedByEventSystem();
+        IsSelected = _selectable.IsObjectSelectedByEventSystem();
 
-        if (IsSelected && _naviItem.ForceSelectEventOnEnable)
+        if (IsSelected && _selectable.ForceSelectEventOnEnable)
         {
-            _naviItem.SelectInProgressTriggeredFromOnEnable = true;
+            _selectable.SelectInProgressTriggeredFromOnEnable = true;
             _selectable.OnSelect(null);
-            _naviItem.SelectInProgressTriggeredFromOnEnable = false;
+            _selectable.SelectInProgressTriggeredFromOnEnable = false;
         }
     }
 
-    public void TryToForceOnDeselect<T>(Selectable _selectable, T _naviItem) where T : INavigationItem
+    public void TryToForceOnDeselect<T>(T _selectable) where T : Selectable, INavigationItem
     {
-        if (IsSelected && _naviItem.ForceDeselectEventOnDisable)
+        if (IsSelected && _selectable.ForceDeselectEventOnDisable)
         {
             _selectable.OnDeselect(null);
         }
@@ -72,22 +64,22 @@ public class SelectionEventController
             return;
         }
 
-        if (isModeActive(SelectionEventMode.SetObjectActiveOnSelect))
+        if (isModeActive(SelectionEventMode.ObjectActive))
         {
             setObjectsEnabled(objectsToEnableOnSelect, isSelected);
         }
 
-        if (isModeActive(SelectionEventMode.SetBehaviourEnabledOnSelect))
+        if (isModeActive(SelectionEventMode.BehaviourEnabled))
         {
             setBehavioursEnabled(behavioursToEnableOnSelect, isSelected);
         }
 
-        if (isModeActive(SelectionEventMode.SetObjectDisabledOnSelect))
+        if (isModeActive(SelectionEventMode.ObjectDisabled))
         {
             setObjectsEnabled(objectsToDisableOnSelect, !isSelected);
         }
 
-        if (isModeActive(SelectionEventMode.SetBehaviourDisabledOnSelect))
+        if (isModeActive(SelectionEventMode.BehaviourDisabled))
         {
             setBehavioursEnabled(behavioursToDisableOnSelect, !isSelected);
         }
@@ -98,9 +90,9 @@ public class SelectionEventController
         return (selectionEventMode & _event) != 0;
     }
 
-    private void setBehavioursEnabled<T>(T[] _behaviours, bool _enabled) where T : Behaviour
+    private void setBehavioursEnabled(Behaviour[] _behaviours, bool _enabled)
     {
-        foreach (T _behaviour in _behaviours)
+        foreach (Behaviour _behaviour in _behaviours)
         {
             if (_behaviour == null)
             {

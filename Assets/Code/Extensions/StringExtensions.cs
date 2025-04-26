@@ -66,7 +66,7 @@ public static class StringExtensions
 
     public static string GetConstLengthFormat(int _length)
     {
-        if (_length.IsInRange(0, NUMBER_OF_PREDEFINED_FORMATS) == true)
+        if (_length.IsInRange(0, NUMBER_OF_PREDEFINED_FORMATS))
         {
             return StringFormatsForNumericValuesWithConstantLength[_length];
         }

@@ -288,7 +288,7 @@ public static class ComponentExtensions
 
         for (int i = _totalCount - 1; i >= 0; i--)
         {
-            if (_transform.GetChild(i).gameObject.activeSelf == true)
+            if (_transform.GetChild(i).gameObject.activeSelf)
             {
                 _totalCount--;
             }

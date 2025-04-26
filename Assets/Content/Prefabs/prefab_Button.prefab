@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 8264229398600864172}
   - component: {fileID: 6916887183874365216}
   - component: {fileID: 7714386970705707631}
-  - component: {fileID: -2708706457822432480}
   m_Layer: 5
   m_Name: prefab_Button
   m_TagString: Untagged
@@ -136,7 +135,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3687201622563459290}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 96e50a63a58b25a4faff2ded2859d488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -171,19 +170,23 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &-2708706457822432480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3687201622563459290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1147797f6fff2414e8817e1676bd9f4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectable: {fileID: 7714386970705707631}
+  invokeOnAnyItemSelected: 1
+  allowNavigationToOtherParent: 1
+  allowNavitationToThisObject: 1
+  forceSelectEventOnEnable: 1
+  forceDeselectEventOnDisable: 1
+  forceSelectOnPointerEnter: 1
+  forceClickOnPointerDown: 0
+  refreshColorTransitionAfterFrame: 0
+  fadeStyle: 0
+  graphicsToFade: []
+  explicitNavigator:
+    AddNewExplicitSelections: 0
+    UseAutomaticSelectionIfExplicitSelectionIsNull: 1
+    selectOnUp: []
+    selectOnDown: []
+    selectOnLeft: []
+    selectOnRight: []
   selectionEventController:
     selectionEventMode: 1
     objectsToEnableOnSelect:
@@ -191,8 +194,9 @@ MonoBehaviour:
     behavioursToEnableOnSelect: []
     objectsToDisableOnSelect: []
     behavioursToDisableOnSelect: []
-  forceSelectEventOnEnable: 1
-  forceDeselectEventOnDisable: 1
+  graphicsTransitionController:
+    cloneColorTransitionToOthers: 0
+    graphicsToCloneTransition: []
 --- !u!1 &7615365426655130305
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,7 +408,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 18
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

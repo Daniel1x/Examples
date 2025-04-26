@@ -40,7 +40,7 @@ public static class MathExtensions
     {
         float _normalizedTime = (_time % _cycleDuration / _cycleDuration) + (_time < 0f ? 1f : 0f);
 
-        return _ascending == true
+        return _ascending
             ? Mathf.Lerp(_min, _max, _normalizedTime)
             : Mathf.Lerp(_max, _min, _normalizedTime);
     }

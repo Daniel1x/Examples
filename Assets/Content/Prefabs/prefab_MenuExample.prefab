@@ -378,6 +378,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4936354064944264629}
     m_Modifications:
+    - target: {fileID: 137930314799651069, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
+      propertyPath: m_fontSize
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3687201622563459290, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
       propertyPath: m_Name
       value: prefab_Button_01
@@ -462,28 +466,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3998439876154368219, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3998439876154368219, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3998439876154368219, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3998439876154368219, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3998439876154368219, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3998439876154368219, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
-      propertyPath: m_AnchoredPosition.y
+    - target: {fileID: 7615365426655130305, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -504,6 +488,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4936354064944264629}
     m_Modifications:
+    - target: {fileID: 137930314799651069, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
+      propertyPath: m_fontSize
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3687201622563459290, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
       propertyPath: m_Name
       value: prefab_Button
@@ -588,6 +576,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3998439876154368219, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998439876154368219, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998439876154368219, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998439876154368219, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998439876154368219, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998439876154368219, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7615365426655130305, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -606,6 +622,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4936354064944264629}
     m_Modifications:
+    - target: {fileID: 137930314799651069, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
+      propertyPath: m_fontSize
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3687201622563459290, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
       propertyPath: m_Name
       value: prefab_Button_03
@@ -714,6 +734,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7615365426655130305, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -732,6 +756,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4936354064944264629}
     m_Modifications:
+    - target: {fileID: 137930314799651069, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
+      propertyPath: m_fontSize
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3687201622563459290, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
       propertyPath: m_Name
       value: prefab_Button_02
@@ -838,6 +866,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3998439876154368219, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7615365426655130305, guid: a858c4522f5536b43b5ee1d93e9edf67, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

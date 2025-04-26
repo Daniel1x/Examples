@@ -704,13 +704,13 @@ public static class CollectionsExtensions
 
     public static T[] RemoveFromArray<T>(this T[] _array, T _item, bool _safe = false)
     {
-        if (_safe == true)
+        if (_safe)
         {
             bool _foundMatch = false;
 
             for (int i = 0; i < _array.Length; i++)
             {
-                if (_array[i].Equals(_item) == true)
+                if (_array[i].Equals(_item))
                 {
                     _foundMatch = true;
                     break;
@@ -728,7 +728,7 @@ public static class CollectionsExtensions
 
         for (int i = 0; i < _array.Length; i++)
         {
-            if (_array[i].Equals(_item) == true)
+            if (_array[i].Equals(_item))
             {
                 continue;
             }
