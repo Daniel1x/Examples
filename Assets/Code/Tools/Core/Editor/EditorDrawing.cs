@@ -1005,5 +1005,108 @@
         {
             _object.serializedObject.ApplyModifiedProperties();
         }
+
+        public static void DrawArrayProperty(SerializedProperty _arrayProperty, ref Rect _propertyPosition, ref int _propertyCounter, float _propertyHeight = DEFAULT_PROPERTY_HEIGHT, float _spacing = DEFAULT_SPACING)
+        {
+            if (_arrayProperty == null)
+            {
+                return;
+            }
+
+            int _lineCount = CountLinesNeededToDrawProperty(_arrayProperty);
+            float _heightPerProperty = _propertyHeight + _spacing;
+            _propertyPosition.y += _heightPerProperty;
+            Rect _arrayPropertyRect = _propertyPosition;
+
+            _arrayPropertyRect.height = _lineCount * _heightPerProperty;
+            _propertyCounter += _lineCount;
+
+            EditorGUI.BeginProperty(_arrayPropertyRect, null, _arrayProperty);
+            EditorGUI.PropertyField(_arrayPropertyRect, _arrayProperty, true);
+            EditorGUI.EndProperty();
+
+            _propertyPosition.y += _arrayPropertyRect.height - _propertyPosition.height;
+        }
+
+        public static int CountLinesNeededToDrawProperty(SerializedProperty _property)
+        {
+            if (_property.isExpanded == false)
+            {
+                return 1;
+            }
+
+            int _lineCount = 2;
+
+            if (_property.isArray == false)
+            {
+                SerializedProperty[] _childProperties = _property.GetChildProperties();
+
+                for (int i = 0; i < _childProperties.Length; i++)
+                {
+                    _lineCount += CountLinesNeededToDrawProperty(_childProperties[i]);
+                }
+
+                return _lineCount;
+            }
+
+            _lineCount++;
+            int _arraySize = _property.arraySize;
+
+            for (int i = 0; i < _arraySize; i++)
+            {
+                _lineCount += CountLinesNeededToDrawProperty(_property.GetArrayElementAtIndex(i));
+            }
+
+            if (_arraySize == 0)
+            {
+                _lineCount++;
+            }
+
+            return _lineCount;
+        }
+
+        public static SerializedProperty[] GetChildProperties(this SerializedProperty _property)
+        {
+            List<SerializedProperty> _children = new List<SerializedProperty>();
+
+            _property.IterateOverChildProperties((_childProperty) =>
+            {
+                _children.Add(_childProperty);
+            });
+
+            return _children.ToArray();
+        }
+
+        public static void IterateOverChildProperties(this SerializedProperty _property, Action<SerializedProperty> _action, bool _skipScriptField = false)
+        {
+            using (SerializedProperty _iterator = _property.Copy())
+            {
+                if (_iterator.NextVisible(true) == false)
+                {
+                    return;
+                }
+
+                if (_skipScriptField)
+                {
+                    if (_iterator.NextVisible(false) == false)
+                    {
+                        return;
+                    }
+                }
+
+                do
+                {
+                    SerializedProperty _childProperty = _property.FindPropertyRelative(_iterator.name);
+
+                    if (_childProperty == null)
+                    {
+                        break;
+                    }
+
+                    _action.Invoke(_childProperty);
+                }
+                while (_iterator.NextVisible(false));
+            }
+        }
     }
 }
