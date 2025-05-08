@@ -77,12 +77,7 @@ public class PlayerInputManagerProvider : MonoBehaviour
             return;
         }
 
-        // Pobierz wszystkie urzπdzenia typu Gamepad
         List<InputDevice> _allDevices = InputSystem.devices.ToList();
-
-        Debug.Log($"All devices: {_allDevices.ToStringByElements(_e => _e.displayName)}");
-
-        // Pobierz urzπdzenia juø przypisane do graczy
         List<InputDevice> _used = new List<InputDevice>();
         ReadOnlyArray<PlayerInput> _allPlayers = PlayerInput.all;
 
@@ -98,27 +93,17 @@ public class PlayerInputManagerProvider : MonoBehaviour
             _used.AddRange(_player.devices);
         }
 
-        Debug.Log($"Used devices: {_used.ToStringByElements(_e => _e.displayName)}");
-
-        // Znajdü pierwszy nieuøywany gamepad
         List<InputDevice> _freeDevices = _allDevices.Where(_device => _used.Contains(_device) == false).ToList();
 
         InputDevice[] _devicesToAssign = _getValidDevicesToAssign();
 
         if (_devicesToAssign.IsNullOrEmpty() == false)
         {
-            // UtwÛrz nowego gracza z nieuøywanym gamepadem
-            var _newPlayer = playerInputManager.JoinPlayer(-1, -1, null, _devicesToAssign);
+            PlayerInput _newPlayer = playerInputManager.JoinPlayer(-1, -1, null, _devicesToAssign);
 
             if (_newPlayer != null)
             {
-                Debug.Log($"New player joined with free gamepad: {_devicesToAssign.ToStringByElements(_e => _e.displayName)} :: Assigned devices: {_newPlayer.devices.ToStringByElements(_e => _e.displayName)}");
-
                 _validatePlayerInputDevices(_newPlayer);
-            }
-            else
-            {
-                Debug.Log($"Player was not created!");
             }
         }
         else
@@ -192,14 +177,12 @@ public class PlayerInputManagerProvider : MonoBehaviour
             return null;
         }
 
-        void _validatePlayerInputDevices(PlayerInput _player)
+        bool _validatePlayerInputDevices(PlayerInput _player)
         {
             if (_player.devices.Count <= 1)
             {
-                return;
+                return true;
             }
-
-            Debug.LogWarning($"Player {_player.playerIndex} has more than one device assigned. Only the first one will be kept.");
 
             List<InputDevice> _mouseOrKeyboard = new List<InputDevice>();
             List<InputDevice> _gamepads = new List<InputDevice>();
@@ -221,9 +204,7 @@ public class PlayerInputManagerProvider : MonoBehaviour
                 ? _mouseOrKeyboard.ToArray()
                 : _gamepads.Count <= 0 ? _gamepads.ToArray() : new InputDevice[] { _gamepads[0] };
 
-            bool _switched = _player.SwitchCurrentControlScheme(_controls.ToArray());
-
-            Debug.Log($"Tried to switch current controls! Switched:{_switched} :: New:{_controls.ToStringByElements(_e => _e.displayName)} :: Assigned:{_player.devices.ToStringByElements(_e => _e.displayName)}");
+            return _player.SwitchCurrentControlScheme(_controls.ToArray());
         }
     }
 
@@ -243,18 +224,15 @@ public class PlayerInputManagerProvider : MonoBehaviour
 
         if (_triggeringDevice == null)
         {
-            Debug.LogWarning("JoinAction was triggered, but no device was found.");
+            return;
+        }
+
+        if (PlayerInput.all.Any(_player => _player.devices.Contains(_triggeringDevice)))
+        {
             return;
         }
 
         Debug.Log($"Join action performed by device: {_triggeringDevice.displayName}");
-
-        // Sprawdü, czy urzπdzenie jest juø przypisane do gracza
-        if (PlayerInput.all.Any(_player => _player.devices.Contains(_triggeringDevice)))
-        {
-            Debug.LogWarning($"Device {_triggeringDevice.displayName} is already assigned to a player.");
-            return;
-        }
 
         JoinPlayerWithFreeController(_triggeringDevice);
     }
