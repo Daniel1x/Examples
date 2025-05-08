@@ -258,5 +258,4 @@ public class PlayerInputManagerProvider : MonoBehaviour
 
         JoinPlayerWithFreeController(_triggeringDevice);
     }
-
 }

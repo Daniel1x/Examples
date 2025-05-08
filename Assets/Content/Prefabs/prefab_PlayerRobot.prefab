@@ -2572,8 +2572,8 @@ MonoBehaviour:
   Jump: 0
   Sprint: 0
   AnalogMovement: 0
-  CursorLocked: 1
-  CursorInputForLook: 1
+  CursorLocked: 0
+  CursorInputForLook: 0
 --- !u!114 &2290659342330336182
 MonoBehaviour:
   m_ObjectHideFlags: 0
