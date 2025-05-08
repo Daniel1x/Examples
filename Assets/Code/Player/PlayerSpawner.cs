@@ -19,6 +19,7 @@ public class PlayerSpawner : MonoBehaviour
     [SerializeField] private PlayerViewModeAutomaticSettings automaticViewModeSettings = null;
     [SerializeField] private bool useAutomatic = false;
     [SerializeField, Range(1, 9)] private int playersToSpawnAtStart = 1;
+    [SerializeField] private bool disableCustomInputs = true;
 
     private PlayerViewModeSettingsBase settings => useAutomatic ? automaticViewModeSettings : viewModeSettings;
 
@@ -42,6 +43,11 @@ public class PlayerSpawner : MonoBehaviour
 
     private void Update()
     {
+        if (disableCustomInputs)
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.N))
         {
             spawnPlayer();
@@ -65,6 +71,11 @@ public class PlayerSpawner : MonoBehaviour
 #if UNITY_EDITOR
     private void OnGUI()
     {
+        if (disableCustomInputs)
+        {
+            return;
+        }
+
         string _rightSideInfo = $"Spawn: N" +
             $"\nKill: K" +
             $"\nNext: {RIGHT_ARROW_SLIM}" +
@@ -141,7 +152,6 @@ public class PlayerSpawner : MonoBehaviour
         if (activePlayer == null)
         {
             activePlayer = players[0];
-            activePlayer.CanHandleInputs = true;
             OnActivePlayerChanged?.Invoke(null, activePlayer);
             return;
         }
@@ -159,9 +169,6 @@ public class PlayerSpawner : MonoBehaviour
         if (_newActivePlayer != activePlayer)
         {
             PlayerController _previouslyActive = activePlayer;
-
-            _previouslyActive.CanHandleInputs = false;
-            _newActivePlayer.CanHandleInputs = true;
 
             activePlayer = _newActivePlayer;
 

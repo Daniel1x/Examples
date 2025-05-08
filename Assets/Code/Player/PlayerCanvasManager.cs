@@ -6,12 +6,12 @@ public class PlayerCanvasManager : MonoBehaviour
     [System.Serializable]
     public class PlayerData
     {
-        public PlayerController Controller = null;
+        public PlayerProvider Player = null;
         public PlayerView View = null;
 
-        public PlayerData(PlayerController _controller, RenderTexture _texture, PlayerView _view)
+        public PlayerData(PlayerProvider _controller, RenderTexture _texture, PlayerView _view)
         {
-            Controller = _controller;
+            Player = _controller;
             View = _view;
             View.TextureTarget.texture = _texture;
         }
@@ -28,15 +28,15 @@ public class PlayerCanvasManager : MonoBehaviour
     {
         rectTransform = (RectTransform)transform;
 
-        PlayerController.OnNewPlayerSpawned += onNewSpawned;
-        PlayerController.OnPlayerDestroyed += onDestroyed;
+        PlayerProvider.OnNewPlayerSpawned += onNewSpawned;
+        PlayerProvider.OnPlayerDestroyed += onDestroyed;
         PlayerSpawner.OnActivePlayerChanged += onActivePlayerChanged;
     }
 
     private void OnDestroy()
     {
-        PlayerController.OnNewPlayerSpawned -= onNewSpawned;
-        PlayerController.OnPlayerDestroyed -= onDestroyed;
+        PlayerProvider.OnNewPlayerSpawned -= onNewSpawned;
+        PlayerProvider.OnPlayerDestroyed -= onDestroyed;
         PlayerSpawner.OnActivePlayerChanged -= onActivePlayerChanged;
     }
 
@@ -91,25 +91,25 @@ public class PlayerCanvasManager : MonoBehaviour
                 y = (_availablePixels.y * _anchorSettings.VerticalAnchor.Range).RoundToInt()
             };
 
-            playerDatas[i].View.TextureTarget.texture = playerDatas[i].Controller.UpdateRenderTextureSize(_rtSize);
+            playerDatas[i].View.TextureTarget.texture = playerDatas[i].Player.UpdateRenderTextureSize(_rtSize);
             playerDatas[i].View.RectTransform.SetAnchorsXY(_anchorSettings.HorizontalAnchor, _anchorSettings.VerticalAnchor);
         }
     }
 
-    private void onNewSpawned(PlayerController _controller, RenderTexture _texture)
+    private void onNewSpawned(PlayerProvider _controller, RenderTexture _texture)
     {
         playerDatas.Add(new PlayerData(_controller, _texture, Instantiate(playerViewPrefab, parent, false)));
         adjustPlayerScreens();
     }
 
-    private void onDestroyed(PlayerController _controller, RenderTexture _texture)
+    private void onDestroyed(PlayerProvider _controller, RenderTexture _texture)
     {
         for (int i = 0; i < playerDatas.Count; i++)
         {
             PlayerData _data = playerDatas[i];
 
-            if (_data.Controller == null
-                || _data.Controller == _controller)
+            if (_data.Player == null
+                || _data.Player == _controller)
             {
                 Destroy(_data.View.gameObject);
                 playerDatas.RemoveAt(i);
@@ -142,7 +142,7 @@ public class PlayerCanvasManager : MonoBehaviour
 
         for (int i = 0; i < playerDatas.Count; i++)
         {
-            if (playerDatas[i].Controller == _controller)
+            if (playerDatas[i].Player == _controller)
             {
                 return playerDatas[i];
             }

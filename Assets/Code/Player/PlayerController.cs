@@ -1,83 +1,35 @@
 using UnityEngine;
-using UnityEngine.Events;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : PlayerProvider
 {
-    public static event UnityAction<PlayerController, RenderTexture> OnNewPlayerSpawned = null;
-    public static event UnityAction<PlayerController, RenderTexture> OnPlayerDestroyed = null;
-
     [SerializeField] private ThirdPersonController thirdPersonController = null;
 
-    private Camera playerCamera = null;
-    private RenderTexture playerViewTexture = null;
+    private PlayerIndicator playerIndicator = null;
 
-    private bool canHandleInputs = false;
-
-    public bool CanHandleInputs
+    protected override void Awake()
     {
-        get => canHandleInputs;
-        set
-        {
-            canHandleInputs = value;
-
-            if (thirdPersonController != null)
-            {
-                thirdPersonController.CanHandleInputs = value;
-            }
-        }
-    }
-
-    public Vector2Int RenderTextureSize { get; private set; } = new Vector2Int(16, 16);
-
-    private void Update()
-    {
-        if (canHandleInputs)
-        {
-            GroundAnimator.UpdateGridStartPoint(transform.position);
-        }
-    }
-
-    private void Awake()
-    {
-        playerCamera = GetComponentInChildren<Camera>();
-        playerCamera.targetTexture = UpdateRenderTextureSize(RenderTextureSize);
+        base.Awake();
 
         if (thirdPersonController != null)
         {
             thirdPersonController.OnJumpPerformed += onJump;
         }
 
-        OnNewPlayerSpawned?.Invoke(this, playerViewTexture);
+        playerIndicator = GetComponentInChildren<PlayerIndicator>(true);
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
-        OnPlayerDestroyed?.Invoke(this, playerViewTexture);
+        base.OnDestroy();
 
         if (thirdPersonController != null)
         {
             thirdPersonController.OnJumpPerformed -= onJump;
         }
-
-        playerCamera.targetTexture = null;
-        playerViewTexture.ClearSpawnedRenderTexture();
     }
 
     private void onJump(ThirdPersonController _controller)
     {
-        GroundAnimator.ShowCircle(transform.position);
-    }
-
-    public RenderTexture UpdateRenderTextureSize(Vector2Int _size)
-    {
-        RenderTextureSize = _size;
-        RenderTextureExtensions.UpdateSpawnedRenderTextureSize(ref playerViewTexture, "rt_PlayerView", RenderTextureSize.x, RenderTextureSize.y, _onNewCreated: onNewRTCreated);
-        return playerViewTexture;
-    }
-
-    private void onNewRTCreated(RenderTexture _rt)
-    {
-        _rt.depthStencilFormat = UnityEngine.Experimental.Rendering.GraphicsFormat.D32_SFloat;
-        playerCamera.targetTexture = _rt;
+        GroundAnimator.ShowCircle(transform.position, playerIndicator != null ? playerIndicator.PlayerColor : Color.white);
     }
 }

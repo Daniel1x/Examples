@@ -4,17 +4,15 @@ using UnityEngine.Events;
 
 public class GroundAnimator : MonoBehaviour
 {
-    public static event UnityAction<Vector3> OnCircleStarted = null;
-    public static event UnityAction<Vector3> OnGridPointUpdate = null;
+    public static event UnityAction<Vector3, Color> OnCircleStarted = null;
 
     [Header("Material Properties")]
     [SerializeField] private string distanceProperty = "_Distance";
     [SerializeField] private string thicknessProperty = "_Thickness";
     [SerializeField] private string startPointProperty = "_StartPoint";
-    [SerializeField] private string gridPointProperty = "_GridStartPoint";
+    [SerializeField] private string circleColorProperty = "_LineColor";
 
     [Header("Settings")]
-    [SerializeField] private Renderer rendererToModify = null;
     [SerializeField] private Terrain terrainToModify = null;
     [SerializeField] private float thickness = 3f;
     [SerializeField, Min(1f)] private float maxDistance = 100f;
@@ -22,47 +20,31 @@ public class GroundAnimator : MonoBehaviour
 
     private float distance = 0f;
     private Vector3 startPoint = Vector3.zero;
-    private Vector3 gridPoint = Vector3.zero;
+    private Color circleColor = Color.white;
 
-    private MaterialPropertyBlock materialPropertyBlock = null;
     private MaterialPropertyBlock terrainPropertyBlock = null;
     private Coroutine animationCoroutine = null;
 
     private void Awake()
     {
-        if (rendererToModify == null)
-        {
-            rendererToModify = GetComponent<Renderer>();
-        }
-
         if (terrainToModify == null)
         {
             terrainToModify = GetComponent<Terrain>();
         }
 
-        materialPropertyBlock = new();
         terrainPropertyBlock = new();
 
         OnCircleStarted += resetAnimation;
-        OnGridPointUpdate += onGridPointUpdate;
     }
 
     private void OnDestroy()
     {
         OnCircleStarted -= resetAnimation;
-        OnGridPointUpdate -= onGridPointUpdate;
     }
 
-    private void onGridPointUpdate(Vector3 _point)
+    private void OnEnable()
     {
-        gridPoint = _point;
-        updateProperties();
-    }
-
-    private void updateProperties()
-    {
-        updateTerrain();
-        updateRenderer();
+        resetProperties();
     }
 
     private void updateTerrain()
@@ -73,30 +55,16 @@ public class GroundAnimator : MonoBehaviour
         }
 
         terrainToModify.GetSplatMaterialPropertyBlock(terrainPropertyBlock);
-
-        terrainPropertyBlock.SetFloat(distanceProperty, distance);
-        terrainPropertyBlock.SetFloat(thicknessProperty, thickness);
-        terrainPropertyBlock.SetVector(startPointProperty, startPoint);
-        terrainPropertyBlock.SetVector(gridPointProperty, gridPoint);
-
+        applyPropertyBlock(terrainPropertyBlock);
         terrainToModify.SetSplatMaterialPropertyBlock(terrainPropertyBlock);
     }
 
-    private void updateRenderer()
+    private void applyPropertyBlock(MaterialPropertyBlock _block)
     {
-        if (rendererToModify == null)
-        {
-            return;
-        }
-
-        rendererToModify.GetPropertyBlock(materialPropertyBlock);
-
-        materialPropertyBlock.SetFloat(distanceProperty, distance);
-        materialPropertyBlock.SetFloat(thicknessProperty, thickness);
-        materialPropertyBlock.SetVector(startPointProperty, startPoint);
-        materialPropertyBlock.SetVector(gridPointProperty, gridPoint);
-
-        rendererToModify.SetPropertyBlock(materialPropertyBlock);
+        _block.SetFloat(distanceProperty, distance);
+        _block.SetFloat(thicknessProperty, thickness);
+        _block.SetVector(startPointProperty, startPoint);
+        _block.SetColor(circleColorProperty, circleColor);
     }
 
     private void resetProperties()
@@ -104,13 +72,14 @@ public class GroundAnimator : MonoBehaviour
         startPoint = Vector3.zero;
         distance = -thickness;
 
-        updateProperties();
+        updateTerrain();
     }
 
-    private void resetAnimation(Vector3 _startPoint)
+    private void resetAnimation(Vector3 _startPoint, Color _color)
     {
         stopAnimationCoroutine();
 
+        circleColor = _color;
         animationCoroutine = StartCoroutine(animateMovement(_startPoint));
     }
 
@@ -131,7 +100,7 @@ public class GroundAnimator : MonoBehaviour
         while (distance < maxDistance)
         {
             distance += Time.deltaTime * movementSpeed;
-            updateProperties();
+            updateTerrain();
 
             yield return null;
         }
@@ -139,13 +108,8 @@ public class GroundAnimator : MonoBehaviour
         resetProperties();
     }
 
-    public static void ShowCircle(Vector3 _startPoint)
+    public static void ShowCircle(Vector3 _startPoint, Color _color)
     {
-        OnCircleStarted?.Invoke(_startPoint);
-    }
-
-    public static void UpdateGridStartPoint(Vector3 _gridPoint)
-    {
-        OnGridPointUpdate?.Invoke(_gridPoint);
+        OnCircleStarted?.Invoke(_startPoint, _color);
     }
 }

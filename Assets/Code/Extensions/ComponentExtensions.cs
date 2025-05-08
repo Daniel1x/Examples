@@ -183,6 +183,40 @@ public static class ComponentExtensions
         return _component;
     }
 
+    public static T GetComponentHereOrInParent<T>(this GameObject _object, bool _includeInactive = true) where T : Component
+    {
+        if (_object == null)
+        {
+            return null;
+        }
+
+        T _component = _object.GetComponent<T>();
+
+        if (_component == null)
+        {
+            _component = _object.GetComponentInParent<T>(_includeInactive);
+        }
+
+        return _component;
+    }
+
+    public static T GetComponentHereOrInParent<T>(this Component _object, bool _includeInactive = true) where T : Component
+    {
+        if (_object == null)
+        {
+            return null;
+        }
+
+        T _component = _object.GetComponent<T>();
+
+        if (_component == null)
+        {
+            _component = _object.GetComponentInParent<T>(_includeInactive);
+        }
+
+        return _component;
+    }
+
     public static void SetHideFlags(this GameObject _gameObject, HideFlags _flags, bool _recursive = true)
     {
         _gameObject.hideFlags = _flags;

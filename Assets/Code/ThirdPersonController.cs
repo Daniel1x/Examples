@@ -54,14 +54,18 @@ public class ThirdPersonController : MonoBehaviour
     private CharacterController controller = null;
     private BasicInputs input = null;
     private GameObject playerCamera = null;
-
-    public bool CanHandleInputs { get; set; } = false;
+    private CameraTargetProvider cameraTargetProvider = null;
 
     private void Awake()
     {
         if (playerCamera == null)
         {
             playerCamera = gameObject.GetComponentInChildren<Camera>()?.gameObject;
+        }
+
+        if (cameraTargetProvider == null)
+        {
+            cameraTargetProvider = gameObject.GetComponent<CameraTargetProvider>();
         }
     }
 
@@ -111,11 +115,6 @@ public class ThirdPersonController : MonoBehaviour
         {
             _targetSpeed = 0f;
         }
-        else if (CanHandleInputs == false)
-        {
-            _targetSpeed = 0;
-            input.Move = Vector2.zero;
-        }
 
         // a reference to the players current horizontal velocity
         float _currentHorizontalSpeed = new Vector3(controller.velocity.x, 0.0f, controller.velocity.z).magnitude;
@@ -147,11 +146,15 @@ public class ThirdPersonController : MonoBehaviour
         // normalise input direction
         Vector3 _inputDirection = new Vector3(input.Move.x, 0.0f, input.Move.y).normalized;
 
+        GameObject _camObject = cameraTargetProvider != null && cameraTargetProvider.VirtualCamera != null
+            ? cameraTargetProvider.VirtualCamera.gameObject
+            : playerCamera;
+
         // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
         // if there is a move input rotate player when the player is moving
-        if (input.Move != Vector2.zero)
+        if (input.Move != Vector2.zero && _camObject != null)
         {
-            targetRotation = Mathf.Atan2(_inputDirection.x, _inputDirection.z) * Mathf.Rad2Deg + playerCamera.transform.eulerAngles.y;
+            targetRotation = Mathf.Atan2(_inputDirection.x, _inputDirection.z) * Mathf.Rad2Deg + _camObject.transform.eulerAngles.y;
 
             float _rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref rotationVelocity, RotationSmoothTime);
 
@@ -159,10 +162,15 @@ public class ThirdPersonController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0.0f, _rotation, 0.0f);
         }
 
-        Vector3 _targetDirection = Quaternion.Euler(0.0f, targetRotation, 0.0f) * Vector3.forward;
+        Vector3 _targetDirection = (Quaternion.Euler(0.0f, targetRotation, 0.0f) * Vector3.forward).normalized;
+
+        if (cameraTargetProvider != null && cameraTargetProvider.CameraManager != null)
+        {
+            _targetDirection = cameraTargetProvider.CameraManager.AdjustMovementVector(transform, _targetDirection, out _);
+        }
 
         // move the player
-        controller.Move((_targetDirection.normalized * (speed * _dt)) + new Vector3(0f, verticalVelocity * _dt, 0f));
+        controller.Move((_targetDirection * (speed * _dt)) + new Vector3(0f, verticalVelocity * _dt, 0f));
 
         // update animator if using character
         if (hasAnimator)
@@ -193,7 +201,7 @@ public class ThirdPersonController : MonoBehaviour
             }
 
             // Jump
-            if (CanHandleInputs && input.Jump && jumpTimeoutDelta <= 0f)
+            if (input.Jump && jumpTimeoutDelta <= 0f)
             {
                 // the square root of H * -2 * G = how much velocity needed to reach desired height
                 verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
