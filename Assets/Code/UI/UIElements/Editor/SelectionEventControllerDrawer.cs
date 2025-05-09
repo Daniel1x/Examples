@@ -23,7 +23,7 @@ public class SelectionEventControllerDrawer : PropertyDrawer
         _singlePropertyPosition.y -= PROPERTY_HEIGHT - SPACE_ABOVE;
 
         _singlePropertyPosition.y += PROPERTY_HEIGHT + SPACING;
-        EditorGUI.LabelField(_singlePropertyPosition, _label, EditorStyles.boldLabel);
+        EditorGUI.LabelField(_singlePropertyPosition, _label.text + ":", EditorStyles.boldLabel);
         propertyCount++;
 
         if (_mainProperty.FindPropertyRelative("selectionEventMode") is SerializedProperty _selectionEventModeProperty)
@@ -79,7 +79,6 @@ public class SelectionEventControllerDrawer : PropertyDrawer
 
     public override float GetPropertyHeight(SerializedProperty _property, GUIContent _label)
     {
-        float _height = SPACE_ABOVE + SPACING + ((PROPERTY_HEIGHT + SPACING) * propertyCount) + SPACE_UNDER;
-        return _height;
+        return SPACE_ABOVE + SPACING + ((PROPERTY_HEIGHT + SPACING) * propertyCount) + SPACE_UNDER;
     }
 }

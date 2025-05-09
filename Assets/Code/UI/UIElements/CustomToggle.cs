@@ -3,32 +3,16 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CustomButton : Button, INavigationItem<CustomButton>, IButtonContainer
+public class CustomToggle : Toggle, INavigationItem<CustomToggle>, IToggleContainer
 {
-    [System.Flags]
-    public enum GraphicsFadeStyles
-    {
-        None = 0,
-        FadeInOnSelect = 1,
-        FadeOutOnDeselect = 2,
-        FadeInOnClick = 4,
+    public static UnityAction<INavigationItem> OnAnyToggleValueChanged = null;
 
-        Default = 3
-    }
+    public event UnityAction<int, CustomToggle> OnItemSelected = null;
+    public event UnityAction<int, CustomToggle> OnItemDeselected = null;
+    public event UnityAction<int, CustomToggle> OnItemDestroyed = null;
 
-    public enum ButtonEventType
-    {
-        OnClick = 0,
-        OnSelect = 1,
-        OnDeselect = 2,
-        OnSubmit = 3
-    }
-
-    public event UnityAction<int, CustomButton> OnItemSelected = null;
-    public event UnityAction<int, CustomButton> OnItemDeselected = null;
-    public event UnityAction<int, CustomButton> OnItemSubmitted = null;
-    public event UnityAction<int, CustomButton> OnItemClicked = null;
-    public event UnityAction<int, CustomButton> OnItemDestroyed = null;
+    [SerializeField] private GameObject onObject = null;
+    [SerializeField] private GameObject offObject = null;
 
     [SerializeField] protected bool invokeOnAnyItemSelected = true;
     [SerializeField] protected bool allowNavigationToOtherParent = true;
@@ -36,19 +20,11 @@ public class CustomButton : Button, INavigationItem<CustomButton>, IButtonContai
     [SerializeField] protected bool forceSelectEventOnEnable = true;
     [SerializeField] protected bool forceDeselectEventOnDisable = true;
     [SerializeField] protected bool forceSelectOnPointerEnter = true;
-    [SerializeField] protected bool forceClickOnPointerDown = false;
     [SerializeField] protected bool forceRefreshColorTransitionAfterFrame = false;
 
     [SerializeField] protected SelectableExplicitNavigator explicitNavigator = new SelectableExplicitNavigator();
     [SerializeField] protected SelectionEventController selectionEventController = new SelectionEventController();
     [SerializeField] protected GraphicsTransitionController graphicsTransitionController = new GraphicsTransitionController();
-
-    [SerializeField] protected GraphicsFadeStyles fadeStyle = GraphicsFadeStyles.None;
-    [SerializeField] protected Graphic[] graphicsToFade = new Graphic[] { };
-
-    protected bool blockButtonSubmit = false;
-    protected bool blockButtonState = false;
-    protected Coroutine colorRefreshCoroutine = null;
 
     #region INavigationItem Interface
     protected int itemIndex = -1;
@@ -67,29 +43,26 @@ public class CustomButton : Button, INavigationItem<CustomButton>, IButtonContai
     public SelectionEventController SelectionEventController => selectionEventController;
     public GraphicsTransitionController GraphicsTransitionController => graphicsTransitionController;
 
-    public CustomButton Button => this;
-    public CustomButton NavigationItem => this;
+    public CustomToggle Toggle => this;
+    public CustomToggle NavigationItem => this;
     public INavigationItemPart Owner { get; set; } = null;
     #endregion
 
-    public bool BlockButtonSubmit { get => blockButtonSubmit; set => blockButtonSubmit = value; }
-    public bool IsSelected => selectionEventController.IsSelected;
+    protected Coroutine colorRefreshCoroutine = null;
 
     protected override void Awake()
     {
-        selectionEventController.UpdateSelectionState();
+        //Forcing instant transitions of check marks! Fade is breaking cloned transitions of graphicsTransitionController.
+        toggleTransition = ToggleTransition.None;
 
-        onClick.AddListener(onClickAction);
-        graphicsTransitionController.SetSelectable(this);
+        base.Awake();
     }
 
     protected override void OnDestroy()
     {
-        onClick.RemoveListener(onClickAction);
+        onValueChanged.RemoveListener(OnToggleValueChanged);
         OnItemDestroyed?.Invoke(ItemIndex, this);
-
-        selectionEventController = null;
-        graphicsTransitionController = null;
+        base.OnDestroy();
     }
 
     protected override void OnEnable()
@@ -101,12 +74,8 @@ public class CustomButton : Button, INavigationItem<CustomButton>, IButtonContai
             INavigationItem.RefreshColorTransitionAfterFrame(this, ref colorRefreshCoroutine);
         }
 
-        if (fadeStyle != GraphicsFadeStyles.None)
-        {
-            FadeGraphicsAlpha(false, 0f, true);
-        }
-
         selectionEventController.UpdateIsSelectedOnEnable(this);
+        refreshValueVisualization(isOn);
     }
 
     protected override void OnDisable()
@@ -121,17 +90,6 @@ public class CustomButton : Button, INavigationItem<CustomButton>, IButtonContai
     public override Selectable FindSelectableOnUp() => INavigationItem.FindSelectableOnUp(this);
     public Selectable FindClosestSelectable(bool _forcePermissionForOtherParent = false) => INavigationItem.FindClosestSelectable(this, _forcePermissionForOtherParent);
 
-    public override void OnSubmit(BaseEventData _eventData)
-    {
-        if (blockButtonSubmit)
-        {
-            return;
-        }
-
-        base.OnSubmit(_eventData);
-        OnItemSubmitted?.Invoke(ItemIndex, this);
-    }
-
     public override void OnSelect(BaseEventData _eventData)
     {
         selectionEventController.IsSelected = true;
@@ -139,11 +97,13 @@ public class CustomButton : Button, INavigationItem<CustomButton>, IButtonContai
 
         base.OnSelect(_eventData);
         OnItemSelected?.Invoke(ItemIndex, this);
+    }
 
-        if (buttonIsUsingFadeStyle(GraphicsFadeStyles.FadeInOnSelect))
-        {
-            FadeGraphicsAlpha(true);
-        }
+    public override void OnDeselect(BaseEventData _eventData)
+    {
+        selectionEventController.IsSelected = false;
+        base.OnDeselect(_eventData);
+        OnItemDeselected?.Invoke(ItemIndex, this);
     }
 
     public override void OnPointerEnter(PointerEventData _eventData)
@@ -152,27 +112,17 @@ public class CustomButton : Button, INavigationItem<CustomButton>, IButtonContai
         INavigationItem.OnNavigationItemPointerEnter(this);
     }
 
+    public void Initialize()
+    {
+        selectionEventController.UpdateSelectionState();
+
+        onValueChanged.AddListener(OnToggleValueChanged);
+        graphicsTransitionController.SetSelectable(this);
+    }
+
     public void ChangeAllowNavigationToOtherParent(bool _allow)
     {
         allowNavigationToOtherParent = _allow;
-    }
-
-    public override void OnDeselect(BaseEventData _eventData)
-    {
-        selectionEventController.IsSelected = false;
-
-        base.OnDeselect(_eventData);
-        OnItemDeselected?.Invoke(ItemIndex, this);
-
-        if (buttonIsUsingFadeStyle(GraphicsFadeStyles.FadeOutOnDeselect))
-        {
-            FadeGraphicsAlpha(false);
-        }
-    }
-
-    public void ChangeAllowNavigationToThisObject(bool _allowNavigation)
-    {
-        allowNavitationToThisObject = _allowNavigation;
     }
 
     protected override void DoStateTransition(SelectionState _state, bool _instant)
@@ -186,62 +136,34 @@ public class CustomButton : Button, INavigationItem<CustomButton>, IButtonContai
         DoStateTransition(currentSelectionState, _instant);
     }
 
-    public override void OnPointerDown(PointerEventData _eventData)
+    public void OnToggleValueChanged(bool _value)
     {
-        base.OnPointerDown(_eventData);
-
-        if (forceClickOnPointerDown)
-        {
-            OnPointerUp(_eventData);
-        }
+        OnAnyToggleValueChanged?.Invoke(this);
+        refreshValueVisualization(_value);
     }
 
-    public override void OnPointerUp(PointerEventData eventData)
+    public void Refresh()
     {
-        if (forceClickOnPointerDown == false)
-        {
-            base.OnPointerUp(eventData);
-        }
+        refreshValueVisualization(isOn);
     }
 
-    public void FadeGraphicsAlpha(bool _fadeIn, float _fadeDuration = -1f, bool _ignoreTimeScale = true)
+    private void refreshValueVisualization(bool _value)
     {
-        if (blockButtonState)
+        INavigationItem.RefreshColorTransitionAfterFrame(this, ref colorRefreshCoroutine);
+
+        if (Application.isPlaying == false)
         {
             return;
         }
 
-        int _count = graphicsToFade.Length;
-
-        if (_count > 0)
+        if (onObject != null)
         {
-            float _newAlpha = _fadeIn ? 1f : 0f;
-            float _newFadeDuration = _fadeDuration == -1f ? colors.fadeDuration : _fadeDuration;
-
-            for (int i = 0; i < _count; i++)
-            {
-                graphicsToFade[i]?.CrossFadeAlpha(_newAlpha, _newFadeDuration, _ignoreTimeScale);
-            }
+            onObject.SetActive(_value);
         }
-    }
 
-    public void SetBlockButtonState(bool _blockButtonState)
-    {
-        blockButtonState = _blockButtonState;
-    }
-
-    private bool buttonIsUsingFadeStyle(GraphicsFadeStyles _style)
-    {
-        return (fadeStyle & _style) != 0;
-    }
-
-    private void onClickAction()
-    {
-        OnItemClicked?.Invoke(ItemIndex, this);
-
-        if (buttonIsUsingFadeStyle(GraphicsFadeStyles.FadeInOnClick))
+        if (offObject != null)
         {
-            FadeGraphicsAlpha(true);
+            offObject.SetActive(!_value);
         }
     }
 }
