@@ -247,8 +247,6 @@ public class PlayerInputManagerProvider : MonoBehaviour
 
     public static bool SetPlayerGamepad(PlayerInput _player, Gamepad _selectedGamepad = null)
     {
-        _player.DebugCurrentDevices($"Set Gamepad : {_selectedGamepad?.name}");
-
         if (_player == null)
         {
             return false;
@@ -294,8 +292,6 @@ public class PlayerInputManagerProvider : MonoBehaviour
             return false;
         }
 
-        _player.DebugCurrentDevices($"Replace Gamepad : {_gamepad?.name}");
-
         PlayerInput _previousOwner = findDeviceOwner(_gamepad);
 
         if (_previousOwner == _player)
@@ -310,7 +306,7 @@ public class PlayerInputManagerProvider : MonoBehaviour
         }
 
         ReadOnlyArray<InputDevice> _playerDevices = _player.devices;
-        List<InputDevice> _validDevices = _player.devices.ToList();
+        List<InputDevice> _validDevices = new List<InputDevice>();
 
         foreach (InputDevice _device in _playerDevices)
         {
@@ -325,11 +321,9 @@ public class PlayerInputManagerProvider : MonoBehaviour
 
         if (anyDeviceModified(in _playerDevices, _validDevices))
         {
-            _player.SwitchCurrentControlScheme(_playerDevices.ToArray());
+            _player.SwitchCurrentControlScheme(_validDevices.ToArray());
             validatePlayerInputDevices(_player);
             _devicesModified = true;
-
-            _player.DebugCurrentDevices("Gamepad set to new owner");
         }
 
         if (_findFreeGamepadForPreviousOwner && _previousOwner != null)
@@ -365,8 +359,6 @@ public class PlayerInputManagerProvider : MonoBehaviour
                 _previousOwner.SwitchCurrentControlScheme(_previousOwnerValidDevices.ToArray());
                 validatePlayerInputDevices(_previousOwner);
                 _devicesModified = true;
-
-                _previousOwner.DebugCurrentDevices("New free device for previous owner");
             }
         }
 
@@ -408,8 +400,6 @@ public class PlayerInputManagerProvider : MonoBehaviour
             return false;
         }
 
-        _player.DebugCurrentDevices("Removing device");
-
         List<InputDevice> _playerDevices = _player.devices.ToList();
 
         if (_playerDevices.Contains(_device))
@@ -418,8 +408,6 @@ public class PlayerInputManagerProvider : MonoBehaviour
             _player.SwitchCurrentControlScheme(_playerDevices.ToArray());
 
             validatePlayerInputDevices(_player);
-
-            _player.DebugCurrentDevices("Device removed");
 
             return true;
         }

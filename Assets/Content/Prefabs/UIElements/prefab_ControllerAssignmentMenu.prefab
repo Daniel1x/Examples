@@ -296,6 +296,7 @@ GameObject:
   - component: {fileID: 844080979433638865}
   - component: {fileID: 7674587407758281399}
   - component: {fileID: 5777123910796586625}
+  - component: {fileID: 7288331668564994504}
   m_Layer: 5
   m_Name: group_ScrollView
   m_TagString: Untagged
@@ -377,7 +378,7 @@ MonoBehaviour:
   m_Content: {fileID: 2471391170144486718}
   m_Horizontal: 1
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -392,6 +393,25 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7288331668564994504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3905198088319992520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9919d3385541144197359539be33ff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resetPositionWhenEnabled: 1
+  scrollDuration: 0.25
+  checkParentingLayersForNestedSelectables: 2
+  disableWhenMouseIsHovering: 1
+  refreshTargetPositionEveryTime: 0
+  adjustValuesToLayoutGroup: 0
+  verticalLayoutGroup: {fileID: 0}
 --- !u!1 &4045349350883482874
 GameObject:
   m_ObjectHideFlags: 0
@@ -569,7 +589,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00008852012}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3087471500922632478

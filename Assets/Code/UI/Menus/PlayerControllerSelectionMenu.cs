@@ -224,8 +224,6 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
 
     private void onDeviceChanged(InputDevice _device, InputDeviceChange _change)
     {
-        Debug.Log("Device changed: " + _device.name + " - " + _change.ToString());
-
         if (_change is InputDeviceChange.Added
             or InputDeviceChange.Reconnected
             or InputDeviceChange.Removed
@@ -302,33 +300,21 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
 
     private void onControllerOptionChanged(PlayerControllerSelector _selector, int _id)
     {
-        _selector.AssignedPlayer.DebugCurrentDevices($"Changed option : {_id}");
-
         if (_id == 0) //None
         {
-            bool _cleared = PlayerInputManagerProvider.SetPlayerGamepad(_selector.AssignedPlayer, null);
+            PlayerInputManagerProvider.SetPlayerGamepad(_selector.AssignedPlayer, null);
+        }
+        else
+        {
+            _id--; //Remove the None option
 
-            if (_cleared)
+            if (controllerOptions.IsIndexOutOfRange(_id) == false)
             {
-                startUpdateCoroutine();
+                PlayerInputManagerProvider.SetPlayerGamepad(_selector.AssignedPlayer, controllerOptions[_id].AssignedGamepad);
             }
-
-            return;
         }
 
-        _id--; //Remove the None option
-
-        if (controllerOptions.IsIndexOutOfRange(_id))
-        {
-            return;
-        }
-
-        bool _set = PlayerInputManagerProvider.SetPlayerGamepad(_selector.AssignedPlayer, controllerOptions[_id].AssignedGamepad);
-
-        if (_set)
-        {
-            startUpdateCoroutine();
-        }
+        startUpdateCoroutine(); //Refresh dropdown options
     }
 
     private void onAutoAssignButtonClicked(int _id, CustomButton _button)
