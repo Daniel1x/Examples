@@ -1,14 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(PlayerInput))]
 public class ThirdPersonController : MonoBehaviour
 {
     public event UnityAction<ThirdPersonController> OnJumpPerformed = null;
-
-    private const float LOOK_THRESHOLD = 0.01f;
 
     [Header("Player")]
     public float MoveSpeed = 2.0f;
@@ -23,15 +19,15 @@ public class ThirdPersonController : MonoBehaviour
 
     [Header("Movement")]
     public float JumpHeight = 1.2f;
-    [Tooltip("The character uses its own gravity value. The engine default is -9.81f")] public float Gravity = -15.0f;
-    [Tooltip("Time required to pass before being able to jump again. Set to 0f to instantly jump again")] public float JumpTimeout = 0.50f;
-    [Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")] public float FallTimeout = 0.15f;
+    public float Gravity = -15.0f;
+    public float JumpTimeout = 0.50f;
+    public float FallTimeout = 0.15f;
 
     [Header("Player Grounded")]
-    [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")] public bool Grounded = true;
-    [Tooltip("Useful for rough ground")] public float GroundedOffset = -0.14f;
-    [Tooltip("The radius of the grounded check. Should match the radius of the CharacterController")] public float GroundedRadius = 0.28f;
-    [Tooltip("What layers the character uses as ground")] public LayerMask GroundLayers = default;
+    public bool Grounded = true;
+    public float GroundedOffset = -0.14f;
+    public float GroundedRadius = 0.28f;
+    public LayerMask GroundLayers = default;
 
     private float speed = 0f;
     private float animationBlend = 0f;
@@ -52,9 +48,10 @@ public class ThirdPersonController : MonoBehaviour
 
     private Animator animator = null;
     private CharacterController controller = null;
-    private PlayerBasicInputs input = null;
     private GameObject playerCamera = null;
     private CameraTargetProvider cameraTargetProvider = null;
+
+    public PlayerBasicInputs BasicInput { get; set; } = null;
 
     private void Awake()
     {
@@ -73,7 +70,6 @@ public class ThirdPersonController : MonoBehaviour
     {
         hasAnimator = TryGetComponent(out animator);
         controller = GetComponent<CharacterController>();
-        input = GetComponent<PlayerBasicInputs>();
 
         animIDSpeed = Animator.StringToHash("Speed");
         animIDGrounded = Animator.StringToHash("Grounded");
@@ -87,6 +83,11 @@ public class ThirdPersonController : MonoBehaviour
 
     private void Update()
     {
+        if (BasicInput == null)
+        {
+            return;
+        }
+
         jumpAndGravity();
         groundedCheck();
         move();
@@ -108,10 +109,10 @@ public class ThirdPersonController : MonoBehaviour
     private void move()
     {
         // set target speed based on move speed, sprint speed and if sprint is pressed
-        float _targetSpeed = input.Sprint ? SprintSpeed : MoveSpeed;
+        float _targetSpeed = BasicInput.Sprint ? SprintSpeed : MoveSpeed;
         float _dt = Time.deltaTime;
 
-        if (input.Move == Vector2.zero)
+        if (BasicInput.Move == Vector2.zero)
         {
             _targetSpeed = 0f;
         }
@@ -119,7 +120,7 @@ public class ThirdPersonController : MonoBehaviour
         // a reference to the players current horizontal velocity
         float _currentHorizontalSpeed = new Vector3(controller.velocity.x, 0.0f, controller.velocity.z).magnitude;
         float _speedOffset = 0.1f;
-        float _inputMagnitude = input.AnalogMovement ? input.Move.magnitude : 1f;
+        float _inputMagnitude = BasicInput.AnalogMovement ? BasicInput.Move.magnitude : 1f;
 
         // accelerate or decelerate to target speed
         if (_currentHorizontalSpeed < _targetSpeed - _speedOffset || _currentHorizontalSpeed > _targetSpeed + _speedOffset)
@@ -144,7 +145,7 @@ public class ThirdPersonController : MonoBehaviour
         }
 
         // normalise input direction
-        Vector3 _inputDirection = new Vector3(input.Move.x, 0.0f, input.Move.y).normalized;
+        Vector3 _inputDirection = new Vector3(BasicInput.Move.x, 0.0f, BasicInput.Move.y).normalized;
 
         GameObject _camObject = cameraTargetProvider != null && cameraTargetProvider.VirtualCamera != null
             ? cameraTargetProvider.VirtualCamera.gameObject
@@ -152,7 +153,7 @@ public class ThirdPersonController : MonoBehaviour
 
         // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
         // if there is a move input rotate player when the player is moving
-        if (input.Move != Vector2.zero && _camObject != null)
+        if (BasicInput.Move != Vector2.zero && _camObject != null)
         {
             targetRotation = Mathf.Atan2(_inputDirection.x, _inputDirection.z) * Mathf.Rad2Deg + _camObject.transform.eulerAngles.y;
 
@@ -201,7 +202,7 @@ public class ThirdPersonController : MonoBehaviour
             }
 
             // Jump
-            if (input.Jump && jumpTimeoutDelta <= 0f)
+            if (BasicInput.Jump && jumpTimeoutDelta <= 0f)
             {
                 // the square root of H * -2 * G = how much velocity needed to reach desired height
                 verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
@@ -241,7 +242,7 @@ public class ThirdPersonController : MonoBehaviour
             }
 
             // if we are not grounded, do not jump
-            input.Jump = false;
+            BasicInput.Jump = false;
         }
 
         // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
@@ -249,11 +250,6 @@ public class ThirdPersonController : MonoBehaviour
         {
             verticalVelocity += Gravity * Time.deltaTime;
         }
-    }
-
-    private float clampAngle(float _angle, float _min, float _max)
-    {
-        return Mathf.Clamp(_angle.Clamp360(), _min, _max);
     }
 
     protected void OnFootstep(AnimationEvent _animationEvent)

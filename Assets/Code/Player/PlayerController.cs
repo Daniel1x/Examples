@@ -1,15 +1,13 @@
 using UnityEngine;
 
-public class PlayerController : PlayerProvider
+public class PlayerController : MonoBehaviour
 {
     [SerializeField] private ThirdPersonController thirdPersonController = null;
 
     private PlayerIndicator playerIndicator = null;
 
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
-
         if (thirdPersonController != null)
         {
             thirdPersonController.OnJumpPerformed += onJump;
@@ -18,10 +16,8 @@ public class PlayerController : PlayerProvider
         playerIndicator = GetComponentInChildren<PlayerIndicator>(true);
     }
 
-    protected override void OnDestroy()
+    protected void OnDestroy()
     {
-        base.OnDestroy();
-
         if (thirdPersonController != null)
         {
             thirdPersonController.OnJumpPerformed -= onJump;

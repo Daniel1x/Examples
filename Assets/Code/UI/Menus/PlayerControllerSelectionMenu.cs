@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
+using UnityEngine.UI;
 
 public class PlayerControllerSelectionMenu : MonoBehaviour
 {
@@ -57,7 +58,12 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
 
     [Header("Menu Options")]
     [SerializeField] private CustomButton autoAssignButton = null;
+    [SerializeField] private CustomButton startButton = null;
     [SerializeField] private BehaviourCollection<PlayerControllerSelector> selectors = new();
+
+    [Header("Player Characters")]
+    [SerializeField] private GameObject playerPrefab = null;
+    [SerializeField] private Transform playerSpawnPoint = null;
 
     [Header("Controller Options")]
     [SerializeField] private MultipleDevicesOption mouseAndKeyboard = new MultipleDevicesOption("Mouse & Keyboard");
@@ -87,6 +93,11 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
             autoAssignButton.OnItemClicked += onAutoAssignButtonClicked;
         }
 
+        if (startButton != null)
+        {
+            startButton.OnItemClicked += onStartButtonClicked;
+        }
+
         selectors.OnNewItemCreated += onNewSelectorCreated;
         selectors.OnBeforeItemDestroyed += onBeforeSelectorDestroyed;
     }
@@ -98,6 +109,11 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
             autoAssignButton.OnItemClicked -= onAutoAssignButtonClicked;
         }
 
+        if (startButton != null)
+        {
+            startButton.OnItemClicked -= onStartButtonClicked;
+        }
+
         selectors.OnNewItemCreated -= onNewSelectorCreated;
         selectors.OnBeforeItemDestroyed -= onBeforeSelectorDestroyed;
     }
@@ -107,6 +123,11 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
         InputSystem.onDeviceChange += onDeviceChanged;
         PlayerInputManagerProvider.OnAnyPlayerJoined += onPlayerCountChanged;
         PlayerInputManagerProvider.OnAnyPlayerLeft += onPlayerCountChanged;
+
+        if (autoAssignButton != null)
+        {
+            autoAssignButton.Select();
+        }
     }
 
     private void OnDisable()
@@ -186,6 +207,8 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
 
             selectors[i].SetData(_player, $"Player {_player.playerIndex}", _hasKeyboard, controllerDropdownOptions, _controllerOption);
         }
+
+        updateStartButtonState();
     }
 
     private int getControllerOption(Gamepad _gamepad)
@@ -291,11 +314,30 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
     private void onNewSelectorCreated(PlayerControllerSelector _selector, int _id)
     {
         _selector.OnControllerOptionChanged += onControllerOptionChanged;
+        _selector.OnActionButtonPressed += onActionButtonPressed;
     }
 
     private void onBeforeSelectorDestroyed(PlayerControllerSelector _selector, int _id)
     {
         _selector.OnControllerOptionChanged -= onControllerOptionChanged;
+        _selector.OnActionButtonPressed -= onActionButtonPressed;
+    }
+
+    private void onActionButtonPressed(PlayerControllerSelector _selector, CustomButton _button)
+    {
+        if (_selector.AssignedPlayer == null)
+        {
+            return;
+        }
+
+        Selectable _nextToSelect = _button.FindSelectableOnUp();
+
+        Destroy(_selector.AssignedPlayer.gameObject);
+
+        if (_nextToSelect != null)
+        {
+            _nextToSelect.Select();
+        }
     }
 
     private void onControllerOptionChanged(PlayerControllerSelector _selector, int _id)
@@ -326,5 +368,84 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
                 //Keep joining players until there are no free controllers
             }
         }
+    }
+
+    private void onStartButtonClicked(int _id, CustomButton _button)
+    {
+        if (_button.interactable == false)
+        {
+            return;
+        }
+
+        if (allPlayersHasAssignedDevices())
+        {
+            gameObject.SetActive(false); //Hide the menu, spawn characters and start game
+
+            ReadOnlyArray<PlayerInput> _allPlayers = PlayerInput.all;
+
+            foreach (var _player in _allPlayers)
+            {
+                if (_player == null)
+                {
+                    continue;
+                }
+
+                if (_player.playerIndex == 0 && _player.devices.Any(_dev => _dev is Gamepad))
+                {
+                    _player.SwitchCurrentControlScheme("Gamepad", _player.devices.ToArray()); //Make sure the first player is using the gamepad scheme
+                }
+
+                GameObject _newCharacter = Instantiate(playerPrefab, playerSpawnPoint);
+
+                if (_newCharacter != null && _player.GetComponent<PlayerInputInstance>() is PlayerInputInstance _inputs)
+                {
+                    if (_newCharacter.GetComponent<ThirdPersonController>() is ThirdPersonController _controller)
+                    {
+                        _controller.BasicInput = _inputs.PlayerBasicInputs;
+                    }
+
+                    if (_newCharacter.GetComponentInChildren<PlayerIndicator>(true) is PlayerIndicator _indicator)
+                    {
+                        _indicator.Player = _player;
+                    }
+                }
+            }
+        }
+    }
+
+    private void updateStartButtonState()
+    {
+        if (startButton == null)
+        {
+            return;
+        }
+
+        startButton.interactable = allPlayersHasAssignedDevices();
+        startButton.transform.SetAsLastSibling();
+
+        if (startButton.interactable == false && startButton.IsSelected)
+        {
+            startButton.FindSelectableOnUp()?.Select();
+        }
+    }
+
+    private bool allPlayersHasAssignedDevices()
+    {
+        ReadOnlyArray<PlayerInput> _allPlayers = PlayerInput.all;
+
+        if (_allPlayers.Count == 0)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < _allPlayers.Count; i++)
+        {
+            if (_allPlayers[i].devices.Count == 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

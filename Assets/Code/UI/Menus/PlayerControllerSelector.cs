@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerControllerSelector : MonoBehaviour
 {
-    public event UnityAction<PlayerControllerSelector> OnActionButtonPressed = null;
+    public event UnityAction<PlayerControllerSelector, CustomButton> OnActionButtonPressed = null;
     public event UnityAction<PlayerControllerSelector, bool> OnUseKeyboardChanged = null;
     public event UnityAction<PlayerControllerSelector, int> OnControllerOptionChanged = null;
 
@@ -86,5 +86,5 @@ public class PlayerControllerSelector : MonoBehaviour
 
     private void onControllerDropdownHandlerValueChanged(int _value) => OnControllerOptionChanged?.Invoke(this, _value);
     private void onKeyboardToggleChanged(int _id, CustomToggle _toggle, bool _value) => OnUseKeyboardChanged?.Invoke(this, _value);
-    private void onActionButtonClicked(int _id, CustomButton _button) => OnActionButtonPressed?.Invoke(this);
+    private void onActionButtonClicked(int _id, CustomButton _button) => OnActionButtonPressed?.Invoke(this, _button);
 }

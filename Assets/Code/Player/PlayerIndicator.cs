@@ -15,6 +15,23 @@ public class PlayerIndicator : MonoBehaviour
     [SerializeField] private Color[] colors = new[] { Color.red, Color.green, Color.blue, Color.yellow, Color.cyan, Color.magenta };
 
     private PlayerInput playerInput = null;
+
+    public PlayerInput Player
+    {
+        get => playerInput;
+        set
+        {
+            playerInput = value;
+
+            if (playerInput != null)
+            {
+                PlayerColor = colors.IsIndexOutOfRange(playerInput.playerIndex)
+                    ? ColorExtensions.RandomColor(colorAlpha)
+                    : colors[playerInput.playerIndex].WithAlpha(colorAlpha);
+            }
+        }
+    }
+
     private CameraTargetProvider cameraTargetProvider = null;
 
     private Color playerColor = Color.white;
@@ -28,19 +45,10 @@ public class PlayerIndicator : MonoBehaviour
         }
     }
 
-    public int PlayerIndex => playerInput != null ? playerInput.playerIndex : -1;
-
     private void Awake()
     {
         playerInput = this.GetComponentHereOrInParent<PlayerInput>();
         cameraTargetProvider = this.GetComponentHereOrInParent<CameraTargetProvider>();
-    }
-
-    private void Start()
-    {
-        PlayerColor = colors.IsIndexOutOfRange(PlayerIndex)
-            ? ColorExtensions.RandomColor(colorAlpha)
-            : colors[PlayerIndex].WithAlpha(colorAlpha);
     }
 
     private void LateUpdate()
