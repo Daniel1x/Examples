@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -8,16 +9,99 @@ using UnityEngine.InputSystem.Utilities;
 [RequireComponent(typeof(PlayerInputManager))]
 public class PlayerInputManagerProvider : MonoBehaviour
 {
+    [System.Serializable]
+    public class PlayerData
+    {
+        public event UnityAction<PlayerData> OnPlayerDestroyed = null;
+
+        [SerializeField] private PlayerInput playerInput = null;
+        [SerializeField] private PlayerInputInstance inputInstance = null;
+
+        private MonoBehaviourEventCaller eventCaller = null;
+
+        public PlayerInput PlayerInput => playerInput;
+        public PlayerInputInstance InputInstance => inputInstance;
+        public int ID => PlayerInput != null ? PlayerInput.playerIndex : -1;
+
+        public PlayerData(PlayerInput _playerInput)
+        {
+            if (_playerInput == null)
+            {
+                return;
+            }
+
+            playerInput = _playerInput;
+            inputInstance = _playerInput.gameObject.GetOrAddComponent<PlayerInputInstance>(out _);
+
+            eventCaller = _playerInput.gameObject.GetOrAddComponent<MonoBehaviourEventCaller>(out _);
+            eventCaller.OnBehaviourDestroyed += onPlayerDestroyed;
+        }
+
+        private void onPlayerDestroyed(MonoBehaviourEventCaller _caller)
+        {
+            if (_caller != null)
+            {
+                _caller.OnBehaviourDestroyed -= onPlayerDestroyed;
+            }
+
+            OnPlayerDestroyed?.Invoke(this);
+        }
+    }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    public static void Init()
+    {
+        OnAnyPlayerJoined = null;
+        OnAnyPlayerLeft = null;
+
+        validInputDevicesForPlayer.Clear();
+        allPlayers = default;
+        allDevices = default;
+    }
+
     public static event UnityAction<PlayerInput> OnAnyPlayerJoined = null;
     public static event UnityAction<PlayerInput> OnAnyPlayerLeft = null;
 
-    public static PlayerInputManager ActiveInstance = null;
-
-    private PlayerInputManager playerInputManager = null;
+    //Temporary lists to store input devices for validation
+    private static List<InputDevice> validInputDevicesForPlayer = new();
+    private static ReadOnlyArray<PlayerInput> allPlayers = default;
+    private static ReadOnlyArray<InputDevice> allDevices = default;
 
     [Header("Join Player Settings")]
     [SerializeField] private bool createFirstPlayerAtStart = true;
+    [SerializeField] private bool useJoinAction = true;
     [SerializeField] private InputAction joinAction = new InputAction();
+
+    [Header("Player Data")]
+    [SerializeField, ReadOnlyProperty] private List<PlayerData> playerDataList = new();
+
+    private PlayerInputManager playerInputManager = null;
+
+    public bool UseJoinAction
+    {
+        get => useJoinAction;
+        set
+        {
+            useJoinAction = value;
+
+            if (useJoinAction)
+            {
+                joinAction.Enable();
+            }
+            else
+            {
+                joinAction.Disable();
+            }
+        }
+    }
+
+    private void OnValidate()
+    {
+        if (Application.isPlaying)
+        {
+            UseJoinAction = useJoinAction; //Refresh the action if it was changed in the inspector
+        }
+    }
 
     private void Awake()
     {
@@ -29,7 +113,7 @@ public class PlayerInputManagerProvider : MonoBehaviour
             playerInputManager.onPlayerLeft += OnPlayerLeft;
         }
 
-        joinAction.Enable();
+        UseJoinAction = useJoinAction; //Enable or disable the join action based on the inspector value
         joinAction.performed += joinActionPerformed;
     }
 
@@ -53,159 +137,83 @@ public class PlayerInputManagerProvider : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        ActiveInstance = playerInputManager;
-    }
-
-    private void OnDisable()
-    {
-        if (ActiveInstance == playerInputManager)
-        {
-            ActiveInstance = null;
-        }
-    }
-
     [ActionButton]
     public void JoinPlayerWithFreeController() => JoinPlayerWithFreeController(null);
 
-    public void JoinPlayerWithFreeController(params InputDevice[] _prioritizedDevices)
+    public bool JoinPlayerWithFreeController(InputDevice _prioritizedDevice)
     {
         if (playerInputManager == null)
         {
-            Debug.LogWarning("PlayerInputManager is not assigned.");
+            return false;
+        }
+
+        InputDevice[] _devicesToAssign = getValidDevicesToAssign(_prioritizedDevice);
+
+        if (_devicesToAssign.IsNullOrEmpty())
+        {
+            Debug.LogWarning("No free devices available to join a new player.");
+            return false; //No free devices available
+        }
+
+        PlayerInput _newPlayer = playerInputManager.JoinPlayer(-1, -1, null, _devicesToAssign);
+
+        if (_newPlayer == null)
+        {
+            return false; //Failed to join player
+        }
+
+        registerNewPlayer(_newPlayer);
+
+        _newPlayer.transform.parent = transform; //Set the player as a child of this object
+
+        validatePlayerInputDevices(_newPlayer);
+        return true;
+    }
+
+    private void registerNewPlayer(PlayerInput _player)
+    {
+        if (_player == null)
+        {
             return;
         }
 
-        List<InputDevice> _allDevices = InputSystem.devices.ToList();
-        List<InputDevice> _used = new List<InputDevice>();
-        ReadOnlyArray<PlayerInput> _allPlayers = PlayerInput.all;
+        PlayerData _newPlayerData = new PlayerData(_player);
+        playerDataList.Add(_newPlayerData);
+        sortPlayerDataByIndex();
 
-        foreach (var _player in _allPlayers)
+        MyLog.Log($"Player added! Player Index: {_player.playerIndex}");
+
+        _newPlayerData.OnPlayerDestroyed += onPlayerDestroyed;
+    }
+
+    private void unregisterPlayer(PlayerInput _player)
+    {
+        for (int i = playerDataList.Count - 1; i >= 0; i--)
         {
-            if (_player.devices.Count <= 0)
+            if (playerDataList[i].PlayerInput == null
+                || playerDataList[i].PlayerInput == _player)
             {
-                continue;
+                playerDataList.RemoveAt(i);
+                MyLog.Log($"Player removed! ID: {i}");
             }
-
-            _validatePlayerInputDevices(_player);
-
-            _used.AddRange(_player.devices);
         }
 
-        List<InputDevice> _freeDevices = _allDevices.Where(_device => _used.Contains(_device) == false).ToList();
+        sortPlayerDataByIndex();
+    }
 
-        InputDevice[] _devicesToAssign = _getValidDevicesToAssign();
-
-        if (_devicesToAssign.IsNullOrEmpty() == false)
+    private void sortPlayerDataByIndex()
+    {
+        if (playerDataList.Count <= 1)
         {
-            PlayerInput _newPlayer = playerInputManager.JoinPlayer(-1, -1, null, _devicesToAssign);
-
-            if (_newPlayer != null)
-            {
-                _validatePlayerInputDevices(_newPlayer);
-            }
-        }
-        else
-        {
-            Debug.LogWarning("No free gamepads available to join a new player.");
+            return;
         }
 
-        InputDevice[] _getValidDevicesToAssign()
-        {
-            if (_prioritizedDevices.IsNullOrEmpty() == false)
-            {
-                List<InputDevice> _validPrioritizedDevices = _prioritizedDevices.Where(_device => _freeDevices.Contains(_device)).ToList();
+        playerDataList.Sort((_p1, _p2) => _p1.ID.CompareTo(_p2.ID));
+    }
 
-                if (_validPrioritizedDevices.IsNullOrEmpty() == false)
-                {
-                    bool _containsMouse = _validPrioritizedDevices.Any(_device => _device is Mouse);
-                    bool _containsKeyboard = _validPrioritizedDevices.Any(_device => _device is Keyboard);
-
-                    if (_containsMouse ^ _containsKeyboard)
-                    {
-                        //If there is only one of them, find the other
-                        foreach (InputDevice _device in _freeDevices)
-                        {
-                            if (_device is Mouse or Keyboard)
-                            {
-                                _validPrioritizedDevices.AddIfNotContains(_device);
-                            }
-                        }
-
-                        return _validPrioritizedDevices.ToArray();
-                    }
-
-                    return _validPrioritizedDevices.ToArray();
-                }
-            }
-
-            List<InputDevice> _validDevices = new List<InputDevice>();
-
-            foreach (InputDevice _device in _freeDevices)
-            {
-                if (_device is Mouse or Keyboard)
-                {
-                    _validDevices.Add(_device);
-                }
-            }
-
-            //Use mouse and keyboard
-            if (_validDevices.Count > 0)
-            {
-                return _validDevices.ToArray();
-            }
-
-            foreach (InputDevice _device in _freeDevices)
-            {
-                //Use gamepad
-                if (_device is Gamepad)
-                {
-                    return new InputDevice[] { _device };
-                }
-            }
-
-            //Use any free device
-            foreach (InputDevice _device in _freeDevices)
-            {
-                if (_device != null)
-                {
-                    return new InputDevice[] { _device };
-                }
-            }
-
-            return null;
-        }
-
-        bool _validatePlayerInputDevices(PlayerInput _player)
-        {
-            if (_player.devices.Count <= 1)
-            {
-                return true;
-            }
-
-            List<InputDevice> _mouseOrKeyboard = new List<InputDevice>();
-            List<InputDevice> _gamepads = new List<InputDevice>();
-
-            foreach (var _device in _player.devices)
-            {
-                switch (_device)
-                {
-                    case Mouse or Keyboard:
-                        _mouseOrKeyboard.Add(_device);
-                        break;
-                    case Gamepad:
-                        _gamepads.Add(_device);
-                        break;
-                }
-            }
-
-            InputDevice[] _controls = _mouseOrKeyboard.Count > 0
-                ? _mouseOrKeyboard.ToArray()
-                : _gamepads.Count <= 0 ? _gamepads.ToArray() : new InputDevice[] { _gamepads[0] };
-
-            return _player.SwitchCurrentControlScheme(_controls.ToArray());
-        }
+    private void onPlayerDestroyed(PlayerData _player)
+    {
+        unregisterPlayer(_player.PlayerInput);
     }
 
     public void OnPlayerJoined(PlayerInput _input)
@@ -224,16 +232,339 @@ public class PlayerInputManagerProvider : MonoBehaviour
 
         if (_triggeringDevice == null)
         {
-            return;
+            return; //Invalid device
         }
 
         if (PlayerInput.all.Any(_player => _player.devices.Contains(_triggeringDevice)))
         {
+            return; //Already used
+        }
+
+        Debug.Log($"Join action performed by device: {_triggeringDevice.name}");
+
+        JoinPlayerWithFreeController(_triggeringDevice);
+    }
+
+    public static bool SetPlayerGamepad(PlayerInput _player, Gamepad _selectedGamepad = null)
+    {
+        _player.DebugCurrentDevices($"Set Gamepad : {_selectedGamepad?.name}");
+
+        if (_player == null)
+        {
+            return false;
+        }
+
+        if (_selectedGamepad != null)
+        {
+            return ReplacePlayerGamepad(_player, _selectedGamepad, true);
+        }
+
+        //Null gamepad can be set to player 0 because he can use keyboard and mouse
+        if (_player.playerIndex != 0)
+        {
+            return false; //Invalid gamepad
+        }
+
+        ReadOnlyArray<InputDevice> _playerDevices = _player.devices;
+        List<InputDevice> _mouseAndKeyboardDevices = new();
+
+        foreach (InputDevice _device in _playerDevices)
+        {
+            if (isMouseOrKeyboard(_device))
+            {
+                _mouseAndKeyboardDevices.Add(_device);
+            }
+        }
+
+        if (anyDeviceModified(in _playerDevices, _mouseAndKeyboardDevices))
+        {
+            _player.SwitchCurrentControlScheme(_mouseAndKeyboardDevices.ToArray());
+            validatePlayerInputDevices(_player);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static bool ReplacePlayerGamepad(PlayerInput _player, Gamepad _gamepad, bool _findFreeGamepadForPreviousOwner = true)
+    {
+        if (_player == null || _gamepad == null)
+        {
+            return false;
+        }
+
+        _player.DebugCurrentDevices($"Replace Gamepad : {_gamepad?.name}");
+
+        PlayerInput _previousOwner = findDeviceOwner(_gamepad);
+
+        if (_previousOwner == _player)
+        {
+            return false; //This player already owns the gamepad
+        }
+
+        if (_previousOwner != null)
+        {
+            //Remove gamepad from the previous player
+            RemoveDeviceFromPlayer(_previousOwner, _gamepad);
+        }
+
+        ReadOnlyArray<InputDevice> _playerDevices = _player.devices;
+        List<InputDevice> _validDevices = _player.devices.ToList();
+
+        foreach (InputDevice _device in _playerDevices)
+        {
+            if (_device != null && _device is not Gamepad)
+            {
+                _validDevices.Add(_device); //Add all devices that are not gamepads
+            }
+        }
+
+        _validDevices.Add(_gamepad); //Add the new gamepad
+        bool _devicesModified = false;
+
+        if (anyDeviceModified(in _playerDevices, _validDevices))
+        {
+            _player.SwitchCurrentControlScheme(_playerDevices.ToArray());
+            validatePlayerInputDevices(_player);
+            _devicesModified = true;
+
+            _player.DebugCurrentDevices("Gamepad set to new owner");
+        }
+
+        if (_findFreeGamepadForPreviousOwner && _previousOwner != null)
+        {
+            ReadOnlyArray<InputDevice> _previousOwnerDevices = _previousOwner.devices;
+            List<InputDevice> _previousOwnerValidDevices = new List<InputDevice>();
+            bool _alreadyHasGamepad = false;
+
+            foreach (InputDevice _device in _previousOwnerDevices)
+            {
+                if (_device is Gamepad)
+                {
+                    _alreadyHasGamepad = true; //Previous owner already has a gamepad
+                }
+                else
+                {
+                    _previousOwnerValidDevices.Add(_device); //Add all devices that are not gamepads
+                }
+            }
+
+            if (_alreadyHasGamepad == false)
+            {
+                Gamepad _freeGamepad = findFreeGamepad();
+
+                if (_freeGamepad != null)
+                {
+                    _previousOwnerValidDevices.Add(_freeGamepad); //Add the new gamepad
+                }
+            }
+
+            if (anyDeviceModified(in _previousOwnerDevices, _previousOwnerValidDevices))
+            {
+                _previousOwner.SwitchCurrentControlScheme(_previousOwnerValidDevices.ToArray());
+                validatePlayerInputDevices(_previousOwner);
+                _devicesModified = true;
+
+                _previousOwner.DebugCurrentDevices("New free device for previous owner");
+            }
+        }
+
+        return _devicesModified;
+    }
+
+    private static Gamepad findFreeGamepad()
+    {
+        allPlayers = PlayerInput.all;
+        List<InputDevice> _usedDevices = new();
+
+        for (int i = 0; i < allPlayers.Count; i++)
+        {
+            if (allPlayers[i] != null)
+            {
+                _usedDevices.AddRange(allPlayers[i].devices);
+            }
+        }
+
+        allDevices = InputSystem.devices;
+
+        foreach (InputDevice _device in allDevices)
+        {
+            if (_device != null
+                && _device is Gamepad _freeGamepad
+                && _usedDevices.Contains(_device) == false)
+            {
+                return _freeGamepad; //Return the first free gamepad
+            }
+        }
+
+        return null; //No free gamepad found
+    }
+
+    public static bool RemoveDeviceFromPlayer(PlayerInput _player, InputDevice _device)
+    {
+        if (_player == null || _device == null)
+        {
+            return false;
+        }
+
+        _player.DebugCurrentDevices("Removing device");
+
+        List<InputDevice> _playerDevices = _player.devices.ToList();
+
+        if (_playerDevices.Contains(_device))
+        {
+            _playerDevices.Remove(_device);
+            _player.SwitchCurrentControlScheme(_playerDevices.ToArray());
+
+            validatePlayerInputDevices(_player);
+
+            _player.DebugCurrentDevices("Device removed");
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private static PlayerInput findDeviceOwner<T>(T _device) where T : InputDevice
+    {
+        allPlayers = PlayerInput.all;
+
+        foreach (PlayerInput _player in allPlayers)
+        {
+            if (_player != null && _player.devices.Contains(_device))
+            {
+                return _player; //Found the player that owns the device
+            }
+        }
+
+        return null; //No player owns the device
+    }
+
+    private static bool isMouseOrKeyboard(InputDevice _device)
+    {
+        return _device is Mouse or Keyboard;
+    }
+
+    private static void validatePlayerInputDevices(PlayerInput _player)
+    {
+        if (_player == null)
+        {
             return;
         }
 
-        Debug.Log($"Join action performed by device: {_triggeringDevice.displayName}");
+        validInputDevicesForPlayer.Clear();
 
-        JoinPlayerWithFreeController(_triggeringDevice);
+        if (_player.playerIndex == 0) //All keyboard and mouse devices for first player
+        {
+            validInputDevicesForPlayer.AddRange(InputSystem.devices.Where(isMouseOrKeyboard));
+        }
+
+        ReadOnlyArray<InputDevice> _playerDevices = _player.devices;
+
+        foreach (InputDevice _device in _playerDevices)
+        {
+            if (_device is Gamepad)
+            {
+                validInputDevicesForPlayer.Add(_device);
+                break; //Only one gamepad per player
+            }
+        }
+
+        if (anyDeviceModified(in _playerDevices, validInputDevicesForPlayer))
+        {
+            _player.SwitchCurrentControlScheme(validInputDevicesForPlayer.ToArray());
+        }
+    }
+
+    private static bool anyDeviceModified(in ReadOnlyArray<InputDevice> _playerDevices, List<InputDevice> _newDevices)
+    {
+        if (_playerDevices.Count != _newDevices.Count)
+        {
+            return true; //Different amount of devices
+        }
+
+        foreach (InputDevice _currentDevice in _playerDevices)
+        {
+            if (_newDevices.Contains(_currentDevice) == false)
+            {
+                return true; //Different devices
+            }
+        }
+
+        return false; //Same amount and same devices
+    }
+
+    private static InputDevice[] getValidDevicesToAssign(InputDevice _prioritizedDevice = null)
+    {
+        allPlayers = PlayerInput.all;
+        List<InputDevice> _usedDevices = new();
+
+        foreach (PlayerInput _player in allPlayers)
+        {
+            if (_player != null)
+            {
+                validatePlayerInputDevices(_player); //Validate and release devices if needed
+                _usedDevices.AddRange(_player.devices);
+            }
+        }
+
+        allDevices = InputSystem.devices;
+        List<InputDevice> _freeDevices = new();
+
+        foreach (InputDevice _device in allDevices)
+        {
+            if (_device != null && _usedDevices.Contains(_device) == false)
+            {
+                _freeDevices.Add(_device);
+            }
+        }
+
+        if (_prioritizedDevice != null && _freeDevices.Contains(_prioritizedDevice))
+        {
+            return new InputDevice[] { _prioritizedDevice }; //Only use the prioritized device if it is free
+        }
+
+        foreach (InputDevice _device in _freeDevices)
+        {
+            //Use first gamepad
+            if (_device is Gamepad)
+            {
+                return new InputDevice[] { _device };
+            }
+        }
+
+        foreach (InputDevice _device in _freeDevices)
+        {
+            //Use first free device, gamepad were already checked
+            if (isMouseOrKeyboard(_device))
+            {
+                return new InputDevice[] { _device };
+            }
+        }
+
+        return null;
+    }
+}
+
+public static class PlayerInputManagerExtensions
+{
+    public static void DebugCurrentDevices(this PlayerInput _player, string _additionalInfo = null)
+    {
+        if (_player != null)
+        {
+            Debug.Log($"{_additionalInfo} :: Current: {_playerInfo(_player)}\n{PlayerInput.all.ToStringByElements(_playerInfo, "\n")}");
+        }
+
+        string _playerInfo(PlayerInput _player)
+        {
+            if (_player == null)
+            {
+                return "Null";
+            }
+
+            return $"Player: {_player.playerIndex} :: Devices: {_player.devices.ToStringByElements(_e => $"{_e.name}", _printIDs: true)}";
+        }
     }
 }

@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using OptionData = TMPro.TMP_Dropdown.OptionData;
@@ -8,9 +8,9 @@ public class DropdownOptionsHandler : MonoBehaviour, INavigationItemContainer<Cu
 {
     public event UnityAction<int> OnDropdownValueChanged = null;
 
-    [SerializeField] protected string[] options = new string[] { };
+    [SerializeField] protected List<string> options = new();
 
-    protected OptionData[] optionDatas = new OptionData[] { };
+    protected List<OptionData> optionDatas = new();
     protected CustomDropdown dropdown = null;
 
     public CustomDropdown Dropdown => dropdown;
@@ -41,13 +41,20 @@ public class DropdownOptionsHandler : MonoBehaviour, INavigationItemContainer<Cu
 
     public void SetDropdownValueWithoutNotify(int _value)
     {
-        if (_value.IsInRange(0, optionDatas.Length - 1) && dropdown.value != _value)
+        if (dropdown == null)
         {
-            dropdown.SetValueWithoutNotify(_value);
+            return;
         }
+
+        if (optionDatas.IsIndexOutOfRange(_value) || dropdown.value == _value)
+        {
+            return;
+        }
+
+        dropdown.SetValueWithoutNotify(_value);
     }
 
-    public void SetNewOptions(string[] _options, int _currentSelected)
+    public void SetNewOptions(List<string> _options, int _currentSelected)
     {
         if (_options.IsNullOrEmpty() || _options.IsIndexOutOfRange(_currentSelected))
         {
@@ -62,17 +69,20 @@ public class DropdownOptionsHandler : MonoBehaviour, INavigationItemContainer<Cu
 
     protected void resetOptionDatasOnDropdown()
     {
-        dropdown.ClearOptions();
-
-        int _count = options.Length;
-        optionDatas = new OptionData[_count];
-
-        for (int i = 0; i < _count; i++)
+        if (dropdown == null)
         {
-            optionDatas[i] = new OptionData(options[i]);
+            return;
         }
 
-        dropdown.options = optionDatas.ToList();
+        dropdown.ClearOptions();
+        optionDatas.Clear();
+
+        for (int i = 0; i < options.Count; i++)
+        {
+            optionDatas.Add(new OptionData(options[i]));
+        }
+
+        dropdown.options = optionDatas;
     }
 
     protected void dropdownValueChanged(int _index)

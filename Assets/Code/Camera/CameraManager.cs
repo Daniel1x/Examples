@@ -26,6 +26,8 @@ public class CameraManager : MonoBehaviour
     //Values for calculations
     private float maxDistance = 0f;
 
+    public CinemachineBrain Brain => brain;
+
     private void Awake()
     {
         if (virtualCamera != null)

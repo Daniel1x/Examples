@@ -113,7 +113,7 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""8c4abdf8-4099-493a-aa1a-129acec7c3df"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -345,16 +345,6 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
                     ""isOR"": false
                 }
             ]
-        },
-        {
-            ""name"": ""Xbox Controller"",
-            ""bindingGroup"": ""Xbox Controller"",
-            ""devices"": []
-        },
-        {
-            ""name"": ""PS4 Controller"",
-            ""bindingGroup"": ""PS4 Controller"",
-            ""devices"": []
         }
     ]
 }");
@@ -593,32 +583,6 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
         {
             if (m_GamepadSchemeIndex == -1) m_GamepadSchemeIndex = asset.FindControlSchemeIndex("Gamepad");
             return asset.controlSchemes[m_GamepadSchemeIndex];
-        }
-    }
-    private int m_XboxControllerSchemeIndex = -1;
-    /// <summary>
-    /// Provides access to the input control scheme.
-    /// </summary>
-    /// <seealso cref="UnityEngine.InputSystem.InputControlScheme" />
-    public InputControlScheme XboxControllerScheme
-    {
-        get
-        {
-            if (m_XboxControllerSchemeIndex == -1) m_XboxControllerSchemeIndex = asset.FindControlSchemeIndex("Xbox Controller");
-            return asset.controlSchemes[m_XboxControllerSchemeIndex];
-        }
-    }
-    private int m_PS4ControllerSchemeIndex = -1;
-    /// <summary>
-    /// Provides access to the input control scheme.
-    /// </summary>
-    /// <seealso cref="UnityEngine.InputSystem.InputControlScheme" />
-    public InputControlScheme PS4ControllerScheme
-    {
-        get
-        {
-            if (m_PS4ControllerSchemeIndex == -1) m_PS4ControllerSchemeIndex = asset.FindControlSchemeIndex("PS4 Controller");
-            return asset.controlSchemes[m_PS4ControllerSchemeIndex];
         }
     }
     /// <summary>

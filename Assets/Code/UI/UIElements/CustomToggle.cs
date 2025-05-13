@@ -10,6 +10,7 @@ public class CustomToggle : Toggle, INavigationItem<CustomToggle>, IToggleContai
     public event UnityAction<int, CustomToggle> OnItemSelected = null;
     public event UnityAction<int, CustomToggle> OnItemDeselected = null;
     public event UnityAction<int, CustomToggle> OnItemDestroyed = null;
+    public event UnityAction<int, CustomToggle, bool> OnItemValueChanged = null;
 
     [SerializeField] private GameObject onObject = null;
     [SerializeField] private GameObject offObject = null;
@@ -138,6 +139,7 @@ public class CustomToggle : Toggle, INavigationItem<CustomToggle>, IToggleContai
 
     public void OnToggleValueChanged(bool _value)
     {
+        OnItemValueChanged?.Invoke(ItemIndex, this, _value);
         OnAnyToggleValueChanged?.Invoke(this);
         refreshValueVisualization(_value);
     }

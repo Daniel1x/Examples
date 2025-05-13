@@ -52,7 +52,7 @@ public class ThirdPersonController : MonoBehaviour
 
     private Animator animator = null;
     private CharacterController controller = null;
-    private BasicInputs input = null;
+    private PlayerBasicInputs input = null;
     private GameObject playerCamera = null;
     private CameraTargetProvider cameraTargetProvider = null;
 
@@ -73,7 +73,7 @@ public class ThirdPersonController : MonoBehaviour
     {
         hasAnimator = TryGetComponent(out animator);
         controller = GetComponent<CharacterController>();
-        input = GetComponent<BasicInputs>();
+        input = GetComponent<PlayerBasicInputs>();
 
         animIDSpeed = Animator.StringToHash("Speed");
         animIDGrounded = Animator.StringToHash("Grounded");
