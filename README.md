@@ -1,10 +1,12 @@
 # Examples
 Repository with code examples.
 
-In this repository you will find examples of code, ui elements, multiplier input management, custom shaders and shader effects.
+In this repository you will find examples of code, ui elements, multiplayer input management, custom shaders and shader effects.
 
 Example class:
+
 [ExampleBehaviourClass](https://github.com/Daniel1x/Examples/blob/main/Assets/Code/ExampleBehaviourClass.cs)
+
 [PlayerInputManagerProvider](https://github.com/Daniel1x/Examples/blob/main/Assets/Code/Player/PlayerInputManagerProvider.cs)
 
 Example terrain shader with scanning effect and multiple height based textures with added noise.
