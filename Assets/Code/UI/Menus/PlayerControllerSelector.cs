@@ -7,30 +7,27 @@ using UnityEngine.InputSystem;
 public class PlayerControllerSelector : MonoBehaviour
 {
     public event UnityAction<PlayerControllerSelector, CustomButton> OnActionButtonPressed = null;
-    public event UnityAction<PlayerControllerSelector, bool> OnUseKeyboardChanged = null;
     public event UnityAction<PlayerControllerSelector, int> OnControllerOptionChanged = null;
 
     [SerializeField] private TMP_Text playerNameText = null;
     [SerializeField] private CustomButton actionButton = null;
-    [SerializeField] private CustomToggle keyboardToggle = null;
     [SerializeField] private CustomDropdown controllerDropdown = null;
     [SerializeField] private DropdownOptionsHandler controllerDropdownOptionsHandler = null;
+    [SerializeField] private GameObject[] keyboardImages = new GameObject[] { };
+    [SerializeField] private GameObject controllerImage = null;
 
     private List<string> controllerOptions = null;
 
     public PlayerInput AssignedPlayer { get; private set; } = null;
+
+    public CustomButton ActionButton => actionButton;
+    public CustomDropdown Dropdown => controllerDropdown;
 
     private void Awake()
     {
         if (actionButton != null)
         {
             actionButton.OnItemClicked += onActionButtonClicked;
-        }
-
-        if (keyboardToggle != null)
-        {
-            keyboardToggle.interactable = false;
-            keyboardToggle.OnItemValueChanged += onKeyboardToggleChanged;
         }
 
         if (controllerDropdownOptionsHandler != null)
@@ -44,11 +41,6 @@ public class PlayerControllerSelector : MonoBehaviour
         if (actionButton != null)
         {
             actionButton.OnItemClicked -= onActionButtonClicked;
-        }
-
-        if (keyboardToggle != null)
-        {
-            keyboardToggle.OnItemValueChanged -= onKeyboardToggleChanged;
         }
 
         if (controllerDropdownOptionsHandler != null)
@@ -78,13 +70,20 @@ public class PlayerControllerSelector : MonoBehaviour
             controllerDropdownOptionsHandler.SetNewOptions(controllerOptions, _currentControllerID);
         }
 
-        if (keyboardToggle != null)
+        if (controllerImage != null)
         {
-            keyboardToggle.SetIsOnWithoutNotify(_hasKeyboard);
+            controllerImage.SetActive(_currentControllerID != 0);
+        }
+
+        foreach (GameObject _keyboardImage in keyboardImages)
+        {
+            if (_keyboardImage != null)
+            {
+                _keyboardImage.SetActive(_hasKeyboard);
+            }
         }
     }
 
     private void onControllerDropdownHandlerValueChanged(int _value) => OnControllerOptionChanged?.Invoke(this, _value);
-    private void onKeyboardToggleChanged(int _id, CustomToggle _toggle, bool _value) => OnUseKeyboardChanged?.Invoke(this, _value);
     private void onActionButtonClicked(int _id, CustomButton _button) => OnActionButtonPressed?.Invoke(this, _button);
 }

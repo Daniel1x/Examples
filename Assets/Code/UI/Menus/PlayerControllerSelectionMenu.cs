@@ -58,10 +58,12 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
 
     [Header("Menu Options")]
     [SerializeField] private CustomButton autoAssignButton = null;
+    [SerializeField] private CustomButton addPlayerButton = null;
     [SerializeField] private CustomButton startButton = null;
     [SerializeField] private BehaviourCollection<PlayerControllerSelector> selectors = new();
 
     [Header("Player Characters")]
+    [SerializeField] private bool createFirstPlayerAtStart = false;
     [SerializeField] private GameObject playerPrefab = null;
     [SerializeField] private Transform playerSpawnPoint = null;
 
@@ -93,6 +95,11 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
             autoAssignButton.OnItemClicked += onAutoAssignButtonClicked;
         }
 
+        if (addPlayerButton != null)
+        {
+            addPlayerButton.OnItemClicked += addPlayerButtonClicked;
+        }
+
         if (startButton != null)
         {
             startButton.OnItemClicked += onStartButtonClicked;
@@ -107,6 +114,11 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
         if (autoAssignButton != null)
         {
             autoAssignButton.OnItemClicked -= onAutoAssignButtonClicked;
+        }
+
+        if (addPlayerButton != null)
+        {
+            addPlayerButton.OnItemClicked -= addPlayerButtonClicked;
         }
 
         if (startButton != null)
@@ -139,6 +151,11 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
 
     private void Start()
     {
+        if (createFirstPlayerAtStart && PlayerInputManagerProvider != null && PlayerInput.all.Count == 0)
+        {
+            PlayerInputManagerProvider.JoinPlayerWithFreeController();
+        }
+
         UpdateAvailableControllerOptions();
     }
 
@@ -186,6 +203,8 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
 
         ReadOnlyArray<PlayerInput> _allPlayers = PlayerInput.all;
         ReadOnlyArray<InputDevice> _playerDevices = default;
+
+        int _selectorCountBeforeUpdate = selectors.VisibleItems;
         selectors.VisibleItems = _allPlayers.Count;
 
         for (int i = 0; i < _allPlayers.Count; i++)
@@ -208,7 +227,7 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
             selectors[i].SetData(_player, $"Player {_player.playerIndex}", _hasKeyboard, controllerDropdownOptions, _controllerOption);
         }
 
-        updateStartButtonState();
+        updateButtonStates(selectors.VisibleItems != _selectorCountBeforeUpdate);
     }
 
     private int getControllerOption(Gamepad _gamepad)
@@ -370,6 +389,14 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
         }
     }
 
+    private void addPlayerButtonClicked(int _id, CustomButton _button)
+    {
+        if (PlayerInputManagerProvider != null)
+        {
+            PlayerInputManagerProvider.JoinPlayerWithFreeController();
+        }
+    }
+
     private void onStartButtonClicked(int _id, CustomButton _button)
     {
         if (_button.interactable == false)
@@ -377,55 +404,41 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
             return;
         }
 
-        if (allPlayersHasAssignedDevices())
-        {
-            gameObject.SetActive(false); //Hide the menu, spawn characters and start game
-
-            ReadOnlyArray<PlayerInput> _allPlayers = PlayerInput.all;
-
-            foreach (var _player in _allPlayers)
-            {
-                if (_player == null)
-                {
-                    continue;
-                }
-
-                if (_player.playerIndex == 0 && _player.devices.Any(_dev => _dev is Gamepad))
-                {
-                    _player.SwitchCurrentControlScheme("Gamepad", _player.devices.ToArray()); //Make sure the first player is using the gamepad scheme
-                }
-
-                GameObject _newCharacter = Instantiate(playerPrefab, playerSpawnPoint);
-
-                if (_newCharacter != null && _player.GetComponent<PlayerInputInstance>() is PlayerInputInstance _inputs)
-                {
-                    if (_newCharacter.GetComponent<ThirdPersonController>() is ThirdPersonController _controller)
-                    {
-                        _controller.BasicInput = _inputs.PlayerBasicInputs;
-                    }
-
-                    if (_newCharacter.GetComponentInChildren<PlayerIndicator>(true) is PlayerIndicator _indicator)
-                    {
-                        _indicator.Player = _player;
-                    }
-                }
-            }
-        }
-    }
-
-    private void updateStartButtonState()
-    {
-        if (startButton == null)
+        if (allPlayersHasAssignedDevices() == false)
         {
             return;
         }
 
-        startButton.interactable = allPlayersHasAssignedDevices();
-        startButton.transform.SetAsLastSibling();
+        gameObject.SetActive(false); //Hide the menu, spawn characters and start game
 
-        if (startButton.interactable == false && startButton.IsSelected)
+        ReadOnlyArray<PlayerInput> _allPlayers = PlayerInput.all;
+
+        foreach (var _player in _allPlayers)
         {
-            startButton.FindSelectableOnUp()?.Select();
+            if (_player == null)
+            {
+                continue;
+            }
+
+            if (_player.playerIndex == 0 && _player.devices.Any(_dev => _dev is Gamepad))
+            {
+                _player.SwitchCurrentControlScheme("Gamepad", _player.devices.ToArray()); //Make sure the first player is using the gamepad scheme
+            }
+
+            GameObject _newCharacter = Instantiate(playerPrefab, playerSpawnPoint);
+
+            if (_newCharacter != null && _player.GetComponent<PlayerInputInstance>() is PlayerInputInstance _inputs)
+            {
+                if (_newCharacter.GetComponent<ThirdPersonController>() is ThirdPersonController _controller)
+                {
+                    _controller.BasicInput = _inputs.PlayerBasicInputs;
+                }
+
+                if (_newCharacter.GetComponentInChildren<PlayerIndicator>(true) is PlayerIndicator _indicator)
+                {
+                    _indicator.Player = _player;
+                }
+            }
         }
     }
 
@@ -447,5 +460,132 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
         }
 
         return true;
+    }
+
+    private void updateButtonStates(bool _selectorCountUpdated)
+    {
+        if (addPlayerButton != null)
+        {
+            if (_selectorCountUpdated)
+            {
+                addPlayerButton.transform.SetAsLastSibling();
+            }
+        }
+
+        if (startButton != null)
+        {
+            startButton.interactable = allPlayersHasAssignedDevices();
+
+            if (_selectorCountUpdated)
+            {
+                startButton.transform.SetAsLastSibling();
+            }
+
+            if (startButton.interactable == false && startButton.IsSelected)
+            {
+                startButton.FindSelectableOnUp()?.Select();
+            }
+        }
+
+        if (_selectorCountUpdated)
+        {
+            updateExpliciteNavigation();
+        }
+    }
+
+    private void updateExpliciteNavigation()
+    {
+        PlayerControllerSelector _firstSelector = selectors.VisibleItems > 0 ? selectors[0] : null;
+        PlayerControllerSelector _lastSelector = selectors.VisibleItems > 0 ? selectors[selectors.VisibleItems - 1] : null;
+
+        _setExplicitNavigation(autoAssignButton, startButton, _firstSelector != null ? _firstSelector.Dropdown : addPlayerButton);
+        _setExplicitNavigation(addPlayerButton, _lastSelector != null ? _lastSelector.Dropdown : autoAssignButton, startButton);
+        _setExplicitNavigation(startButton, addPlayerButton, autoAssignButton);
+
+        for (int i = 0; i < selectors.VisibleItems; i++)
+        {
+            PlayerControllerSelector _previous = i - 1 >= 0 ? selectors[i - 1] : null;
+            PlayerControllerSelector _next = i + 1 < selectors.VisibleItems ? selectors[i + 1] : null;
+
+            if (i == 0)
+            {
+                if (_next == null)
+                {
+                    _setSelectorExpliciteNavigation(selectors[i]);
+                }
+                else
+                {
+                    _setSelectorExpliciteNavigation(selectors[i], null, _next.ActionButton, null, _next.Dropdown);
+                }
+
+            }
+            else if (i == selectors.VisibleItems - 1)
+            {
+                if (_previous == null)
+                {
+                    _setSelectorExpliciteNavigation(selectors[i]);
+                }
+                else
+                {
+                    _setSelectorExpliciteNavigation(selectors[i], _previous.ActionButton, null, _previous.Dropdown, null);
+                }
+            }
+            else if (_previous != null && _next != null)
+            {
+                _setSelectorExpliciteNavigation(selectors[i], _previous.ActionButton, _next.ActionButton, _previous.Dropdown, _next.Dropdown);
+            }
+
+            void _setSelectorExpliciteNavigation(PlayerControllerSelector _selector,
+                Selectable _onButtonUp = null, Selectable _onButtonDown = null,
+                Selectable _onDropdownUp = null, Selectable _onDropdownDown = null)
+            {
+                if (_selector == null)
+                {
+                    return;
+                }
+
+                if (_onButtonUp == null)
+                {
+                    _onButtonUp = autoAssignButton;
+                }
+
+                if (_onButtonDown == null)
+                {
+                    _onButtonDown = addPlayerButton;
+                }
+
+                if (_onDropdownUp == null)
+                {
+                    _onDropdownUp = autoAssignButton;
+                }
+
+                if (_onDropdownDown == null)
+                {
+                    _onDropdownDown = addPlayerButton;
+                }
+
+                _setExplicitNavigation(_selector.ActionButton, _onButtonUp, _onButtonDown);
+                _setExplicitNavigation(_selector.Dropdown, _onDropdownUp, _onDropdownDown);
+            }
+        }
+
+        void _setExplicitNavigation<T>(T _current, Selectable _onUp, Selectable _onDown, Selectable _onLeft = null, Selectable _onRight = null) where T : Selectable, INavigationItem<T>
+        {
+            if (_current == null)
+            {
+                return;
+            }
+
+            Navigation _navigation = _current.navigation;
+
+            _navigation.mode = Navigation.Mode.Explicit;
+            _navigation.selectOnUp = _onUp;
+            _navigation.selectOnDown = _onDown;
+            _navigation.selectOnLeft = _onLeft;
+            _navigation.selectOnRight = _onRight;
+
+            _current.ExplicitNavigator.UseAutomaticSelectionIfExplicitSelectionIsNull = true;
+            _current.navigation = _navigation;
+        }
     }
 }
