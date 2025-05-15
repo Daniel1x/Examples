@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerControllerSelectionMenu : MonoBehaviour
@@ -71,6 +75,10 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
     [SerializeField] private MultipleDevicesOption mouseAndKeyboard = new MultipleDevicesOption("Mouse & Keyboard");
     [SerializeField] private List<GamepadOption> controllerOptions = new List<GamepadOption>();
     [SerializeField] private List<string> controllerDropdownOptions = new();
+
+    [Header("Start Action")]
+    [SerializeField] private bool loadNextLevelOnStart = false;
+    [SerializeField] private AssetReference nextSceneAsset = default;
 
     private Coroutine updateCoroutine = null;
     private PlayerInputManagerProvider playerInputManagerProvider = null;
@@ -402,6 +410,17 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
         if (_button.interactable == false)
         {
             return;
+        }
+
+        if (loadNextLevelOnStart)
+        {
+            AsyncOperationHandle<SceneInstance> _handle = Addressables.LoadSceneAsync(nextSceneAsset, LoadSceneMode.Single);
+
+            if (_handle.IsValid())
+            {
+                gameObject.SetActive(false);
+                return;
+            }
         }
 
         if (allPlayersHasAssignedDevices() == false)

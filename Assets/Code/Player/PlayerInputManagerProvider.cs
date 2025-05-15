@@ -57,6 +57,8 @@ public class PlayerInputManagerProvider : MonoBehaviour
         validInputDevicesForPlayer.Clear();
         allPlayers = default;
         allDevices = default;
+
+        instance = null;
     }
 
     public static event UnityAction<PlayerInput> OnAnyPlayerJoined = null;
@@ -66,6 +68,8 @@ public class PlayerInputManagerProvider : MonoBehaviour
     private static List<InputDevice> validInputDevicesForPlayer = new();
     private static ReadOnlyArray<PlayerInput> allPlayers = default;
     private static ReadOnlyArray<InputDevice> allDevices = default;
+
+    private static PlayerInputManagerProvider instance = null;
 
     [Header("Join Player Settings")]
     [SerializeField] private bool createFirstPlayerAtStart = true;
@@ -105,6 +109,15 @@ public class PlayerInputManagerProvider : MonoBehaviour
 
     private void Awake()
     {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
+        DontDestroyOnLoad(this);
+
         playerInputManager = GetComponent<PlayerInputManager>();
 
         if (playerInputManager != null)
@@ -119,6 +132,11 @@ public class PlayerInputManagerProvider : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (instance == this)
+        {
+            instance = null;
+        }
+
         if (playerInputManager != null)
         {
             playerInputManager.onPlayerJoined -= OnPlayerJoined;
