@@ -5,8 +5,9 @@ public class ReflectionProbeGizmo : MonoBehaviour
 {
     public enum DrawMode
     {
-        OnSelected = 0,
-        Always = 1,
+        None = 0,
+        OnSelected = 1,
+        Always = 2,
     }
 
     [SerializeField, HideInInspector] private ReflectionProbe reflectionProbe = null;

@@ -116,7 +116,7 @@ public class PlayerInputManagerProvider : MonoBehaviour
         }
 
         instance = this;
-        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(gameObject);
 
         playerInputManager = GetComponent<PlayerInputManager>();
 
