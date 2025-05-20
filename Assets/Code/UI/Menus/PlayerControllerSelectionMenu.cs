@@ -450,7 +450,7 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
             {
                 if (_newCharacter.GetComponent<ThirdPersonController>() is ThirdPersonController _controller)
                 {
-                    _controller.BasicInput = _inputs.PlayerBasicInputs;
+                    _controller.InputProvider = _inputs.PlayerBasicInputs;
                 }
 
                 if (_newCharacter.GetComponentInChildren<PlayerIndicator>(true) is PlayerIndicator _indicator)

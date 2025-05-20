@@ -170,7 +170,6 @@ public static class CollectionsExtensions
             return _list.ElementAt(_selectedID);
         }
 
-        MyLog.Warning($"COLLECTION EXTENSIONS :: Collection is empty! Default value returned!", UnityEngine.Color.yellow);
         _selectedID = -1;
         return default;
     }
@@ -187,7 +186,6 @@ public static class CollectionsExtensions
             return _array.ElementAt(_selectedID);
         }
 
-        MyLog.Warning($"COLLECTION EXTENSIONS :: Collection is empty! Default value returned!", UnityEngine.Color.yellow);
         _selectedID = -1;
         return default;
     }

@@ -1,32 +1,26 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerBasicInputs : MonoBehaviour
+public class PlayerBasicInputs : CharacterInputProvider
 {
     [Header("Character Input Values")]
-    public Vector2 Move = default;
-    public Vector2 Look = default;
-    public bool Jump = false;
-    public bool Sprint = false;
+    [SerializeField, ReadOnlyProperty] private Vector2 move = default;
+    [SerializeField, ReadOnlyProperty] private bool jump = false;
+    [SerializeField, ReadOnlyProperty] private bool sprint = false;
 
     [Header("Movement Settings")]
-    public bool AnalogMovement = false;
+    [SerializeField] private bool analogMovement = false;
 
-    public void OnMove(InputValue _input)
-    {
-        MoveInput(_input.Get<Vector2>());
-    }
+    public override Vector2 Move => move;
+    public override bool Jump { get => jump; set => jump = value; }
+    public override bool Sprint => sprint;
+    public override bool AnalogMovement => analogMovement;
 
-    public void OnLook(InputValue _input)
-    {
-        //LookInput(_input.Get<Vector2>());        
-    }
-
+    public void OnMove(InputValue _input) => MoveInput(_input.Get<Vector2>());
     public void OnJump(InputValue _input) => JumpInput(_input.isPressed);
     public void OnSprint(InputValue _input) => SprintInput(_input.isPressed);
 
-    public void MoveInput(Vector2 _newMoveDirection) => Move = _newMoveDirection;
-    public void LookInput(Vector2 _newLookDirection) => Look = _newLookDirection;
-    public void JumpInput(bool _newJumpState) => Jump = _newJumpState;
-    public void SprintInput(bool _newSprintState) => Sprint = _newSprintState;
+    public void MoveInput(Vector2 _newMoveDirection) => move = _newMoveDirection;
+    public void JumpInput(bool _newJumpState) => jump = _newJumpState;
+    public void SprintInput(bool _newSprintState) => sprint = _newSprintState;
 }

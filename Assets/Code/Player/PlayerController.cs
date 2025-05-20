@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void onJump(ThirdPersonController _controller)
+    private void onJump(UnitCharacterController _controller)
     {
         GroundAnimator.ShowCircle(transform.position, playerIndicator != null ? playerIndicator.PlayerColor : Color.white);
     }

@@ -5,11 +5,11 @@ using UnityEngine.InputSystem;
 public class PlayerInputInstance : MonoBehaviour
 {
     public PlayerInput PlayerInput { get; private set; } = null;
-    public PlayerBasicInputs PlayerBasicInputs { get; private set; } = null;
+    public CharacterInputProvider PlayerBasicInputs { get; private set; } = null;
 
     private void Awake()
     {
         PlayerInput = GetComponent<PlayerInput>();
-        PlayerBasicInputs = GetComponent<PlayerBasicInputs>();
+        PlayerBasicInputs = GetComponent<CharacterInputProvider>();
     }
 }
