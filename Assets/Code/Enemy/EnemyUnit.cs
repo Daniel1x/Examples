@@ -5,6 +5,7 @@ public class EnemyUnit : CharacterInputProvider
     [SerializeField] private Transform target = null;
     [SerializeField] private AnimationCurve sprintIntervals = AnimationCurve.Constant(0f, 10f, 1f);
     [SerializeField] private float sprintThreshold = 0.5f;
+    [SerializeField, Min(0.1f)] private float minDistance = 1f;
 
     private Vector2 move = default;
     private bool jump = false;
@@ -32,12 +33,12 @@ public class EnemyUnit : CharacterInputProvider
         else
         {
             Vector3 _direction = transform.DirectionTo(target);
-            move = new Vector2(_direction.x, _direction.z);
+            _direction.y = 0f; // Ignore vertical direction
+            float _distance = _direction.magnitude;
 
-            if (move.x != 0f || move.y != 0f)
-            {
-                move = move.normalized;
-            }
+            move = _distance < minDistance
+                ? Vector2.zero
+                : new Vector2(_direction.x, _direction.z) / _distance;
         }
 
         lifeTime += Time.deltaTime;
@@ -53,6 +54,27 @@ public class EnemyUnit : CharacterInputProvider
         {
             jump = false; //Clear jump state after use
         }
+    }
+
+    private void OnEnable()
+    {
+        updateTarget();
+
+        PlayerController.OnPlayerCountUpdated += updateTarget;
+    }
+
+    private void OnDisable()
+    {
+        PlayerController.OnPlayerCountUpdated -= updateTarget;
+    }
+
+    private void updateTarget()
+    {
+        PlayerController _closestPlayer = PlayerController.GetClosestPlayer(transform.position);
+
+        target = _closestPlayer != null
+            ? _closestPlayer.transform
+            : null;
     }
 
     [ActionButton] public void StartSprint() => sprintOverride = true;

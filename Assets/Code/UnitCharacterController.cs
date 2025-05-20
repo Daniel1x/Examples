@@ -230,6 +230,7 @@ public class UnitCharacterController : UnitAnimationEventReceiver
                     animator.SetBool(animIDJump, true);
                 }
 
+                InputProvider.Jump = false;
                 OnJumpPerformed?.Invoke(this);
             }
 
