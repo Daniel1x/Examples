@@ -19,22 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-### Unity Asset Licensing Notice
-
-This repository includes third-party assets obtained from the Unity Asset Store, specifically:
-
-**"Robot Kyle (URP)"**  
-Copyright © Unity Technologies  
-Licensed under the **Unity Companion License**  
-🔗 https://unity3d.com/legal/licenses/Unity_Companion_License
-
-#### Scope of Unity Asset License:
-
-The following directory and its contents:
-Assets/UnityTechnologies
-as well as any prefabs, scenes, materials, models, textures, or other content that directly incorporate or are derived from those files are licensed under the Unity Companion License. These files are not covered by the MIT License above.
-You may only use and distribute the files listed above (and any derivative works based on them) in connection with projects created using the Unity Engine, and in compliance with the Unity Companion License terms.
-Use of these assets outside of Unity or for any purpose not permitted by the Unity Companion License is strictly prohibited.
