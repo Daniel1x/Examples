@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class EnemyUnit : CharacterInputProvider
 {
+    [SerializeField] private float targetUpdateInterval = 0.5f;
     [SerializeField] private Transform target = null;
     [SerializeField] private AnimationCurve sprintIntervals = AnimationCurve.Constant(0f, 10f, 1f);
     [SerializeField] private float sprintThreshold = 0.5f;
@@ -13,6 +14,7 @@ public class EnemyUnit : CharacterInputProvider
     private bool sprintOverride = false;
 
     private float lifeTime = 0f;
+    private float lastTargetUpdate = 0f;
 
     public override Vector2 Move => move;
     public override bool Jump { get => jump; set => jump = value; }
@@ -46,6 +48,8 @@ public class EnemyUnit : CharacterInputProvider
         float _currentTime = lifeTime % _duration;
         float _sprintValue = sprintIntervals.Evaluate(_currentTime);
         sprint = _sprintValue > sprintThreshold;
+
+        checkForTargetUpdate();
     }
 
     private void LateUpdate()
@@ -66,6 +70,15 @@ public class EnemyUnit : CharacterInputProvider
     private void OnDisable()
     {
         PlayerController.OnPlayerCountUpdated -= updateTarget;
+    }
+
+    private void checkForTargetUpdate()
+    {
+        if (target == null || Time.time - lastTargetUpdate > targetUpdateInterval)
+        {
+            lastTargetUpdate = Time.time;
+            updateTarget();
+        }
     }
 
     private void updateTarget()

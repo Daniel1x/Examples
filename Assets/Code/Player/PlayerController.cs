@@ -52,8 +52,10 @@ public class PlayerController : MonoBehaviour
         PlayerController closestPlayer = null;
         float _closestDistance = float.MaxValue;
 
-        foreach (var _player in activePlayerControllers)
+        for (int i = 0; i < activePlayerControllers.Count; i++)
         {
+            PlayerController _player = activePlayerControllers[i];
+
             if (_player == null || _player.transform == null)
             {
                 continue;

@@ -47,6 +47,7 @@ public class UnitCharacterController : UnitAnimationEventReceiver
     [SerializeField] protected float speedChangeRate = 10.0f;
 
     [Header("Audio")]
+    [SerializeField] protected UnitAnimationEventReceiver customEventReceiver = null;
     [SerializeField] protected CharacterAudioSettings characterAudioSettings = new CharacterAudioSettings();
 
     [Header("Movement")]
@@ -84,11 +85,36 @@ public class UnitCharacterController : UnitAnimationEventReceiver
     protected Animator animator = null;
     protected CharacterController controller = null;
 
+    public bool ShowLog = false;
+
+    public void Log(string _message)
+    {
+        if (ShowLog)
+        {
+            Debug.Log(_message, this);
+        }
+    }
+
     protected virtual void Awake()
     {
         if (InputProvider == null)
         {
             InputProvider = GetComponent<CharacterInputProvider>();
+        }
+
+        if (customEventReceiver != null)
+        {
+            customEventReceiver.OnFootstepEvent += OnFootstep;
+            customEventReceiver.OnLandEvent += OnLand;
+        }
+    }
+
+    protected virtual void OnDestroy()
+    {
+        if (customEventReceiver != null)
+        {
+            customEventReceiver.OnFootstepEvent -= OnFootstep;
+            customEventReceiver.OnLandEvent -= OnLand;
         }
     }
 
