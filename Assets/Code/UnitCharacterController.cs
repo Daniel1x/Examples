@@ -65,6 +65,11 @@ public class UnitCharacterController : UnitAnimationEventReceiver
     [Header("Inputs")]
     [ReadOnlyProperty] public CharacterInputProvider InputProvider = null;
 
+    [Header("Debug")]
+    [SerializeField, ReadOnlyProperty] public bool CollidedSides = false;
+    [SerializeField, ReadOnlyProperty] public bool CollidedAbove = false;
+    [SerializeField, ReadOnlyProperty] public bool CollidedBelow = false;
+
     protected float speed = 0f;
     protected float animationBlend = 0f;
     protected float targetRotation = 0f;
@@ -83,17 +88,8 @@ public class UnitCharacterController : UnitAnimationEventReceiver
     protected int animIDMotionSpeed = 0;
 
     protected Animator animator = null;
+    protected AttackBehaviour attackBehaviour = null;
     protected CharacterController controller = null;
-
-    public bool ShowLog = false;
-
-    public void Log(string _message)
-    {
-        if (ShowLog)
-        {
-            Debug.Log(_message, this);
-        }
-    }
 
     protected virtual void Awake()
     {
@@ -106,6 +102,7 @@ public class UnitCharacterController : UnitAnimationEventReceiver
         {
             customEventReceiver.OnFootstepEvent += OnFootstep;
             customEventReceiver.OnLandEvent += OnLand;
+            customEventReceiver.OnAttackPerformedEvent += OnAttackPerformed;
         }
     }
 
@@ -115,6 +112,7 @@ public class UnitCharacterController : UnitAnimationEventReceiver
         {
             customEventReceiver.OnFootstepEvent -= OnFootstep;
             customEventReceiver.OnLandEvent -= OnLand;
+            customEventReceiver.OnAttackPerformedEvent -= OnAttackPerformed;
         }
     }
 
@@ -126,6 +124,11 @@ public class UnitCharacterController : UnitAnimationEventReceiver
         {
             animator = gameObject.GetComponentInChildren<Animator>(true);
             hasAnimator = animator != null;
+        }
+
+        if (animator != null)
+        {
+            attackBehaviour = animator.GetBehaviour<AttackBehaviour>();
         }
 
         controller = GetComponent<CharacterController>();
@@ -207,9 +210,21 @@ public class UnitCharacterController : UnitAnimationEventReceiver
         }
 
         Vector3 _targetDirection = (Quaternion.Euler(0.0f, targetRotation, 0.0f) * Vector3.forward).normalized;
-        _targetDirection = adjustTargetMovementDirection(_targetDirection);
 
-        controller.Move((_targetDirection * (speed * _dt)) + new Vector3(0f, verticalVelocity * _dt, 0f));
+        if (attackBehaviour != null && attackBehaviour.IsInProgress)
+        {
+            _targetDirection = Vector3.zero;
+        }
+        else
+        {
+            _targetDirection = adjustTargetMovementDirection(_targetDirection);
+        }
+
+        CollisionFlags _collision = controller.Move((_targetDirection * (speed * _dt)) + new Vector3(0f, verticalVelocity * _dt, 0f));
+
+        CollidedSides = (_collision & CollisionFlags.Sides) != 0;
+        CollidedAbove = (_collision & CollisionFlags.Above) != 0;
+        CollidedBelow = (_collision & CollisionFlags.Below) != 0;
 
         if (hasAnimator)
         {
@@ -290,6 +305,16 @@ public class UnitCharacterController : UnitAnimationEventReceiver
         }
     }
 
+    [ActionButton]
+    public void Attack()
+    {
+        if (attackBehaviour != null && attackBehaviour.IsInProgress == false)
+        {
+            animator.SetTrigger("Attack");
+        }
+    }
+
     public override void OnFootstep(AnimationEvent _animationEvent) => characterAudioSettings.OnFootstep(_animationEvent, transform, controller);
     public override void OnLand(AnimationEvent _animationEvent) => characterAudioSettings.OnLand(_animationEvent, transform, controller);
+    public override void OnAttackPerformed(AnimationEvent _animationEvent) { }
 }
