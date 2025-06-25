@@ -28,9 +28,19 @@ public class ActionButtonEditor : Editor
                 continue;
             }
 
-            if (GUILayout.Button(_method.Name))
+            foreach (var _attribute in attributes)
             {
-                _method.Invoke(_targetObject, null);
+                if (_attribute is not ActionButtonAttribute _action)
+                {
+                    continue;
+                }
+
+                string _buttonName = _action.NameOverride.IsNullEmptyOrWhitespace() ? _method.Name : _action.NameOverride;
+
+                if (GUILayout.Button(_buttonName))
+                {
+                    _method.Invoke(_targetObject, null);
+                }
             }
         }
     }
