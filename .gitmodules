@@ -1,0 +1,3 @@
+[submodule "Assets/Code/Core"]
+	path = Assets/Code/Core
+	url = git@github.com:Daniel1x/Core.git
