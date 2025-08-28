@@ -3,6 +3,8 @@ Repository with code examples.
 
 In this repository you will find examples of code, ui elements, multiplayer input management, custom shaders and shader effects.
 
+This repository also includes an internal submodule with [Core](https://github.com/Daniel1x/Core) scripts and tools that I created and use across multiple projects.
+
 Example class:
 
 [ExampleBehaviourClass](https://github.com/Daniel1x/Examples/blob/main/Assets/Code/ExampleBehaviourClass.cs)
