@@ -6,7 +6,9 @@ public class PlayerController : MonoBehaviour
 {
     public static event UnityAction OnPlayerCountUpdated = null;
 
-    private static List<PlayerController> activePlayerControllers = new List<PlayerController>();
+    public static List<PlayerController> GetActivePlayers() => new List<PlayerController>(activePlayerControllers);
+
+    private static readonly List<PlayerController> activePlayerControllers = new List<PlayerController>();
 
     [SerializeField] private ThirdPersonController thirdPersonController = null;
 

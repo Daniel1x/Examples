@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class PlayerIndicator : MonoBehaviour
+public class PlayerIndicator : MonoBehaviour, IPlayerColorProvider
 {
     [Header("References")]
     [SerializeField] private TMP_Text textField = null;

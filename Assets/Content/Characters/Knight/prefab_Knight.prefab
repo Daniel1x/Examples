@@ -73,6 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d098c3d43b1da77449ab95219bc90fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetUpdateInterval: 0.5
   target: {fileID: 0}
   sprintIntervals:
     serializedVersion: 2
@@ -136,6 +137,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   sprintThreshold: 0.5
   minDistance: 1
+  attackRange: 2
+  attackCooldown: 2
 --- !u!114 &4413072807755698521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,6 +191,11 @@ MonoBehaviour:
   gravity: -15
   jumpTimeout: 0.5
   fallTimeout: 0.15
+  attackRange: 0.25
+  attackLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  damage: 10
   grounded: 1
   groundedOffset: -0.14
   groundedRadius: 0.28
@@ -195,6 +203,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   InputProvider: {fileID: 0}
+  CollidedSides: 0
+  CollidedAbove: 0
+  CollidedBelow: 0
 --- !u!1001 &2480116633397359902
 PrefabInstance:
   m_ObjectHideFlags: 0

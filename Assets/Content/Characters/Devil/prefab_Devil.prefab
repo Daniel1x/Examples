@@ -137,6 +137,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   sprintThreshold: 0.5
   minDistance: 1
+  attackRange: 2
+  attackCooldown: 2
 --- !u!114 &4413072807755698521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,6 +191,11 @@ MonoBehaviour:
   gravity: -15
   jumpTimeout: 0.5
   fallTimeout: 0.15
+  attackRange: 0.25
+  attackLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  damage: 10
   grounded: 1
   groundedOffset: -0.14
   groundedRadius: 0.28

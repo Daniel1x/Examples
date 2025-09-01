@@ -8,6 +8,12 @@ public class EnemyUnit : CharacterInputProvider
     [SerializeField] private float sprintThreshold = 0.5f;
     [SerializeField, Min(0.1f)] private float minDistance = 1f;
 
+    [Header("Attack")]
+    [SerializeField, Min(0f)] private float attackRange = 2f;
+    [SerializeField, Min(0f)] private float attackCooldown = 2f;
+
+    private UnitCharacterController controller = null;
+
     private Vector2 move = default;
     private bool jump = false;
     private bool sprint = false;
@@ -15,6 +21,7 @@ public class EnemyUnit : CharacterInputProvider
 
     private float lifeTime = 0f;
     private float lastTargetUpdate = 0f;
+    private float attackCooldownTimer = 0f;
 
     public override Vector2 Move => move;
     public override bool Jump { get => jump; set => jump = value; }
@@ -23,6 +30,7 @@ public class EnemyUnit : CharacterInputProvider
 
     private void Awake()
     {
+        controller = GetComponent<UnitCharacterController>();
         lifeTime = UnityEngine.Random.Range(0f, 1000f);
     }
 
@@ -41,6 +49,8 @@ public class EnemyUnit : CharacterInputProvider
             move = _distance < minDistance
                 ? Vector2.zero
                 : new Vector2(_direction.x, _direction.z) / _distance;
+
+            tryTriggerAttack(_distance);
         }
 
         lifeTime += Time.deltaTime;
@@ -88,6 +98,25 @@ public class EnemyUnit : CharacterInputProvider
         target = _closestPlayer != null
             ? _closestPlayer.transform
             : null;
+    }
+
+    private void tryTriggerAttack(float _distanceToTarget)
+    {
+        if (attackCooldownTimer > 0f)
+        {
+            attackCooldownTimer -= Time.deltaTime;
+            return;
+        }
+
+        if (_distanceToTarget <= attackRange)
+        {
+            if (controller != null)
+            {
+                controller.Attack();
+            }
+
+            attackCooldownTimer = attackCooldown;
+        }
     }
 
     [ActionButton] public void StartSprint() => sprintOverride = true;

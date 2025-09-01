@@ -5,6 +5,49 @@ public class ThirdPersonController : UnitCharacterController
 {
     private GameObject playerCamera = null;
     private CameraTargetProvider cameraTargetProvider = null;
+    private UnitStats playerCharacterStats = null;
+
+    private bool sprintBlocked = false;
+
+    protected override bool isSprinting
+    {
+        get
+        {
+            if (!base.isSprinting)
+            {
+                return false; // No inputs
+            }
+
+            if (playerCharacterStats == null)
+            {
+                return true; // No need to check stats
+            }
+
+            if (sprintBlocked)
+            {
+                if (playerCharacterStats.IsStaminaAboveThreshold)
+                {
+                    sprintBlocked = false;
+                }
+                else
+                {
+                    return false; // Wait for stamina to regenerate
+                }
+            }
+
+            float _requiredStamina = playerCharacterStats.StaminaRunCost * Time.deltaTime;
+
+            if (playerCharacterStats.CanUseStamina(_requiredStamina))
+            {
+                return true;
+            }
+            else
+            {
+                sprintBlocked = true;
+                return false; // Wait for stamina to regenerate
+            }
+        }
+    }
 
     protected override void Awake()
     {
@@ -18,6 +61,11 @@ public class ThirdPersonController : UnitCharacterController
         if (cameraTargetProvider == null)
         {
             cameraTargetProvider = gameObject.GetComponent<CameraTargetProvider>();
+        }
+
+        if (playerCharacterStats == null)
+        {
+            playerCharacterStats = gameObject.GetComponent<UnitStats>();
         }
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -59,6 +60,8 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
             AssignedGamepad = _inputDevice;
         }
     }
+
+    public static event UnityAction OnAllPlayersReady = null;
 
     [Header("Menu Options")]
     [SerializeField] private CustomButton autoAssignButton = null;
@@ -453,12 +456,23 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
                     _controller.InputProvider = _inputs.PlayerBasicInputs;
                 }
 
+                IPlayerColorProvider _colorProvider = null;
+
                 if (_newCharacter.GetComponentInChildren<PlayerIndicator>(true) is PlayerIndicator _indicator)
                 {
                     _indicator.Player = _player;
+                    _colorProvider = _indicator;
+                }
+
+                if (_newCharacter.TryGetComponent(out UnitStats _unitsStats))
+                {
+                    _unitsStats.Player = _player;
+                    _unitsStats.ColorProvider = _colorProvider;
                 }
             }
         }
+
+        OnAllPlayersReady?.Invoke();
     }
 
     private bool allPlayersHasAssignedDevices()

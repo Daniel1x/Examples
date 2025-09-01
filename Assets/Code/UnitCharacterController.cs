@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(CharacterController))]
@@ -56,6 +58,11 @@ public class UnitCharacterController : UnitAnimationEventReceiver
     [SerializeField] protected float jumpTimeout = 0.50f;
     [SerializeField] protected float fallTimeout = 0.15f;
 
+    [Header("Attack")]
+    [SerializeField] protected float attackRange = 0.25f;
+    [SerializeField] protected LayerMask attackLayerMask = default;
+    [SerializeField, Min(0f)] protected float damage = 10f;
+
     [Header("Player Grounded")]
     [SerializeField] protected bool grounded = true;
     [SerializeField] protected float groundedOffset = -0.14f;
@@ -69,6 +76,8 @@ public class UnitCharacterController : UnitAnimationEventReceiver
     [SerializeField, ReadOnlyProperty] public bool CollidedSides = false;
     [SerializeField, ReadOnlyProperty] public bool CollidedAbove = false;
     [SerializeField, ReadOnlyProperty] public bool CollidedBelow = false;
+
+    protected readonly Dictionary<string, Transform> characterSocketsForAttacks = new();
 
     protected float speed = 0f;
     protected float animationBlend = 0f;
@@ -90,6 +99,8 @@ public class UnitCharacterController : UnitAnimationEventReceiver
     protected Animator animator = null;
     protected AttackBehaviour attackBehaviour = null;
     protected CharacterController controller = null;
+
+    protected virtual bool isSprinting => InputProvider.Sprint;
 
     protected virtual void Awake()
     {
@@ -114,6 +125,8 @@ public class UnitCharacterController : UnitAnimationEventReceiver
             customEventReceiver.OnLandEvent -= OnLand;
             customEventReceiver.OnAttackPerformedEvent -= OnAttackPerformed;
         }
+
+        characterSocketsForAttacks.Clear();
     }
 
     protected virtual void Start()
@@ -170,7 +183,7 @@ public class UnitCharacterController : UnitAnimationEventReceiver
 
     protected void move()
     {
-        float _targetSpeed = InputProvider.Sprint ? sprintSpeed : moveSpeed;
+        float _targetSpeed = isSprinting ? sprintSpeed : moveSpeed;
         float _dt = Time.deltaTime;
 
         if (InputProvider.Move == Vector2.zero)
@@ -316,5 +329,66 @@ public class UnitCharacterController : UnitAnimationEventReceiver
 
     public override void OnFootstep(AnimationEvent _animationEvent) => characterAudioSettings.OnFootstep(_animationEvent, transform, controller);
     public override void OnLand(AnimationEvent _animationEvent) => characterAudioSettings.OnLand(_animationEvent, transform, controller);
-    public override void OnAttackPerformed(AnimationEvent _animationEvent) { }
+    public override void OnAttackPerformed(AnimationEvent _animationEvent) => handleAttackEvent(_animationEvent);
+
+    protected void handleAttackEvent(AnimationEvent _animationEvent)
+    {
+        if (_animationEvent == null || _animationEvent.stringParameter.IsNullEmptyOrWhitespace())
+        {
+            return; //No event keys defined
+        }
+
+        string[] _eventKeys = _animationEvent.stringParameter.Split(' ');
+
+        if (_eventKeys == null || _eventKeys.Length == 0)
+        {
+            return; //No event keys defined
+        }
+
+        foreach (string _eventKey in _eventKeys)
+        {
+            if (_eventKey.IsNullEmptyOrWhitespace())
+            {
+                continue;
+            }
+
+            if (characterSocketsForAttacks.TryGetValue(_eventKey, out Transform _socket) == false)
+            {
+                _socket = transform.FindChildTransformWithName(_eventKey);
+                characterSocketsForAttacks.Add(_eventKey, _socket);
+            }
+
+            if (_socket == null)
+            {
+                continue; //Socket not found
+            }
+
+            if (checkHit(_socket.position, attackRange))
+            {
+                break; //Only register one hit per attack event
+            }
+        }
+    }
+
+    protected bool checkHit(Vector3 _position, float _range)
+    {
+        Collider[] _hitColliders = Physics.OverlapSphere(_position, _range, attackLayerMask, QueryTriggerInteraction.Ignore);
+
+        if (_hitColliders == null || _hitColliders.Length == 0)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < _hitColliders.Length; i++)
+        {
+            IUnitStatsProvider _statsProvider = _hitColliders[i].GetComponentInParent<IUnitStatsProvider>();
+
+            if (_statsProvider != null && _statsProvider.CanReceiveDamage(damage))
+            {
+                return true; //Only register one hit per attack event
+            }
+        }
+
+        return false;
+    }
 }

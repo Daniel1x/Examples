@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7608415010627364069}
   - component: {fileID: 1960014518116128011}
   - component: {fileID: -841968688626251706}
+  - component: {fileID: 8379241901581017827}
   m_Layer: 6
   m_Name: prefab_PlayerCharacter
   m_TagString: Player
@@ -118,6 +119,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   InputProvider: {fileID: 0}
+  CollidedSides: 0
+  CollidedAbove: 0
+  CollidedBelow: 0
 --- !u!114 &1960014518116128011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,6 +154,31 @@ MonoBehaviour:
   priority: 0
   weight: 1
   radius: 1
+--- !u!114 &8379241901581017827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5226335930749228911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c45f42e886b9064196c854682d0740e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitStats
+  health:
+    Current: 100
+    Max: 100
+  stamina:
+    Current: 20
+    Max: 20
+  mana:
+    Current: 50
+    Max: 50
+  hpRegenSpeed: 1
+  staminaRegenSpeed: 1
+  staminaRunCost: 2
+  manaRegenSpeed: 1
 --- !u!1001 &6827137450673252748
 PrefabInstance:
   m_ObjectHideFlags: 0
