@@ -15,6 +15,26 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: d3e89becd5aaf224baa108885d73ff31
   m_SerializeEntries:
+  - m_GUID: 0c1d78a2eea4eb94b99adacf78059b94
+    m_Address: Assets/Content/Prefabs/Pickups/prefab_Mana.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3b4f37f87f8339a468c29e292a55cf24
+    m_Address: Assets/Content/Prefabs/VFX/prefab_ManaBurst.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4762544e38036ac4fa3506bbe25d8013
+    m_Address: Assets/Content/Prefabs/VFX/prefab_StaminaBurst.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9cc0cf8e88a473148a995a9c61817daa
+    m_Address: Assets/Content/Prefabs/VFX/prefab_HealBurst.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9fc0d4010bbf28b4594072e72b8655ab
     m_Address: Assets/Scenes/MainScene.unity
     m_ReadOnly: 0
@@ -22,6 +42,26 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a34b585388516fc438afc938298ba1ee
     m_Address: Assets/Scenes/MenuScene.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a9b423842ab6b2246b89add61dada8c2
+    m_Address: Assets/Content/Prefabs/VFX/prefab_BloodHit.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4bb33eb6396f554face9623dcb9f630
+    m_Address: Assets/Content/Prefabs/prefab_BloodBurst.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d53ffd2526a59c647ab1deff4455399e
+    m_Address: Assets/Content/Prefabs/Pickups/prefab_Stamina.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa42f1c1feaf81b45b31a7f587d5b5c6
+    m_Address: Assets/Content/Prefabs/Pickups/prefab_HealthPickup.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

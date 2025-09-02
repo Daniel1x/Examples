@@ -53,11 +53,6 @@ public class ProgressCircleController : MonoBehaviour
         float _segmentFill = 1f / segments;
         int _numberOfFullSegments = Mathf.FloorToInt(currentFill / _segmentFill);
 
-        if (_numberOfFullSegments < 1)
-        {
-            _numberOfFullSegments = 1; //Fill is above 0, so at least one segment should be filled
-        }
-
         image.fillAmount = _numberOfFullSegments * _segmentFill;
         UpdateGradient();
     }

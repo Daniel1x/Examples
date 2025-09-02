@@ -467,7 +467,7 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
                 if (_newCharacter.TryGetComponent(out UnitStats _unitsStats))
                 {
                     _unitsStats.Player = _player;
-                    _unitsStats.ColorProvider = _colorProvider;
+                    _unitsStats.PlayerColor = _colorProvider;
                 }
             }
         }

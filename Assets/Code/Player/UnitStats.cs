@@ -7,6 +7,8 @@ public class UnitStats : MonoBehaviour, IUnitStatsProvider
     public const float STAMINA_UNLOCK_THRESHOLD = 0.25f;
 
     public event Action OnDeath = null;
+    public event Action OnDamaged = null;
+    public event Action OnHealed = null;
     public event Action OnStatsChanged = null;
 
     [SerializeField] private UnitStat health = new UnitStat(100f);
@@ -19,13 +21,14 @@ public class UnitStats : MonoBehaviour, IUnitStatsProvider
     [SerializeField, Min(0f)] private float manaRegenSpeed = 0.2f;
 
     public PlayerInput Player { get; set; } = null;
-    public IPlayerColorProvider ColorProvider { get; set; } = null;
+    public IPlayerColorProvider PlayerColor { get; set; } = null;
 
     public UnitStat Health => health;
     public UnitStat Stamina => stamina;
     public UnitStat Mana => mana;
     public int PlayerIndex => Player != null ? Player.playerIndex : -1;
 
+    public bool IsAlive => health.Current > 0f;
     public bool IsStaminaAboveThreshold => stamina.Percent01 > STAMINA_UNLOCK_THRESHOLD;
     public float StaminaRunCost => staminaRunCost;
 
@@ -35,7 +38,7 @@ public class UnitStats : MonoBehaviour, IUnitStatsProvider
 
     private void Update()
     {
-        if (health.Current <= 0f)
+        if (IsAlive == false)
         {
             return; //Dead
         }
@@ -78,14 +81,86 @@ public class UnitStats : MonoBehaviour, IUnitStatsProvider
         }
     }
 
-    public bool CanUseMana(float _mana, bool _subtract = true)
+    public bool CanReceiveDamage(float _damage, bool _apply = true)
     {
+        if (IsAlive == false || _damage == 0f)
+        {
+            return false; // Dead or no damage
+        }
+
+        if (_damage < 0f)
+        {
+            return CanHeal(-_damage, _apply);
+        }
+
+        if (_apply == false)
+        {
+            return true; // Have any health, so can receive damage
+        }
+
+        // Apply damage
+        health.ChangeCurrent(-_damage);
+        damageReceivedThisFrame += _damage;
+
+        if (health.Current <= 0f)
+        {
+            OnDeath?.Invoke();
+        }
+        else
+        {
+            OnDamaged?.Invoke();
+        }
+
+        return true;
+    }
+
+    public bool CanHeal(float _heal, bool _apply = true)
+    {
+        if (IsAlive == false || _heal == 0f)
+        {
+            return false; // Dead or no heal
+        }
+
+        if (_heal < 0f)
+        {
+            return CanReceiveDamage(-_heal, _apply);
+        }
+
+        if (health.IsMax)
+        {
+            return false; // Already at max health
+        }
+
+        if (_apply == false)
+        {
+            return true; // Can heal
+        }
+
+        // Apply heal
+        health.ChangeCurrent(_heal);
+        damageReceivedThisFrame -= _heal;
+        OnHealed?.Invoke();
+        return true;
+    }
+
+    public bool CanUseMana(float _mana, bool _apply = true)
+    {
+        if (IsAlive == false || _mana == 0f)
+        {
+            return false; // Dead or no mana change
+        }
+
+        if (_mana < 0f)
+        {
+            return CanRestoreMana(-_mana, _apply);
+        }
+
         if (mana.Current >= _mana)
         {
-            if (_subtract)
+            if (_apply)
             {
+                mana.ChangeCurrent(-_mana);
                 manaUsedThisFrame += _mana;
-                mana.Current -= _mana;
             }
 
             return true;
@@ -94,14 +169,52 @@ public class UnitStats : MonoBehaviour, IUnitStatsProvider
         return false;
     }
 
-    public bool CanUseStamina(float _stamina, bool _subtract = true)
+    public bool CanRestoreMana(float _mana, bool _apply = true)
     {
+        if (IsAlive == false || _mana == 0f)
+        {
+            return false; // Dead or no mana change
+        }
+
+        if (_mana < 0f)
+        {
+            return CanUseMana(-_mana, _apply);
+        }
+
+        if (mana.IsMax)
+        {
+            return false; // Already at max mana
+        }
+
+        if (_apply == false)
+        {
+            return true; // Can restore mana
+        }
+
+        // Apply mana restore
+        mana.ChangeCurrent(_mana);
+        manaUsedThisFrame -= _mana;
+        return true;
+    }
+
+    public bool CanUseStamina(float _stamina, bool _apply = true)
+    {
+        if (IsAlive == false || _stamina == 0f)
+        {
+            return false; // Dead or no stamina change
+        }
+
+        if (_stamina < 0f)
+        {
+            return CanRestoreStamina(-_stamina, _apply);
+        }
+
         if (stamina.Current >= _stamina)
         {
-            if (_subtract)
+            if (_apply)
             {
+                stamina.ChangeCurrent(-_stamina);
                 staminaUsedThisFrame += _stamina;
-                stamina.Current -= _stamina;
             }
 
             return true;
@@ -110,24 +223,31 @@ public class UnitStats : MonoBehaviour, IUnitStatsProvider
         return false;
     }
 
-    public bool CanReceiveDamage(float _damage, bool _subtract = true)
+    public bool CanRestoreStamina(float _stamina, bool _apply = true)
     {
-        if (health.Current > 0f)
+        if (IsAlive == false || _stamina == 0f)
         {
-            if (_subtract)
-            {
-                damageReceivedThisFrame += _damage;
-                health.Current -= _damage;
-
-                if (health.Current <= 0f)
-                {
-                    OnDeath?.Invoke();
-                }
-            }
-
-            return true;
+            return false; // Dead or no stamina change
         }
 
-        return false;
+        if (_stamina < 0f)
+        {
+            return CanUseStamina(-_stamina, _apply);
+        }
+
+        if (stamina.IsMax)
+        {
+            return false; // Already at max stamina
+        }
+
+        if (_apply == false)
+        {
+            return true; // Can restore stamina
+        }
+
+        // Apply stamina restore
+        stamina.ChangeCurrent(_stamina);
+        staminaUsedThisFrame -= _stamina;
+        return true;
     }
 }

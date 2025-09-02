@@ -15,6 +15,7 @@ public class PlayerStatsDisplay : MonoBehaviour
         if (statsProvider != null)
         {
             statsProvider.OnStatsChanged -= UpdateStats;
+            statsProvider.OnDeath -= UpdateStats;
         }
     }
 
@@ -23,6 +24,7 @@ public class PlayerStatsDisplay : MonoBehaviour
         if (statsProvider != null)
         {
             statsProvider.OnStatsChanged -= UpdateStats;
+            statsProvider.OnDeath -= UpdateStats;
         }
 
         statsProvider = _statsProvider;
@@ -32,10 +34,11 @@ public class PlayerStatsDisplay : MonoBehaviour
             if (playerID != null)
             {
                 playerID.text = "P" + _statsProvider.PlayerIndex;
-                playerID.color = _statsProvider.ColorProvider.PlayerColor;
+                playerID.color = _statsProvider.PlayerColor.PlayerColor;
             }
 
             statsProvider.OnStatsChanged += UpdateStats;
+            statsProvider.OnDeath += UpdateStats;
         }
 
         UpdateStats();

@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 1960014518116128011}
   - component: {fileID: -841968688626251706}
   - component: {fileID: 8379241901581017827}
+  - component: {fileID: -7788329386770026769}
+  - component: {fileID: -5797474542315966663}
   m_Layer: 6
   m_Name: prefab_PlayerCharacter
   m_TagString: Player
@@ -112,6 +114,11 @@ MonoBehaviour:
   gravity: -15
   jumpTimeout: 0.5
   fallTimeout: 0.15
+  attackRange: 0.25
+  attackLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  damage: 10
   grounded: 1
   groundedOffset: -0.14
   groundedRadius: 0.28
@@ -179,6 +186,59 @@ MonoBehaviour:
   staminaRegenSpeed: 1
   staminaRunCost: 2
   manaRegenSpeed: 1
+--- !u!114 &-7788329386770026769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5226335930749228911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f09f0011a5f533646af128d46bcc2799, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitDeathVFXTrigger
+  deathVFX:
+    Spawn: 1
+    Lifetime: 2
+    Prefab:
+      m_AssetGUID: b4bb33eb6396f554face9623dcb9f630
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
+  damagedVFX:
+    Spawn: 1
+    Lifetime: 2
+    Prefab:
+      m_AssetGUID: a9b423842ab6b2246b89add61dada8c2
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
+  healedVFX:
+    Spawn: 1
+    Lifetime: 2
+    Prefab:
+      m_AssetGUID: 9cc0cf8e88a473148a995a9c61817daa
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
+  spawnPoint: {fileID: 346849016032537505}
+  spawnOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &-5797474542315966663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5226335930749228911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 515e4192b9170d545ae5094cfbd30ca8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PickupHandler
 --- !u!1001 &6827137450673252748
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -583,6 +643,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4685403399074341549}
   m_SourcePrefab: {fileID: 100100000, guid: 272c02af3714ccb4bbeb69dab2432348, type: 3}
+--- !u!4 &346849016032537505 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -2707054796494011859, guid: 272c02af3714ccb4bbeb69dab2432348, type: 3}
+  m_PrefabInstance: {fileID: 6827137450673252748}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5944668525336990941 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 272c02af3714ccb4bbeb69dab2432348, type: 3}
