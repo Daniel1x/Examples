@@ -11,6 +11,7 @@ public class EnemyUnit : CharacterInputProvider
     [Header("Attack")]
     [SerializeField, Min(0f)] private float attackRange = 2f;
     [SerializeField, Min(0f)] private float attackCooldown = 2f;
+    [SerializeField] private ActionBehaviour.ActionType[] availableAttacks = new ActionBehaviour.ActionType[0];
 
     private UnitCharacterController controller = null;
 
@@ -108,15 +109,22 @@ public class EnemyUnit : CharacterInputProvider
             return;
         }
 
-        if (_distanceToTarget <= attackRange)
+        if (_distanceToTarget > attackRange)
         {
-            if (controller != null)
-            {
-                controller.Attack();
-            }
-
-            attackCooldownTimer = attackCooldown;
+            return;
         }
+
+        if (controller == null || controller.IsAnyActionBehaviourInProgress(out _))
+        {
+            return;
+        }
+
+        ActionBehaviour.ActionType _action = availableAttacks != null && availableAttacks.Length > 0
+            ? availableAttacks.GetRandom()
+            : ActionBehaviour.ActionType.BothHandsAttack;
+
+        controller.Attack(_action);
+        attackCooldownTimer = attackCooldown;
     }
 
     [ActionButton] public void StartSprint() => sprintOverride = true;

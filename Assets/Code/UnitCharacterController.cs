@@ -9,6 +9,8 @@ public class UnitCharacterController : UnitAnimationEventReceiver
     [System.Serializable]
     public class CharacterAudioSettings
     {
+        private static Transform parent = null;
+
         public AudioClip LandingAudioClip = null;
         public AudioClip[] FootstepAudioClips = new AudioClip[] { };
         [Range(0, 1)] public float FootstepAudioVolume = 0.5f;
@@ -36,7 +38,30 @@ public class UnitCharacterController : UnitAnimationEventReceiver
                 return;
             }
 
-            AudioSource.PlayClipAtPoint(_clip, _transform.TransformPoint(_controller.center), FootstepAudioVolume);
+            PlayClipAtPoint(_clip, _transform.TransformPoint(_controller.center), FootstepAudioVolume);
+        }
+
+        public static void PlayClipAtPoint(AudioClip _clip, Vector3 _position, float _volume = 1f)
+        {
+            if (parent == null)
+            {
+                parent = new GameObject("One shot audio parent").transform;
+                parent.ResetTransformValues();
+            }
+
+            GameObject _gameObject = new GameObject("One shot audio");
+
+            _gameObject.transform.SetParent(parent);
+            _gameObject.transform.position = _position;
+
+            AudioSource _audioSource = _gameObject.AddComponent<AudioSource>();
+
+            _audioSource.clip = _clip;
+            _audioSource.spatialBlend = 1f;
+            _audioSource.volume = _volume;
+            _audioSource.Play();
+
+            UnityEngine.Object.Destroy(_gameObject, _clip.length * ((Time.timeScale < 0.01f) ? 0.01f : Time.timeScale));
         }
     }
 
@@ -97,7 +122,7 @@ public class UnitCharacterController : UnitAnimationEventReceiver
     protected int animIDMotionSpeed = 0;
 
     protected Animator animator = null;
-    protected AttackBehaviour attackBehaviour = null;
+    protected ActionBehaviour[] actionBehaviours = null;
     protected CharacterController controller = null;
 
     protected virtual bool isSprinting => InputProvider.Sprint;
@@ -141,7 +166,7 @@ public class UnitCharacterController : UnitAnimationEventReceiver
 
         if (animator != null)
         {
-            attackBehaviour = animator.GetBehaviour<AttackBehaviour>();
+            actionBehaviours = animator.GetBehaviours<ActionBehaviour>();
         }
 
         controller = GetComponent<CharacterController>();
@@ -183,10 +208,11 @@ public class UnitCharacterController : UnitAnimationEventReceiver
 
     protected void move()
     {
+        bool _isAnyActionInProgress = IsAnyActionBehaviourInProgress(out bool _allowMovement);
         float _targetSpeed = isSprinting ? sprintSpeed : moveSpeed;
         float _dt = Time.deltaTime;
 
-        if (InputProvider.Move == Vector2.zero)
+        if (InputProvider.Move == Vector2.zero || !_allowMovement)
         {
             _targetSpeed = 0f;
         }
@@ -222,14 +248,15 @@ public class UnitCharacterController : UnitAnimationEventReceiver
             transform.rotation = Quaternion.Euler(0.0f, _rotationY, 0.0f);
         }
 
-        Vector3 _targetDirection = (Quaternion.Euler(0.0f, targetRotation, 0.0f) * Vector3.forward).normalized;
+        Vector3 _targetDirection;
 
-        if (attackBehaviour != null && attackBehaviour.IsInProgress)
+        if (_isAnyActionInProgress && _allowMovement == false)
         {
             _targetDirection = Vector3.zero;
         }
         else
         {
+            _targetDirection = (Quaternion.Euler(0.0f, targetRotation, 0.0f) * Vector3.forward).normalized;
             _targetDirection = adjustTargetMovementDirection(_targetDirection);
         }
 
@@ -244,6 +271,27 @@ public class UnitCharacterController : UnitAnimationEventReceiver
             animator.SetFloat(animIDSpeed, animationBlend);
             animator.SetFloat(animIDMotionSpeed, _inputMagnitude);
         }
+    }
+
+    public bool IsAnyActionBehaviourInProgress(out bool _allowMovement)
+    {
+        if (actionBehaviours == null || actionBehaviours.Length == 0)
+        {
+            _allowMovement = true;
+            return false;
+        }
+
+        for (int i = 0; i < actionBehaviours.Length; i++)
+        {
+            if (actionBehaviours[i].IsInProgress)
+            {
+                _allowMovement = actionBehaviours[i].IsMovementAllowed;
+                return true;
+            }
+        }
+
+        _allowMovement = true;
+        return false;
     }
 
     protected virtual float getTargetRotation(Vector2 _inputs)
@@ -318,11 +366,11 @@ public class UnitCharacterController : UnitAnimationEventReceiver
         }
     }
 
-    [ActionButton]
-    public void Attack()
+    public void Attack(ActionBehaviour.ActionType _type)
     {
-        if (attackBehaviour != null && attackBehaviour.IsInProgress == false)
+        if (IsAnyActionBehaviourInProgress(out _) == false)
         {
+            animator.SetFloat("AttackType", (float)_type);
             animator.SetTrigger("Attack");
         }
     }

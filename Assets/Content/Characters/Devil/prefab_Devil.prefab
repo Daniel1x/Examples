@@ -139,6 +139,7 @@ MonoBehaviour:
   minDistance: 1
   attackRange: 2
   attackCooldown: 2
+  availableAttacks: 000000000100000002000000030000000400000005000000
 --- !u!114 &4413072807755698521
 MonoBehaviour:
   m_ObjectHideFlags: 0
