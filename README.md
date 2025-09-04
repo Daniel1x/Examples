@@ -9,6 +9,14 @@ Example class:
 
 [ExampleBehaviourClass](https://github.com/Daniel1x/Examples/blob/main/Assets/Code/ExampleBehaviourClass.cs)
 
+Tools and editor extensions ([Core](https://github.com/Daniel1x/Core)):
+
+[TextureSaver](https://github.com/Daniel1x/Core/blob/main/Tools/TextureSaver/TextureSaver.cs)
+[TextureSaverUtilities](https://github.com/Daniel1x/Core/blob/main/Tools/TextureSaver/Editor/TextureSaverUtilities.cs)
+[TextureSaverEditor](https://github.com/Daniel1x/Core/blob/main/Tools/TextureSaver/Editor/TextureSaverEditor.cs)
+
+[AnimationExtensions](https://github.com/Daniel1x/Core/blob/main/Extensions/AnimationExtensions.cs)
+
 Working class example:
 
 [PlayerInputManagerProvider](https://github.com/Daniel1x/Examples/blob/main/Assets/Code/Player/PlayerInputManagerProvider.cs)
