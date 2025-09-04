@@ -16,8 +16,11 @@ Tools and editor extensions ([Core](https://github.com/Daniel1x/Core)):
 [TextureSaverEditor](https://github.com/Daniel1x/Core/blob/main/Tools/TextureSaver/Editor/TextureSaverEditor.cs)
 
 [AnimationExtensions](https://github.com/Daniel1x/Core/blob/main/Extensions/AnimationExtensions.cs)
+[RenderTextureExtensions](https://github.com/Daniel1x/Core/blob/main/Extensions/RenderTextureExtensions.cs)
 
 Working class example:
+
+[PlayerBasicInputs](https://github.com/Daniel1x/Examples/blob/main/Assets/Code/PlayerBasicInputs.cs)
 
 [PlayerInputManagerProvider](https://github.com/Daniel1x/Examples/blob/main/Assets/Code/Player/PlayerInputManagerProvider.cs)
 
