@@ -30,6 +30,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 777144ae53b8c034ba0fa9169cbac49a
+    m_Address: Assets/Content/VFX
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9cc0cf8e88a473148a995a9c61817daa
     m_Address: Assets/Content/Prefabs/VFX/prefab_HealBurst.prefab
     m_ReadOnly: 0

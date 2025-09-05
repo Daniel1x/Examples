@@ -1,0 +1,1269 @@
+fileFormatVersion: 2
+guid: aa0907451008d784b8ef5b1c0900465d
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: t_PlasmaParticles_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1639
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fcb6b06a90249ed47be9b3bc358aa344
+      internalID: -327367326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_1
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 1639
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eda7ddf38b5688e4f98f91ef0599e5aa
+      internalID: -613292299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_2
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 1639
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d4ecec4ca7e6834fb2b81801a27cfdf
+      internalID: 1791532060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_3
+      rect:
+        serializedVersion: 2
+        x: 612
+        y: 1639
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c1d09d1044ba7f42a11acb0cff89166
+      internalID: 1704751205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_4
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 1639
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81f52d13ae1cc40428e703b337166c3c
+      internalID: -431103109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_5
+      rect:
+        serializedVersion: 2
+        x: 1020
+        y: 1639
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 367a5e1ffa3e6fe47b5c38817f1f89aa
+      internalID: 815281604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_6
+      rect:
+        serializedVersion: 2
+        x: 1224
+        y: 1639
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 030729ad7f5948a4eabb6431fc2c3fed
+      internalID: 1232026686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_7
+      rect:
+        serializedVersion: 2
+        x: 1428
+        y: 1639
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8cc539699afaba844a6fbf6e35ac4361
+      internalID: -1584174266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_8
+      rect:
+        serializedVersion: 2
+        x: 1632
+        y: 1639
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 10af0b28cf85c6a48b49dc210493df93
+      internalID: 1489168641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_9
+      rect:
+        serializedVersion: 2
+        x: 1836
+        y: 1639
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba338a97b0511ac4a9afcbc6116de8b3
+      internalID: 1589589223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1230
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27368a430fc148649a8c249589417337
+      internalID: -1607050873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_11
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 1230
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df0062f6d1b4c0442a6c45d258d2826b
+      internalID: 330843227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_12
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 1230
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f30e14a50e66aaa4a89b328abc0f05ba
+      internalID: -662452142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_13
+      rect:
+        serializedVersion: 2
+        x: 612
+        y: 1230
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78d712f615a8c3b4a85f0df6751cb7e7
+      internalID: 2123915071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_14
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 1230
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29b07942f7e504b4dab5882927821fc7
+      internalID: -1804108418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_15
+      rect:
+        serializedVersion: 2
+        x: 1020
+        y: 1230
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68a45ebbdebdbd145b3df3a044688bd9
+      internalID: -1791057906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_16
+      rect:
+        serializedVersion: 2
+        x: 1224
+        y: 1230
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c523cfcd7cdf28044ba1a5684abe216c
+      internalID: 103830203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_17
+      rect:
+        serializedVersion: 2
+        x: 1428
+        y: 1230
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b774722b2b796e4bb7f85434360d707
+      internalID: -1250733803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_18
+      rect:
+        serializedVersion: 2
+        x: 1632
+        y: 1230
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76d06c6df48904f4eb4a184fdc50ac02
+      internalID: 1057795551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_19
+      rect:
+        serializedVersion: 2
+        x: 1836
+        y: 1230
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8f7b30874042914a93d37a7efecd6c8
+      internalID: -350859788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 821
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba68302277c1cb94cbdfa55ff015f0f7
+      internalID: 2132246779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_21
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 821
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 175d3aa1e0c048a4fae84a8891417eee
+      internalID: -951670207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_22
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 821
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d73463dac309de449d6458950dab0e2
+      internalID: 911299971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_23
+      rect:
+        serializedVersion: 2
+        x: 612
+        y: 821
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f7a05e1af5360f44eac773724b13e5d6
+      internalID: -733087906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_24
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 821
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea45b8e89208f6f45bb0289db55b1e7e
+      internalID: -1073197227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_25
+      rect:
+        serializedVersion: 2
+        x: 1020
+        y: 821
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2960feac17346d469ecda334fffca16
+      internalID: -1671282823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_26
+      rect:
+        serializedVersion: 2
+        x: 1224
+        y: 821
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1eb88f863d651774ebc01bbc3fc002b1
+      internalID: -948088757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_27
+      rect:
+        serializedVersion: 2
+        x: 1428
+        y: 821
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6947938b20019d41b26ccd47ceeb4a5
+      internalID: 1876737651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_28
+      rect:
+        serializedVersion: 2
+        x: 1632
+        y: 821
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e15f4e7481533c478d3a27d470b326c
+      internalID: -1352898394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_29
+      rect:
+        serializedVersion: 2
+        x: 1836
+        y: 821
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28bb97c6563354c43bc395851bffe0c6
+      internalID: -1540532111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 412
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 338627ce6dee3f7478c9876023717b18
+      internalID: -1163656592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_31
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 412
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0aac841bdf02e0a4281157e193153373
+      internalID: 1058804038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_32
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 412
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3bf72422f468e2948854faf2d6b784fd
+      internalID: 1149207005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_33
+      rect:
+        serializedVersion: 2
+        x: 612
+        y: 412
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9df3cdc38a4f4fc439999f558b2667c8
+      internalID: -307944918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_34
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 412
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9edca26301796fc418b1bf5a8a886e38
+      internalID: 2107398440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_35
+      rect:
+        serializedVersion: 2
+        x: 1020
+        y: 412
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffaab33c7623b8548866ab969efd359f
+      internalID: 1373618933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_36
+      rect:
+        serializedVersion: 2
+        x: 1224
+        y: 412
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 798d80209aba543479e013f33beea09f
+      internalID: 41724570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_37
+      rect:
+        serializedVersion: 2
+        x: 1428
+        y: 412
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ff0fbea28ca8d94fa88b10ac1bfa8e0
+      internalID: 1250478714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_38
+      rect:
+        serializedVersion: 2
+        x: 1632
+        y: 412
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a65c31dd6684a748b638db9116554ae
+      internalID: 1898575270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_39
+      rect:
+        serializedVersion: 2
+        x: 1836
+        y: 412
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 595aee14de84100408c9fbfa2abc04ab
+      internalID: 789286014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85465d567bef9dc498d85488cc4775b8
+      internalID: -729194290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_41
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 3
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a92ada288301a04d9b734f73ebb32a7
+      internalID: -25355871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_42
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 3
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78e110a5f9be3ee45a489fa803172df3
+      internalID: 1212826029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_43
+      rect:
+        serializedVersion: 2
+        x: 612
+        y: 3
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2c07ec1c3de66144975cf6af8001941
+      internalID: -1888890779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_44
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 3
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d955389f04d0214db2f39b25637970c
+      internalID: 397351876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_45
+      rect:
+        serializedVersion: 2
+        x: 1020
+        y: 3
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e17a7e4e1ec8f74baad4890ab4a3fe8
+      internalID: 986953391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_46
+      rect:
+        serializedVersion: 2
+        x: 1224
+        y: 3
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b59b82dec822be745a46cb538e43dd59
+      internalID: 1210293954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_47
+      rect:
+        serializedVersion: 2
+        x: 1428
+        y: 3
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36697cbe869e1ec4599d63419fbecfd5
+      internalID: 604908359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_48
+      rect:
+        serializedVersion: 2
+        x: 1632
+        y: 3
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e53ff3dc9a64ed4290b2a7dced279be
+      internalID: 1607285817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: t_PlasmaParticles_49
+      rect:
+        serializedVersion: 2
+        x: 1836
+        y: 3
+        width: 204
+        height: 409
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d61dcf4977b850642b3718fc7f8f3f0c
+      internalID: -812686541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: d4853325988a7104c84bd69e4cfb0041
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":10.0,"y":5.0},"gridSpriteSize":{"x":204.0,"y":409.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      t_PlasmaParticles_0: -327367326
+      t_PlasmaParticles_1: -613292299
+      t_PlasmaParticles_10: -1607050873
+      t_PlasmaParticles_11: 330843227
+      t_PlasmaParticles_12: -662452142
+      t_PlasmaParticles_13: 2123915071
+      t_PlasmaParticles_14: -1804108418
+      t_PlasmaParticles_15: -1791057906
+      t_PlasmaParticles_16: 103830203
+      t_PlasmaParticles_17: -1250733803
+      t_PlasmaParticles_18: 1057795551
+      t_PlasmaParticles_19: -350859788
+      t_PlasmaParticles_2: 1791532060
+      t_PlasmaParticles_20: 2132246779
+      t_PlasmaParticles_21: -951670207
+      t_PlasmaParticles_22: 911299971
+      t_PlasmaParticles_23: -733087906
+      t_PlasmaParticles_24: -1073197227
+      t_PlasmaParticles_25: -1671282823
+      t_PlasmaParticles_26: -948088757
+      t_PlasmaParticles_27: 1876737651
+      t_PlasmaParticles_28: -1352898394
+      t_PlasmaParticles_29: -1540532111
+      t_PlasmaParticles_3: 1704751205
+      t_PlasmaParticles_30: -1163656592
+      t_PlasmaParticles_31: 1058804038
+      t_PlasmaParticles_32: 1149207005
+      t_PlasmaParticles_33: -307944918
+      t_PlasmaParticles_34: 2107398440
+      t_PlasmaParticles_35: 1373618933
+      t_PlasmaParticles_36: 41724570
+      t_PlasmaParticles_37: 1250478714
+      t_PlasmaParticles_38: 1898575270
+      t_PlasmaParticles_39: 789286014
+      t_PlasmaParticles_4: -431103109
+      t_PlasmaParticles_40: -729194290
+      t_PlasmaParticles_41: -25355871
+      t_PlasmaParticles_42: 1212826029
+      t_PlasmaParticles_43: -1888890779
+      t_PlasmaParticles_44: 397351876
+      t_PlasmaParticles_45: 986953391
+      t_PlasmaParticles_46: 1210293954
+      t_PlasmaParticles_47: 604908359
+      t_PlasmaParticles_48: 1607285817
+      t_PlasmaParticles_49: -812686541
+      t_PlasmaParticles_5: 815281604
+      t_PlasmaParticles_6: 1232026686
+      t_PlasmaParticles_7: -1584174266
+      t_PlasmaParticles_8: 1489168641
+      t_PlasmaParticles_9: 1589589223
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

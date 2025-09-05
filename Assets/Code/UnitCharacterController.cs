@@ -433,6 +433,11 @@ public class UnitCharacterController : UnitAnimationEventReceiver
 
             if (_statsProvider != null && _statsProvider.CanReceiveDamage(damage))
             {
+                if (VFXManager.Instance != null)
+                {
+                    VFXManager.Instance.SpawnVFX(VFXManager.VFXType.SmallExplosion, _position);
+                }
+
                 return true; //Only register one hit per attack event
             }
         }
