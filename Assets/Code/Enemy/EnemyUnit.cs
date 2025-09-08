@@ -1,3 +1,4 @@
+using DL.Structs;
 using UnityEngine;
 
 public class EnemyUnit : CharacterInputProvider
@@ -10,6 +11,7 @@ public class EnemyUnit : CharacterInputProvider
 
     [Header("Attack")]
     [SerializeField, Min(0f)] private float attackRange = 2f;
+    [SerializeField, MinMaxSlider(0f, 20f)] private MinMax throwAttackRange = new MinMax(3f, 10f);
     [SerializeField, Min(0f)] private float attackCooldown = 2f;
     [SerializeField] private ActionBehaviour.ActionType[] availableAttacks = new ActionBehaviour.ActionType[0];
 
@@ -109,7 +111,9 @@ public class EnemyUnit : CharacterInputProvider
             return;
         }
 
-        if (_distanceToTarget > attackRange)
+        bool _canThrow = throwAttackRange.FitsInRange(_distanceToTarget);
+
+        if (_distanceToTarget > attackRange && _canThrow == false)
         {
             return;
         }
@@ -119,9 +123,18 @@ public class EnemyUnit : CharacterInputProvider
             return;
         }
 
-        ActionBehaviour.ActionType _action = availableAttacks != null && availableAttacks.Length > 0
-            ? availableAttacks.GetRandom()
-            : ActionBehaviour.ActionType.BothHandsAttack;
+        ActionBehaviour.ActionType _action;
+
+        if (_canThrow)
+        {
+            _action = ActionBehaviour.ActionType.ThrowAttack;
+        }
+        else
+        {
+            _action = availableAttacks != null && availableAttacks.Length > 0
+                ? availableAttacks.GetRandom()
+                : ActionBehaviour.ActionType.BothHandsAttack;
+        }
 
         controller.Attack(_action);
         attackCooldownTimer = attackCooldown;

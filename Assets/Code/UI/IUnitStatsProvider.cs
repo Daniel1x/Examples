@@ -1,9 +1,9 @@
-public interface IUnitStatsProvider : IDamagable, IPlayerDataProvider, IStaminaUser, IManaUser
+public interface IUnitStatsProvider : IDamageable, IPlayerDataProvider, IStaminaUser, IManaUser
 {
     public event System.Action OnStatsChanged;
 }
 
-public interface IDamagable
+public interface IDamageable
 {
     public event System.Action OnDamaged;
     public event System.Action OnHealed;

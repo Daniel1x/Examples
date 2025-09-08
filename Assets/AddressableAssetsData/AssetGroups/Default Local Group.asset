@@ -60,6 +60,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c4664310fb9ca254592d67838da93d68
+    m_Address: Assets/Content/Prefabs/Projectiles/prefab_Grenade.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d53ffd2526a59c647ab1deff4455399e
     m_Address: Assets/Content/Prefabs/Pickups/prefab_Stamina.prefab
     m_ReadOnly: 0

@@ -127,6 +127,8 @@ public class UnitCharacterController : UnitAnimationEventReceiver
 
     protected virtual bool isSprinting => InputProvider.Sprint;
 
+    public ActionBehaviour.ActionType TriggeredAction { get; private set; }
+
     protected virtual void Awake()
     {
         if (InputProvider == null)
@@ -370,6 +372,13 @@ public class UnitCharacterController : UnitAnimationEventReceiver
     {
         if (IsAnyActionBehaviourInProgress(out _) == false)
         {
+            TriggeredAction = _type;
+
+            if (hasAnimator == false || animator == null)
+            {
+                return;
+            }
+
             animator.SetFloat("AttackType", (float)_type);
             animator.SetTrigger("Attack");
         }
@@ -393,6 +402,32 @@ public class UnitCharacterController : UnitAnimationEventReceiver
             return; //No event keys defined
         }
 
+        const string _throwingKey = "Throw";
+
+        if (_eventKeys[0].Equals(_throwingKey, StringComparison.OrdinalIgnoreCase))
+        {
+            for (int i = 1; i < _eventKeys.Length; i++)
+            {
+                string _eventKey = _eventKeys[i];
+
+                if (_eventKey.IsNullEmptyOrWhitespace())
+                {
+                    continue;
+                }
+
+                Transform _socket = _getSocket(_eventKey);
+
+                if (_socket != null && ProjectilesManager.Instance != null)
+                {
+                    Vector3 _targetPosition = _socket.position + (transform.forward.WithY(0f).normalized * 10f);
+
+                    ProjectilesManager.Instance.SpawnGrenade(_socket.position, _targetPosition);
+                }
+            }
+
+            return; //Throwing attack - no hit detection
+        }
+
         foreach (string _eventKey in _eventKeys)
         {
             if (_eventKey.IsNullEmptyOrWhitespace())
@@ -400,11 +435,7 @@ public class UnitCharacterController : UnitAnimationEventReceiver
                 continue;
             }
 
-            if (characterSocketsForAttacks.TryGetValue(_eventKey, out Transform _socket) == false)
-            {
-                _socket = transform.FindChildTransformWithName(_eventKey);
-                characterSocketsForAttacks.Add(_eventKey, _socket);
-            }
+            Transform _socket = _getSocket(_eventKey);
 
             if (_socket == null)
             {
@@ -415,6 +446,22 @@ public class UnitCharacterController : UnitAnimationEventReceiver
             {
                 break; //Only register one hit per attack event
             }
+        }
+
+        Transform _getSocket(string _socketName)
+        {
+            if (_socketName.IsNullEmptyOrWhitespace())
+            {
+                return null;
+            }
+
+            if (characterSocketsForAttacks.TryGetValue(_socketName, out Transform _socket) == false)
+            {
+                _socket = transform.FindChildTransformWithName(_socketName);
+                characterSocketsForAttacks.Add(_socketName, _socket);
+            }
+
+            return _socket;
         }
     }
 
