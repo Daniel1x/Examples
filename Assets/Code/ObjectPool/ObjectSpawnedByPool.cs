@@ -7,8 +7,6 @@ public class ObjectSpawnedByPool : MonoBehaviour, IPoolable
 
     protected IPoolProvider poolProvider = null;
 
-    public bool CanReturnToPool { get; set; } = true;
-
     protected virtual void Update()
     {
         if (lifetime < 0f)
@@ -33,11 +31,6 @@ public class ObjectSpawnedByPool : MonoBehaviour, IPoolable
 
     public virtual void ReturnToPool()
     {
-        if (CanReturnToPool == false)
-        {
-            return;
-        }
-
         // Restore parent if required
         if (poolProvider != null && poolProvider.ParentTransform != null)
         {

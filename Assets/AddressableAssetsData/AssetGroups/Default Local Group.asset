@@ -15,8 +15,8 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: d3e89becd5aaf224baa108885d73ff31
   m_SerializeEntries:
-  - m_GUID: 0c1d78a2eea4eb94b99adacf78059b94
-    m_Address: Assets/Content/Prefabs/Pickups/prefab_Mana.prefab
+  - m_GUID: 09811c3ab318c2740a2541dfef1af7b7
+    m_Address: Assets/Content/Prefabs/Potions/prefab_StaminaPotion.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -30,8 +30,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7560ca5db02cd9146886e7847476b817
+    m_Address: Assets/Content/Prefabs/Potions/prefab_ManaPotion.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 777144ae53b8c034ba0fa9169cbac49a
     m_Address: Assets/Content/VFX
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8060194a60b94944fb20b4790eca4f8c
+    m_Address: Assets/Content/Prefabs/Potions/prefab_HealthPotion.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -65,13 +75,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d53ffd2526a59c647ab1deff4455399e
-    m_Address: Assets/Content/Prefabs/Pickups/prefab_Stamina.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fa42f1c1feaf81b45b31a7f587d5b5c6
-    m_Address: Assets/Content/Prefabs/Pickups/prefab_HealthPickup.prefab
+  - m_GUID: cd723a2f22f66ef468fe1fa3b65c4073
+    m_Address: Assets/Content/Prefabs/Potions/Templates/prefab_Potion.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

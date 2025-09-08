@@ -45,7 +45,6 @@ public class ObjectPoolBehaviourTemplate<T> : MonoBehaviour, IPoolBehaviour<T>, 
         {
             if (pool[i] != null)
             {
-                pool[i].CanReturnToPool = false;
                 Addressables.ReleaseInstance(pool[i].gameObject);
             }
         }

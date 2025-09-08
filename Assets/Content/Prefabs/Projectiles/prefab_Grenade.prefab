@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2533433183122675637}
   - component: {fileID: 2211075865517873987}
   - component: {fileID: 4045195617687156456}
+  - component: {fileID: 3783789620588034277}
   m_Layer: 9
   m_Name: prefab_Grenade
   m_TagString: Untagged
@@ -28,9 +29,9 @@ Transform:
   m_GameObject: {fileID: 3259795051953923768}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 83.748, y: 1.393, z: 88.241}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8832838215195986282}
   m_Father: {fileID: 0}
@@ -50,7 +51,7 @@ MonoBehaviour:
   flightDuration: 1
   explosionDelay: 3
   explosionRadius: 5
-  xAngleRotation: 0
+  xAngleRotation: 360
   damageableLayers:
     serializedVersion: 2
     m_Bits: 192
@@ -907,6 +908,28 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!64 &3783789620588034277
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3259795051953923768}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3049495435234205125, guid: a62f09bcdd658804d813d5a7d9d06ffd, type: 3}
 --- !u!1001 &9015699525750091393
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -74,11 +74,6 @@ public class Grenade : ObjectSpawnedByPool, IProjectileBehaviour
 
     public override void ReturnToPool()
     {
-        if (CanReturnToPool == false)
-        {
-            return;
-        }
-
         base.ReturnToPool();
         resetProjectileState();
     }
