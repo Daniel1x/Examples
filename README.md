@@ -18,6 +18,12 @@ Tools and editor extensions ([Core](https://github.com/Daniel1x/Core)):
 [AnimationExtensions](https://github.com/Daniel1x/Core/blob/main/Extensions/AnimationExtensions.cs)
 [RenderTextureExtensions](https://github.com/Daniel1x/Core/blob/main/Extensions/RenderTextureExtensions.cs)
 
+Gameplay implementation example and graphics preview:
+
+Characters, weapons, potions, textures, and effects were created by me. The scripts in this repository include the input management system, character controls, equipment management, the pickup system, character stat display, and much more.
+
+<img src="https://github.com/Daniel1x/Examples/blob/main/Assets/Content/Preview/t_Preview9.png" alt="Zdjęcie 9" width="500"/>
+
 Working class example:
 
 [PlayerBasicInputs](https://github.com/Daniel1x/Examples/blob/main/Assets/Code/PlayerBasicInputs.cs)
