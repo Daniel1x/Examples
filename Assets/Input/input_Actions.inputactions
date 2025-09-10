@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "input_Actions",
     "maps": [
         {
@@ -36,6 +37,24 @@
                     "name": "Sprint",
                     "type": "PassThrough",
                     "id": "980e881e-182c-404c-8cbf-3d09fdb48fef",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeRightWeapon",
+                    "type": "Button",
+                    "id": "dc2f3d54-0c58-4d4d-a46f-128ffe2d9972",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeLeftWeapon",
+                    "type": "Button",
+                    "id": "cad36e16-bec9-4ef7-b1b8-bba6042c144c",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -194,6 +213,50 @@
                     "processors": "",
                     "groups": "Gamepad;KeyboardMouse",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b15511b6-1bcf-4684-adb8-8555aa6a5ead",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse;Gamepad",
+                    "action": "ChangeRightWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fcedf7ba-1adb-4d33-af01-c76f3264d1f2",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;KeyboardMouse",
+                    "action": "ChangeRightWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1f6d3d80-b0fb-4df4-80ed-7554ae62c442",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse;Gamepad",
+                    "action": "ChangeLeftWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "53ec1548-1b50-46d2-aec0-922f608da7ba",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;KeyboardMouse",
+                    "action": "ChangeLeftWeapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

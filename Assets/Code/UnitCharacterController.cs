@@ -124,6 +124,7 @@ public class UnitCharacterController : UnitAnimationEventReceiver
     protected Animator animator = null;
     protected ActionBehaviour[] actionBehaviours = null;
     protected CharacterController controller = null;
+    protected UnitEquipmentManager equipmentManager = null;
 
     protected virtual bool isSprinting => InputProvider.Sprint;
 
@@ -172,6 +173,7 @@ public class UnitCharacterController : UnitAnimationEventReceiver
         }
 
         controller = GetComponent<CharacterController>();
+        equipmentManager = GetComponent<UnitEquipmentManager>();
 
         animIDSpeed = Animator.StringToHash("Speed");
         animIDGrounded = Animator.StringToHash("Grounded");
@@ -190,9 +192,30 @@ public class UnitCharacterController : UnitAnimationEventReceiver
             return;
         }
 
+        handleEquipmentChange();
         jumpAndGravity();
         groundedCheck();
         move();
+    }
+
+    private void handleEquipmentChange()
+    {
+        if (equipmentManager == null)
+        {
+            return;
+        }
+
+        if (InputProvider.ChangeRightArmWeapon)
+        {
+            equipmentManager.ChangeRightArmEquipmentToNext();
+            InputProvider.ChangeRightArmWeapon = false;
+        }
+
+        if (InputProvider.ChangeLeftArmWeapon)
+        {
+            equipmentManager.ChangeLeftArmEquipmentToNext();
+            InputProvider.ChangeLeftArmWeapon = false;
+        }
     }
 
     private void groundedCheck()

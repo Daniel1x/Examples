@@ -55,7 +55,7 @@ MonoBehaviour:
   damageableLayers:
     serializedVersion: 2
     m_Bits: 192
-  damageAmount: 50
+  damageAmount: 1
   damageDecreasePerDistance:
     serializedVersion: 2
     m_Curve:

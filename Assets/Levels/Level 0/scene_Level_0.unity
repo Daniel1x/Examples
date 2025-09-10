@@ -246,10 +246,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 673793556}
     m_Modifications:
-    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
-      propertyPath: m_Name
-      value: prefab_StaminaPotion_05
-      objectReference: {fileID: 0}
     - target: {fileID: 1176023597063752217, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 43.604084
@@ -289,6 +285,10 @@ PrefabInstance:
     - target: {fileID: 1176023597063752217, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
+      propertyPath: m_Name
+      value: prefab_StaminaPotion_05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -716,10 +716,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 673793556}
     m_Modifications:
-    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
-      propertyPath: m_Name
-      value: prefab_StaminaPotion_08
-      objectReference: {fileID: 0}
     - target: {fileID: 1176023597063752217, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 21.411356
@@ -760,6 +756,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
+      propertyPath: m_Name
+      value: prefab_StaminaPotion_08
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -778,6 +778,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 673793556}
     m_Modifications:
+    - target: {fileID: 332908807777346892, guid: 7560ca5db02cd9146886e7847476b817, type: 3}
+      propertyPath: m_Name
+      value: prefab_ManaPotion
+      objectReference: {fileID: 0}
     - target: {fileID: 8791962264468614315, guid: 7560ca5db02cd9146886e7847476b817, type: 3}
       propertyPath: m_LocalPosition.x
       value: 44.474735
@@ -817,10 +821,6 @@ PrefabInstance:
     - target: {fileID: 8791962264468614315, guid: 7560ca5db02cd9146886e7847476b817, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 332908807777346892, guid: 7560ca5db02cd9146886e7847476b817, type: 3}
-      propertyPath: m_Name
-      value: prefab_ManaPotion
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1064,10 +1064,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 673793556}
     m_Modifications:
-    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
-      propertyPath: m_Name
-      value: prefab_StaminaPotion_07
-      objectReference: {fileID: 0}
     - target: {fileID: 1176023597063752217, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 62.441544
@@ -1107,6 +1103,10 @@ PrefabInstance:
     - target: {fileID: 1176023597063752217, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
+      propertyPath: m_Name
+      value: prefab_StaminaPotion_07
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1324,10 +1324,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 673793556}
     m_Modifications:
-    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
-      propertyPath: m_Name
-      value: prefab_StaminaPotion_01
-      objectReference: {fileID: 0}
     - target: {fileID: 1176023597063752217, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 70.01059
@@ -1367,6 +1363,10 @@ PrefabInstance:
     - target: {fileID: 1176023597063752217, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
+      propertyPath: m_Name
+      value: prefab_StaminaPotion_01
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1630,6 +1630,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 673793556}
     m_Modifications:
+    - target: {fileID: 332908807777346892, guid: 7560ca5db02cd9146886e7847476b817, type: 3}
+      propertyPath: m_Name
+      value: prefab_ManaPotion_01
+      objectReference: {fileID: 0}
     - target: {fileID: 8791962264468614315, guid: 7560ca5db02cd9146886e7847476b817, type: 3}
       propertyPath: m_LocalPosition.x
       value: 74.136375
@@ -1670,10 +1674,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 332908807777346892, guid: 7560ca5db02cd9146886e7847476b817, type: 3}
-      propertyPath: m_Name
-      value: prefab_ManaPotion_01
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1692,6 +1692,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 673793556}
     m_Modifications:
+    - target: {fileID: 332908807777346892, guid: 7560ca5db02cd9146886e7847476b817, type: 3}
+      propertyPath: m_Name
+      value: prefab_ManaPotion_02
+      objectReference: {fileID: 0}
     - target: {fileID: 8791962264468614315, guid: 7560ca5db02cd9146886e7847476b817, type: 3}
       propertyPath: m_LocalPosition.x
       value: 75.64979
@@ -1731,10 +1735,6 @@ PrefabInstance:
     - target: {fileID: 8791962264468614315, guid: 7560ca5db02cd9146886e7847476b817, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 332908807777346892, guid: 7560ca5db02cd9146886e7847476b817, type: 3}
-      propertyPath: m_Name
-      value: prefab_ManaPotion_02
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2484,27 +2484,27 @@ PrefabInstance:
       objectReference: {fileID: 572895134}
     - target: {fileID: 5607375408694159514, guid: 7dc426c1734c836448ccf7a8e96abb97, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5607375408694159514, guid: 7dc426c1734c836448ccf7a8e96abb97, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5607375408694159514, guid: 7dc426c1734c836448ccf7a8e96abb97, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 900
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5607375408694159514, guid: 7dc426c1734c836448ccf7a8e96abb97, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5607375408694159514, guid: 7dc426c1734c836448ccf7a8e96abb97, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 450
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5607375408694159514, guid: 7dc426c1734c836448ccf7a8e96abb97, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5670697448551516749, guid: 7dc426c1734c836448ccf7a8e96abb97, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2544,27 +2544,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6416540303707858997, guid: 7dc426c1734c836448ccf7a8e96abb97, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6416540303707858997, guid: 7dc426c1734c836448ccf7a8e96abb97, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6416540303707858997, guid: 7dc426c1734c836448ccf7a8e96abb97, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 900
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6416540303707858997, guid: 7dc426c1734c836448ccf7a8e96abb97, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6416540303707858997, guid: 7dc426c1734c836448ccf7a8e96abb97, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 450
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6416540303707858997, guid: 7dc426c1734c836448ccf7a8e96abb97, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6516455882746923746, guid: 7dc426c1734c836448ccf7a8e96abb97, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2812,10 +2812,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 673793556}
     m_Modifications:
-    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
-      propertyPath: m_Name
-      value: prefab_StaminaPotion_03
-      objectReference: {fileID: 0}
     - target: {fileID: 1176023597063752217, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 42.969353
@@ -2855,6 +2851,10 @@ PrefabInstance:
     - target: {fileID: 1176023597063752217, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
+      propertyPath: m_Name
+      value: prefab_StaminaPotion_03
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3996,10 +3996,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 673793556}
     m_Modifications:
-    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
-      propertyPath: m_Name
-      value: prefab_StaminaPotion
-      objectReference: {fileID: 0}
     - target: {fileID: 1176023597063752217, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 64.60982
@@ -4040,6 +4036,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
+      propertyPath: m_Name
+      value: prefab_StaminaPotion
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4058,10 +4058,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 673793556}
     m_Modifications:
-    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
-      propertyPath: m_Name
-      value: prefab_StaminaPotion_02
-      objectReference: {fileID: 0}
     - target: {fileID: 1176023597063752217, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 92.36187
@@ -4101,6 +4097,10 @@ PrefabInstance:
     - target: {fileID: 1176023597063752217, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
+      propertyPath: m_Name
+      value: prefab_StaminaPotion_02
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4237,10 +4237,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 673793556}
     m_Modifications:
-    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
-      propertyPath: m_Name
-      value: prefab_StaminaPotion_06
-      objectReference: {fileID: 0}
     - target: {fileID: 1176023597063752217, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 76.88254
@@ -4280,6 +4276,10 @@ PrefabInstance:
     - target: {fileID: 1176023597063752217, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
+      propertyPath: m_Name
+      value: prefab_StaminaPotion_06
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4361,10 +4361,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 673793556}
     m_Modifications:
-    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
-      propertyPath: m_Name
-      value: prefab_StaminaPotion_04
-      objectReference: {fileID: 0}
     - target: {fileID: 1176023597063752217, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 48.104492
@@ -4404,6 +4400,10 @@ PrefabInstance:
     - target: {fileID: 1176023597063752217, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7984876547080635390, guid: 09811c3ab318c2740a2541dfef1af7b7, type: 3}
+      propertyPath: m_Name
+      value: prefab_StaminaPotion_04
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -75,6 +75,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbe86ae36c378004b9908bab6a549bdd
+    m_Address: Assets/Content/Equipment
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cd723a2f22f66ef468fe1fa3b65c4073
     m_Address: Assets/Content/Prefabs/Potions/Templates/prefab_Potion.prefab
     m_ReadOnly: 0

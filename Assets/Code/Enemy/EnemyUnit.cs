@@ -30,6 +30,8 @@ public class EnemyUnit : CharacterInputProvider
     public override bool Jump { get => jump; set => jump = value; }
     public override bool Sprint => sprint || sprintOverride;
     public override bool AnalogMovement => false;
+    public override bool ChangeRightArmWeapon { get => false; set { } }
+    public override bool ChangeLeftArmWeapon { get => false; set { } }
 
     private void Awake()
     {

@@ -127,6 +127,24 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChangeRightWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""dc2f3d54-0c58-4d4d-a46f-128ffe2d9972"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChangeLeftWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""cad36e16-bec9-4ef7-b1b8-bba6042c144c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -286,6 +304,50 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""b15511b6-1bcf-4684-adb8-8555aa6a5ead"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse;Gamepad"",
+                    ""action"": ""ChangeRightWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fcedf7ba-1adb-4d33-af01-c76f3264d1f2"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad;KeyboardMouse"",
+                    ""action"": ""ChangeRightWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1f6d3d80-b0fb-4df4-80ed-7554ae62c442"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse;Gamepad"",
+                    ""action"": ""ChangeLeftWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""53ec1548-1b50-46d2-aec0-922f608da7ba"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad;KeyboardMouse"",
+                    ""action"": ""ChangeLeftWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""dc65b89f-9bd3-43fb-92af-d0d87ba5faa4"",
                     ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
@@ -355,6 +417,8 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
+        m_Player_ChangeRightWeapon = m_Player.FindAction("ChangeRightWeapon", throwIfNotFound: true);
+        m_Player_ChangeLeftWeapon = m_Player.FindAction("ChangeLeftWeapon", throwIfNotFound: true);
     }
 
     ~@Input_Actions()
@@ -439,6 +503,8 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Sprint;
+    private readonly InputAction m_Player_ChangeRightWeapon;
+    private readonly InputAction m_Player_ChangeLeftWeapon;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -466,6 +532,14 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Sprint".
         /// </summary>
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/ChangeRightWeapon".
+        /// </summary>
+        public InputAction @ChangeRightWeapon => m_Wrapper.m_Player_ChangeRightWeapon;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/ChangeLeftWeapon".
+        /// </summary>
+        public InputAction @ChangeLeftWeapon => m_Wrapper.m_Player_ChangeLeftWeapon;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -504,6 +578,12 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
+            @ChangeRightWeapon.started += instance.OnChangeRightWeapon;
+            @ChangeRightWeapon.performed += instance.OnChangeRightWeapon;
+            @ChangeRightWeapon.canceled += instance.OnChangeRightWeapon;
+            @ChangeLeftWeapon.started += instance.OnChangeLeftWeapon;
+            @ChangeLeftWeapon.performed += instance.OnChangeLeftWeapon;
+            @ChangeLeftWeapon.canceled += instance.OnChangeLeftWeapon;
         }
 
         /// <summary>
@@ -527,6 +607,12 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
+            @ChangeRightWeapon.started -= instance.OnChangeRightWeapon;
+            @ChangeRightWeapon.performed -= instance.OnChangeRightWeapon;
+            @ChangeRightWeapon.canceled -= instance.OnChangeRightWeapon;
+            @ChangeLeftWeapon.started -= instance.OnChangeLeftWeapon;
+            @ChangeLeftWeapon.performed -= instance.OnChangeLeftWeapon;
+            @ChangeLeftWeapon.canceled -= instance.OnChangeLeftWeapon;
         }
 
         /// <summary>
@@ -621,5 +707,19 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSprint(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ChangeRightWeapon" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnChangeRightWeapon(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ChangeLeftWeapon" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnChangeLeftWeapon(InputAction.CallbackContext context);
     }
 }
