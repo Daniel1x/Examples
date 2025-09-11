@@ -451,9 +451,20 @@ public class PlayerControllerSelectionMenu : MonoBehaviour
 
             if (_newCharacter != null && _player.GetComponent<PlayerInputInstance>() is PlayerInputInstance _inputs)
             {
-                if (_newCharacter.GetComponent<ThirdPersonController>() is ThirdPersonController _controller)
+                var _inputDependency = _newCharacter.GetComponents<IRequiresCharacterInputProvider<PlayerBasicInputs>>();
+
+                if (_inputDependency != null)
                 {
-                    _controller.InputProvider = _inputs.PlayerBasicInputs;
+                    for (int i = 0; i < _inputDependency.Length; i++)
+                    {
+                        _inputDependency[i].InputProvider = _inputs.InputProvider;
+                    }
+
+                    Debug.Log($"Spawned character for player {_player.playerIndex} with input provider {_inputs.InputProvider.GetType().Name}.", _newCharacter);
+                }
+                else
+                {
+                    Debug.LogWarning($"The player prefab {playerPrefab.name} does not have any component that implements IRequiresCharacterInputProvider<PlayerBasicInputs>.", playerPrefab);
                 }
 
                 IPlayerColorProvider _colorProvider = null;

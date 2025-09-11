@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
         OnPlayerCountUpdated?.Invoke();
     }
 
-    private void onJump(UnitCharacterController _controller)
+    private void onJump(UnitCharacterController<PlayerBasicInputs> _controller)
     {
         GroundAnimator.ShowCircle(transform.position, playerIndicator != null ? playerIndicator.PlayerColor : Color.white);
     }

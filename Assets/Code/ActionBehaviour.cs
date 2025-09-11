@@ -10,6 +10,7 @@ public class ActionBehaviour : StateMachineBehaviour
         PunchAttack = 3,
         ThrowAttack = 4,
         AreaSpell = 5,
+        RightSlash = 6,
     }
 
     [SerializeField] private bool isMovementAlowed = true;

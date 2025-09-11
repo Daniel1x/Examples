@@ -145,6 +145,24 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FastAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""4ac4c4f3-934d-4376-8c57-3ea5c0099cd4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HeavyAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""1b89b07e-4619-479e-a88d-e2926b600467"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -348,6 +366,50 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""b6032078-b208-4b47-8ed6-eda29d39a1ce"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse;Gamepad"",
+                    ""action"": ""FastAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8fc0d656-4624-4b56-bd65-b84e5955bcab"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad;KeyboardMouse"",
+                    ""action"": ""FastAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9ceaa80e-553f-404d-8894-6386fbd7a080"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse;Gamepad"",
+                    ""action"": ""HeavyAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4a59f7c7-9d0a-4ef2-9436-cfa5fa38536e"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad;KeyboardMouse"",
+                    ""action"": ""HeavyAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""dc65b89f-9bd3-43fb-92af-d0d87ba5faa4"",
                     ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
@@ -419,6 +481,8 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_ChangeRightWeapon = m_Player.FindAction("ChangeRightWeapon", throwIfNotFound: true);
         m_Player_ChangeLeftWeapon = m_Player.FindAction("ChangeLeftWeapon", throwIfNotFound: true);
+        m_Player_FastAttack = m_Player.FindAction("FastAttack", throwIfNotFound: true);
+        m_Player_HeavyAttack = m_Player.FindAction("HeavyAttack", throwIfNotFound: true);
     }
 
     ~@Input_Actions()
@@ -505,6 +569,8 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_ChangeRightWeapon;
     private readonly InputAction m_Player_ChangeLeftWeapon;
+    private readonly InputAction m_Player_FastAttack;
+    private readonly InputAction m_Player_HeavyAttack;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -540,6 +606,14 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/ChangeLeftWeapon".
         /// </summary>
         public InputAction @ChangeLeftWeapon => m_Wrapper.m_Player_ChangeLeftWeapon;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/FastAttack".
+        /// </summary>
+        public InputAction @FastAttack => m_Wrapper.m_Player_FastAttack;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/HeavyAttack".
+        /// </summary>
+        public InputAction @HeavyAttack => m_Wrapper.m_Player_HeavyAttack;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -584,6 +658,12 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
             @ChangeLeftWeapon.started += instance.OnChangeLeftWeapon;
             @ChangeLeftWeapon.performed += instance.OnChangeLeftWeapon;
             @ChangeLeftWeapon.canceled += instance.OnChangeLeftWeapon;
+            @FastAttack.started += instance.OnFastAttack;
+            @FastAttack.performed += instance.OnFastAttack;
+            @FastAttack.canceled += instance.OnFastAttack;
+            @HeavyAttack.started += instance.OnHeavyAttack;
+            @HeavyAttack.performed += instance.OnHeavyAttack;
+            @HeavyAttack.canceled += instance.OnHeavyAttack;
         }
 
         /// <summary>
@@ -613,6 +693,12 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
             @ChangeLeftWeapon.started -= instance.OnChangeLeftWeapon;
             @ChangeLeftWeapon.performed -= instance.OnChangeLeftWeapon;
             @ChangeLeftWeapon.canceled -= instance.OnChangeLeftWeapon;
+            @FastAttack.started -= instance.OnFastAttack;
+            @FastAttack.performed -= instance.OnFastAttack;
+            @FastAttack.canceled -= instance.OnFastAttack;
+            @HeavyAttack.started -= instance.OnHeavyAttack;
+            @HeavyAttack.performed -= instance.OnHeavyAttack;
+            @HeavyAttack.canceled -= instance.OnHeavyAttack;
         }
 
         /// <summary>
@@ -721,5 +807,19 @@ public partial class @Input_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnChangeLeftWeapon(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "FastAttack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnFastAttack(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "HeavyAttack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnHeavyAttack(InputAction.CallbackContext context);
     }
 }

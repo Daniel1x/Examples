@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class ThirdPersonController : UnitCharacterController
+public class ThirdPersonController : UnitCharacterController<PlayerBasicInputs>
 {
     private GameObject playerCamera = null;
     private CameraTargetProvider cameraTargetProvider = null;

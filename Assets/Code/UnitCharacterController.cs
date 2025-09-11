@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+public class UnitCharacterController : UnitCharacterController<CharacterInputProvider>
+{
+    // This class is just a non-generic version of UnitCharacterController<T> for convenience.
+}
+
 [RequireComponent(typeof(CharacterController))]
-public class UnitCharacterController : UnitAnimationEventReceiver
+public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, IRequiresCharacterInputProvider<T> where T : CharacterInputProvider
 {
     [System.Serializable]
     public class CharacterAudioSettings
@@ -65,7 +70,7 @@ public class UnitCharacterController : UnitAnimationEventReceiver
         }
     }
 
-    public event UnityAction<UnitCharacterController> OnJumpPerformed = null;
+    public event UnityAction<UnitCharacterController<T>> OnJumpPerformed = null;
 
     [Header("Player")]
     [SerializeField] protected float moveSpeed = 2.0f;
@@ -93,9 +98,6 @@ public class UnitCharacterController : UnitAnimationEventReceiver
     [SerializeField] protected float groundedOffset = -0.14f;
     [SerializeField] protected float groundedRadius = 0.28f;
     [SerializeField] protected LayerMask groundLayers = default;
-
-    [Header("Inputs")]
-    [ReadOnlyProperty] public CharacterInputProvider InputProvider = null;
 
     [Header("Debug")]
     [SerializeField, ReadOnlyProperty] public bool CollidedSides = false;
@@ -129,12 +131,13 @@ public class UnitCharacterController : UnitAnimationEventReceiver
     protected virtual bool isSprinting => InputProvider.Sprint;
 
     public ActionBehaviour.ActionType TriggeredAction { get; private set; }
+    public T InputProvider { get; set; }
 
     protected virtual void Awake()
     {
         if (InputProvider == null)
         {
-            InputProvider = GetComponent<CharacterInputProvider>();
+            InputProvider = GetComponent<T>();
         }
 
         if (customEventReceiver != null)
