@@ -26,12 +26,12 @@ public class PlayerAttackController : MonoBehaviour, IRequiresCharacterInputProv
 
         if (InputProvider.FastAttack)
         {
-            characterController.Attack(ActionBehaviour.ActionType.RightSlash);
+            characterController.Attack(ActionBehaviour.ActionType.LeftSlash);
             InputProvider.FastAttack = false;
         }
         else if (InputProvider.HeavyAttack)
         {
-            characterController.Attack(ActionBehaviour.ActionType.AreaSpell);
+            characterController.Attack(ActionBehaviour.ActionType.RightSlash);
             InputProvider.HeavyAttack = false;
         }
     }
