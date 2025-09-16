@@ -34,3 +34,9 @@ public interface IManaUser
     public bool CanUseMana(float _mana, bool _apply = true);
     public bool CanRestoreMana(float _mana, bool _apply = true);
 }
+
+public interface ICanApplyDamage
+{
+    public event System.Action OnCanApplyDamageStateUpdated;
+    public bool CanApplyDamage { get; }
+}

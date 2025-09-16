@@ -1,34 +1,32 @@
 using DL.Structs;
 using UnityEngine;
 
+[RequireComponent(typeof(UnitCharacterController), typeof(UnitStats))]
 public class EnemyUnit : CharacterInputProvider
 {
     [SerializeField] private float targetUpdateInterval = 0.5f;
     [SerializeField] private Transform target = null;
-    [SerializeField] private AnimationCurve sprintIntervals = AnimationCurve.Constant(0f, 10f, 1f);
-    [SerializeField] private float sprintThreshold = 0.5f;
     [SerializeField, Min(0.1f)] private float minDistance = 1f;
 
     [Header("Attack")]
+    [SerializeField, Min(0f)] private float throwManaCost = 5f;
     [SerializeField, Min(0f)] private float attackRange = 2f;
     [SerializeField, MinMaxSlider(0f, 20f)] private MinMax throwAttackRange = new MinMax(3f, 10f);
     [SerializeField, Min(0f)] private float attackCooldown = 2f;
     [SerializeField] private ActionBehaviour.ActionType[] availableAttacks = new ActionBehaviour.ActionType[0];
 
     private UnitCharacterController controller = null;
+    private UnitStats unitStats = null;
 
     private Vector2 move = default;
     private bool jump = false;
-    private bool sprint = false;
-    private bool sprintOverride = false;
 
-    private float lifeTime = 0f;
     private float lastTargetUpdate = 0f;
     private float attackCooldownTimer = 0f;
 
     public override Vector2 Move => move;
     public override bool Jump { get => jump; set => jump = value; }
-    public override bool Sprint => sprint || sprintOverride;
+    public override bool Sprint => true;
     public override bool AnalogMovement => false;
     public override bool ChangeRightArmWeapon { get => false; set { } }
     public override bool ChangeLeftArmWeapon { get => false; set { } }
@@ -36,7 +34,7 @@ public class EnemyUnit : CharacterInputProvider
     private void Awake()
     {
         controller = GetComponent<UnitCharacterController>();
-        lifeTime = UnityEngine.Random.Range(0f, 1000f);
+        unitStats = GetComponent<UnitStats>();
     }
 
     private void Update()
@@ -57,12 +55,6 @@ public class EnemyUnit : CharacterInputProvider
 
             tryTriggerAttack(_distance);
         }
-
-        lifeTime += Time.deltaTime;
-        float _duration = sprintIntervals[sprintIntervals.length - 1].time;
-        float _currentTime = lifeTime % _duration;
-        float _sprintValue = sprintIntervals.Evaluate(_currentTime);
-        sprint = _sprintValue > sprintThreshold;
 
         checkForTargetUpdate();
     }
@@ -127,7 +119,7 @@ public class EnemyUnit : CharacterInputProvider
 
         ActionBehaviour.ActionType _action;
 
-        if (_canThrow)
+        if (_canThrow && (unitStats == null || unitStats.CanUseMana(throwManaCost)))
         {
             _action = ActionBehaviour.ActionType.ThrowAttack;
         }
@@ -142,7 +134,5 @@ public class EnemyUnit : CharacterInputProvider
         attackCooldownTimer = attackCooldown;
     }
 
-    [ActionButton] public void StartSprint() => sprintOverride = true;
-    [ActionButton] public void StopSprint() => sprintOverride = false;
     [ActionButton] public void StartJump() => jump = true;
 }

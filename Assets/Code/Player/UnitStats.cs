@@ -4,13 +4,12 @@ using UnityEngine.InputSystem;
 
 public class UnitStats : MonoBehaviour, IUnitStatsProvider
 {
-    public const float STAMINA_UNLOCK_THRESHOLD = 0.25f;
-
     public event Action OnDeath = null;
     public event Action OnDamaged = null;
     public event Action OnHealed = null;
     public event Action OnStatsChanged = null;
 
+    [SerializeField] private bool destroyOnDeath = false;
     [SerializeField] private UnitStat health = new UnitStat(100f);
     [SerializeField] private UnitStat stamina = new UnitStat(20f);
     [SerializeField] private UnitStat mana = new UnitStat(50f);
@@ -18,6 +17,7 @@ public class UnitStats : MonoBehaviour, IUnitStatsProvider
     [SerializeField, Min(0f)] private float hpRegenSpeed = 0.1f;
     [SerializeField, Min(0f)] private float staminaRegenSpeed = 0.1f;
     [SerializeField, Min(0f)] private float staminaRunCost = 0.5f;
+    [SerializeField, Range(0f, 1f)] private float staminaUnlockThreshold = 0.25f;
     [SerializeField, Min(0f)] private float manaRegenSpeed = 0.2f;
 
     public PlayerInput Player { get; set; } = null;
@@ -29,7 +29,7 @@ public class UnitStats : MonoBehaviour, IUnitStatsProvider
     public int PlayerIndex => Player != null ? Player.playerIndex : -1;
 
     public bool IsAlive => health.Current > 0f;
-    public bool IsStaminaAboveThreshold => stamina.Percent01 > STAMINA_UNLOCK_THRESHOLD;
+    public bool IsStaminaAboveThreshold => stamina.Percent01 >= staminaUnlockThreshold;
     public float StaminaRunCost => staminaRunCost;
 
     private float damageReceivedThisFrame = 0f;
@@ -102,9 +102,19 @@ public class UnitStats : MonoBehaviour, IUnitStatsProvider
         health.ChangeCurrent(-_damage);
         damageReceivedThisFrame += _damage;
 
+        if (DamageIndicatorsManager.Instance != null)
+        {
+            DamageIndicatorsManager.Instance?.ShowDamageIndicator(transform.position, -_damage, DamageIndicator.DamageType.Normal);
+        }
+
         if (health.Current <= 0f)
         {
             OnDeath?.Invoke();
+
+            if (destroyOnDeath)
+            {
+                Destroy(gameObject);
+            }
         }
         else
         {
@@ -139,6 +149,12 @@ public class UnitStats : MonoBehaviour, IUnitStatsProvider
         // Apply heal
         health.ChangeCurrent(_heal);
         damageReceivedThisFrame -= _heal;
+
+        if (DamageIndicatorsManager.Instance != null)
+        {
+            DamageIndicatorsManager.Instance?.ShowDamageIndicator(transform.position, _heal, DamageIndicator.DamageType.Heal);
+        }
+
         OnHealed?.Invoke();
         return true;
     }

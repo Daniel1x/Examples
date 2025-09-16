@@ -15,10 +15,10 @@ TagManager:
   - Player
   - Enemy
   - Pickups
-  - Projectiles
-  - 
-  - 
-  - 
+  - EnemyProjectiles
+  - PlayerProjectiles
+  - EnemyEquipment
+  - PlayerEquipment
   - 
   - 
   - 

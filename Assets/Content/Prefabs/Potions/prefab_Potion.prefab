@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2937137114363233434}
   - component: {fileID: 8752585055937536010}
   - component: {fileID: 794322320812388959}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: prefab_Potion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,6 +135,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b73d22b295cbd0c4788a226b4a0d1e3a, type: 3}
       propertyPath: m_Name
       value: Potion
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b73d22b295cbd0c4788a226b4a0d1e3a, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

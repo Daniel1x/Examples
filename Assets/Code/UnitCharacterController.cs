@@ -8,8 +8,8 @@ public class UnitCharacterController : UnitCharacterController<CharacterInputPro
     // This class is just a non-generic version of UnitCharacterController<T> for convenience.
 }
 
-[RequireComponent(typeof(CharacterController))]
-public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, IRequiresCharacterInputProvider<T> where T : CharacterInputProvider
+[RequireComponent(typeof(CharacterController), typeof(UnitStats))]
+public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, ICanApplyDamage, IRequiresCharacterInputProvider<T> where T : CharacterInputProvider
 {
     [System.Serializable]
     public class CharacterAudioSettings
@@ -71,6 +71,7 @@ public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, I
     }
 
     public event UnityAction<UnitCharacterController<T>> OnJumpPerformed = null;
+    public event Action OnCanApplyDamageStateUpdated = null;
 
     [Header("Player")]
     [SerializeField] protected float moveSpeed = 2.0f;
@@ -124,14 +125,56 @@ public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, I
     protected int animIDMotionSpeed = 0;
 
     protected Animator animator = null;
-    protected ActionBehaviour[] actionBehaviours = null;
+    protected ActionStateHandler actionStateHandler = null;
     protected CharacterController controller = null;
     protected UnitEquipmentManager equipmentManager = null;
+    protected UnitStats characterStats = null;
 
-    protected virtual bool isSprinting => InputProvider.Sprint;
+    protected bool sprintBlocked = false;
+    protected virtual bool isSprinting
+    {
+        get
+        {
+            if (InputProvider.Sprint == false)
+            {
+                return false; // No inputs
+            }
+
+            if (characterStats == null)
+            {
+                return true; // No need to check stats
+            }
+
+            if (sprintBlocked)
+            {
+                if (characterStats.IsStaminaAboveThreshold)
+                {
+                    sprintBlocked = false;
+                }
+                else
+                {
+                    return false; // Wait for stamina to regenerate
+                }
+            }
+
+            float _requiredStamina = characterStats.StaminaRunCost * Time.deltaTime;
+
+            if (characterStats.CanUseStamina(_requiredStamina))
+            {
+                return true;
+            }
+            else
+            {
+                sprintBlocked = true;
+                return false; // Wait for stamina to regenerate
+            }
+        }
+    }
 
     public ActionBehaviour.ActionType TriggeredAction { get; private set; }
     public T InputProvider { get; set; }
+
+    public bool CanApplyDamage => actionStateHandler != null && actionStateHandler.CanApplyMeleeDamage is not ActionBehaviour.AttackSide.None;
 
     protected virtual void Awake()
     {
@@ -139,6 +182,10 @@ public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, I
         {
             InputProvider = GetComponent<T>();
         }
+
+        controller = GetComponent<CharacterController>();
+        equipmentManager = GetComponent<UnitEquipmentManager>();
+        characterStats = GetComponent<UnitStats>();
 
         if (customEventReceiver != null)
         {
@@ -157,6 +204,13 @@ public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, I
             customEventReceiver.OnAttackPerformedEvent -= OnAttackPerformed;
         }
 
+        if (actionStateHandler != null)
+        {
+            actionStateHandler.OnActionStateChanged -= onActionStatusUpdated;
+            actionStateHandler.Dispose();
+            actionStateHandler = null;
+        }
+
         characterSocketsForAttacks.Clear();
     }
 
@@ -172,11 +226,9 @@ public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, I
 
         if (animator != null)
         {
-            actionBehaviours = animator.GetBehaviours<ActionBehaviour>();
+            actionStateHandler = new ActionStateHandler(animator);
+            actionStateHandler.OnActionStateChanged += onActionStatusUpdated;
         }
-
-        controller = GetComponent<CharacterController>();
-        equipmentManager = GetComponent<UnitEquipmentManager>();
 
         animIDSpeed = Animator.StringToHash("Speed");
         animIDGrounded = Animator.StringToHash("Grounded");
@@ -186,6 +238,11 @@ public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, I
 
         jumpTimeoutDelta = jumpTimeout;
         fallTimeoutDelta = fallTimeout;
+    }
+
+    private void onActionStatusUpdated(ActionStateHandler _handler)
+    {
+        OnCanApplyDamageStateUpdated?.Invoke();
     }
 
     protected virtual void Update()
@@ -303,19 +360,10 @@ public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, I
 
     public bool IsAnyActionBehaviourInProgress(out bool _allowMovement)
     {
-        if (actionBehaviours == null || actionBehaviours.Length == 0)
+        if (actionStateHandler != null)
         {
-            _allowMovement = true;
-            return false;
-        }
-
-        for (int i = 0; i < actionBehaviours.Length; i++)
-        {
-            if (actionBehaviours[i].IsInProgress)
-            {
-                _allowMovement = actionBehaviours[i].IsMovementAllowed;
-                return true;
-            }
+            _allowMovement = actionStateHandler.CanMove;
+            return actionStateHandler.IsAnyActionInProgress;
         }
 
         _allowMovement = true;

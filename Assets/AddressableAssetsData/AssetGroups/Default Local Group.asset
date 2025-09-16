@@ -90,6 +90,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e7de0ca50d9247e4e91ab21024d7b298
+    m_Address: Assets/Content/Prefabs/prefab_DamageIndicator.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7fd416adbaadb6f498b60a2c4b83a204, type: 2}
   m_SchemaSet:

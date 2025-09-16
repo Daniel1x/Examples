@@ -10,14 +10,9 @@ public class UnitEquipmentManager : MonoBehaviour
         [SerializeField] private EquipmentSocket socket = null;
 
         public IAssetListProvider AssetListProvider { get; private set; } = null;
+        public EquipmentSocket Socket { get => socket; private set => socket = value; }
 
-        public EquipmentSocket Socket
-        {
-            get => socket;
-            private set => socket = value;
-        }
-
-        public void Initialize(IAssetListProvider _provider)
+        public void Initialize(IAssetListProvider _provider, int _ownerLayer, ICanApplyDamage _canApplyDamage)
         {
             if (socket == null)
             {
@@ -25,23 +20,34 @@ public class UnitEquipmentManager : MonoBehaviour
                 return;
             }
 
+            socket.Initialize(_ownerLayer, _canApplyDamage);
             AssetListProvider = _provider;
 
-            if (AssetListProvider != null)
+            if (AssetListProvider == null)
             {
-                List<AssetReferenceGameObject> _assets = AssetListProvider.GetAssets();
+                return;
+            }
 
-                for (int i = 0; i < _assets.Count; i++)
-                {
-                    Socket.AddAssetReference(_assets[i], false);
-                }
+            List<AssetReferenceGameObject> _assets = AssetListProvider.GetAssets();
+
+            if (_assets == null || _assets.Count == 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < _assets.Count; i++)
+            {
+                socket.AddAssetReference(_assets[i], false);
             }
         }
     }
 
+    [SerializeField] private ThirdPersonController characterController = null;
     [SerializeField] private SocketSetup rightArmSocket = new();
     [SerializeField] private SocketSetup leftArmSocket = new();
     [SerializeField] private AssetListProvider armWeapons = new();
+
+    public int OwnerLayer { get; private set; } = default;
 
     private int currentRightArmIndex = -1;
     private int currentLeftArmIndex = -1;
@@ -58,8 +64,10 @@ public class UnitEquipmentManager : MonoBehaviour
 
     public void InitializeSockets()
     {
-        rightArmSocket.Initialize(armWeapons);
-        leftArmSocket.Initialize(armWeapons);
+        OwnerLayer = gameObject.layer;
+
+        rightArmSocket.Initialize(armWeapons, OwnerLayer, characterController);
+        leftArmSocket.Initialize(armWeapons, OwnerLayer, characterController);
     }
 
     public void ReleaseAllSockets()
@@ -73,6 +81,16 @@ public class UnitEquipmentManager : MonoBehaviour
         {
             leftArmSocket.Socket.ReleaseAllInstances(true);
         }
+    }
+
+    public void OnNewAttackStarted()
+    {
+
+    }
+
+    public void OnAttackFinished()
+    {
+
     }
 
     [ActionButton]

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3892379373910241868}
   - component: {fileID: 8791558084238458106}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Socket_Hand_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,6 @@ MonoBehaviour:
   groundLayers:
     serializedVersion: 2
     m_Bits: 1
-  inputProvider: {fileID: 0}
   CollidedSides: 0
   CollidedAbove: 0
   CollidedBelow: 0
@@ -220,6 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c45f42e886b9064196c854682d0740e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitStats
+  destroyOnDeath: 0
   health:
     Current: 100
     Max: 100
@@ -289,22 +289,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65a6ca6b3fb8f98439d0431ed671495d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitEquipmentManager
+  characterController: {fileID: 7608415010627364069}
   rightArmSocket:
     socket: {fileID: 826757503090354243}
   leftArmSocket:
     socket: {fileID: 8791558084238458106}
   armWeapons:
     assets:
-    - m_AssetGUID: c63d514d56cdf204dab400794b3b1561
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_SubObjectGUID: 
-      m_EditorAssetChanged: 0
-    - m_AssetGUID: 26055f885492a40498b6840b27c8862e
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_SubObjectGUID: 
-      m_EditorAssetChanged: 0
     - m_AssetGUID: a5fbe6b684513e844bcb8b3ed323511f
       m_SubObjectName: 
       m_SubObjectType: 
@@ -346,7 +337,6 @@ MonoBehaviour:
   groundLayers:
     serializedVersion: 2
     m_Bits: 0
-  inputProvider: {fileID: 0}
   CollidedSides: 0
   CollidedAbove: 0
   CollidedBelow: 0
@@ -372,7 +362,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3969017313244281539}
   - component: {fileID: 826757503090354243}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Socket_Hand_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -861,9 +851,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6931982203980057317}
     m_Modifications:
+    - target: {fileID: 794582801082859184, guid: 0b2bc7cb5a7922344883dfd28479a3aa, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1968500435360824760, guid: 0b2bc7cb5a7922344883dfd28479a3aa, type: 3}
       propertyPath: m_Name
       value: prefab_PlayerIndicator
+      objectReference: {fileID: 0}
+    - target: {fileID: 1968500435360824760, guid: 0b2bc7cb5a7922344883dfd28479a3aa, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4526433743416725552, guid: 0b2bc7cb5a7922344883dfd28479a3aa, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7976991570179697305, guid: 0b2bc7cb5a7922344883dfd28479a3aa, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8277606641753399873, guid: 0b2bc7cb5a7922344883dfd28479a3aa, type: 3}
       propertyPath: m_LocalPosition.x

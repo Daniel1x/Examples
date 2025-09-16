@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class CameraManager : MonoBehaviour
 {
+    public static CameraManager Instance { get; private set; } = null;
+
     [Header("Camera Manager")]
     [SerializeField] private CinemachineBrain brain = null;
     [SerializeField] private CinemachineCamera virtualCamera = null;
@@ -27,9 +29,13 @@ public class CameraManager : MonoBehaviour
     private float maxDistance = 0f;
 
     public CinemachineBrain Brain => brain;
+    public CinemachineCamera VirtualCamera => virtualCamera;
+    public CinemachineTargetGroup TargetGroup => targetGroup;
 
     private void Awake()
     {
+        Instance = this;
+
         if (virtualCamera != null)
         {
             positionComposer = virtualCamera.GetComponent<CinemachinePositionComposer>();

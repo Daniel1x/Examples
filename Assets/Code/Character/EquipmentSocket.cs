@@ -10,9 +10,13 @@ public class EquipmentSocket : MonoBehaviour
     {
         public AssetReferenceGameObject Reference { get; private set; } = null;
         public GameObject Instance { get; private set; } = null;
+        public IEquipment Equipment { get; private set; } = null;
 
         private bool isEnabled = false;
         private Transform assetParent = null;
+
+        private int ownerLayer = -1;
+        private ICanApplyDamage canApplyDamageProvider = null;
 
         public bool IsEnabled
         {
@@ -33,11 +37,14 @@ public class EquipmentSocket : MonoBehaviour
             }
         }
 
-        public AssetReferenceData(AssetReferenceGameObject _reference, Transform _parent, bool _initialEnabled = false)
+        public AssetReferenceData(AssetReferenceGameObject _reference, Transform _parent, int _ownerLayer, ICanApplyDamage _iCanApplyDamage, bool _initialEnabled = false)
         {
             Reference = _reference;
             assetParent = _parent;
             isEnabled = _initialEnabled;
+            ownerLayer = _ownerLayer;
+            canApplyDamageProvider = _iCanApplyDamage;
+
             EnsureSpawnedAsset();
         }
 
@@ -80,16 +87,33 @@ public class EquipmentSocket : MonoBehaviour
             Instance = _handle.Result;
             Instance.transform.SetParent(assetParent);
             Instance.transform.ResetLocalTransformValues();
+
+            Equipment = Instance.GetComponent<IEquipment>();
+
+            if (Equipment != null)
+            {
+                Equipment.Initialize(ownerLayer, canApplyDamageProvider);
+            }
+
             Instance.SetActive(isEnabled);
         }
     }
 
     private readonly Dictionary<AssetReferenceGameObject, AssetReferenceData> availableAssets = new();
-    private AssetReferenceData enabledAsset = null;
+    private AssetReferenceData enabledAsset { get; set; } = null;
+
+    public int OwnerLayer { get; private set; } = 0;
+    public ICanApplyDamage ICanApplyDamage { get; private set; } = null;
 
     private void OnDestroy()
     {
         ReleaseAllInstances(true);
+    }
+
+    public void Initialize(int _ownerLayer, ICanApplyDamage _canApplyDamage)
+    {
+        OwnerLayer = _ownerLayer;
+        ICanApplyDamage = _canApplyDamage;
     }
 
     public void AddAssetReference(AssetReferenceGameObject _assetReference, bool _enabled = false)
@@ -106,7 +130,7 @@ public class EquipmentSocket : MonoBehaviour
             return;
         }
 
-        availableAssets.Add(_assetReference, new(_assetReference, transform, _enabled));
+        availableAssets.Add(_assetReference, new AssetReferenceData(_assetReference, transform, OwnerLayer, ICanApplyDamage, _enabled));
 
         if (_enabled)
         {
