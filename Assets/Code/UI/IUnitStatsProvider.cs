@@ -38,5 +38,5 @@ public interface IManaUser
 public interface ICanApplyDamage
 {
     public event System.Action OnCanApplyDamageStateUpdated;
-    public bool CanApplyDamage { get; }
+    public AttackSide CanApplyDamage { get; }
 }

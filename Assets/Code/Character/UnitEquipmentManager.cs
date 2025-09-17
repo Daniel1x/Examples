@@ -12,7 +12,7 @@ public class UnitEquipmentManager : MonoBehaviour
         public IAssetListProvider AssetListProvider { get; private set; } = null;
         public EquipmentSocket Socket { get => socket; private set => socket = value; }
 
-        public void Initialize(IAssetListProvider _provider, int _ownerLayer, ICanApplyDamage _canApplyDamage)
+        public void Initialize(IAssetListProvider _provider, int _ownerLayer, ICanApplyDamage _canApplyDamage, AttackSide _side)
         {
             if (socket == null)
             {
@@ -20,7 +20,7 @@ public class UnitEquipmentManager : MonoBehaviour
                 return;
             }
 
-            socket.Initialize(_ownerLayer, _canApplyDamage);
+            socket.Initialize(_ownerLayer, _canApplyDamage, _side);
             AssetListProvider = _provider;
 
             if (AssetListProvider == null)
@@ -66,8 +66,8 @@ public class UnitEquipmentManager : MonoBehaviour
     {
         OwnerLayer = gameObject.layer;
 
-        rightArmSocket.Initialize(armWeapons, OwnerLayer, characterController);
-        leftArmSocket.Initialize(armWeapons, OwnerLayer, characterController);
+        rightArmSocket.Initialize(armWeapons, OwnerLayer, characterController, AttackSide.Right);
+        leftArmSocket.Initialize(armWeapons, OwnerLayer, characterController, AttackSide.Left);
     }
 
     public void ReleaseAllSockets()

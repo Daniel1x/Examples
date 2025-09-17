@@ -174,7 +174,9 @@ public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, I
     public ActionBehaviour.ActionType TriggeredAction { get; private set; }
     public T InputProvider { get; set; }
 
-    public bool CanApplyDamage => actionStateHandler != null && actionStateHandler.CanApplyMeleeDamage is not ActionBehaviour.AttackSide.None;
+    public AttackSide CanApplyDamage => actionStateHandler != null 
+        ? actionStateHandler.CanApplyMeleeDamage 
+        : AttackSide.None;
 
     protected virtual void Awake()
     {

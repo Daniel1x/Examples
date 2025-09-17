@@ -7,6 +7,7 @@ public abstract class IEquipment : MonoBehaviour
     protected readonly List<Collider> collisionsInProgress = new List<Collider>(32);
 
     public Collider EquipmentCollider { get; private set; } = null;
+    public AttackSide Side { get; protected set; } = AttackSide.None;
     public ICanApplyDamage CanApplyDamageProvider { get; private set; } = null;
     public bool CanApplyDamage { get; private set; } = false;
     public int OwnerLayer { get; private set; } = -1;
@@ -60,12 +61,13 @@ public abstract class IEquipment : MonoBehaviour
         collisionsInProgress.Remove(_other);
     }
 
-    public void Initialize(int _ownerLayer, ICanApplyDamage _canApplyDamage)
+    public void Initialize(int _ownerLayer, ICanApplyDamage _canApplyDamage, AttackSide _side)
     {
         unregisterFromCanApplyDamageProvider();
 
         OwnerLayer = _ownerLayer;
         CanApplyDamageProvider = _canApplyDamage;
+        Side = _side;
 
         registerToCanApplyDamageProvider();
     }
@@ -91,7 +93,8 @@ public abstract class IEquipment : MonoBehaviour
 
     private void onCanApplyDamageStateUpdated()
     {
-        bool _shouldApply = CanApplyDamageProvider != null && CanApplyDamageProvider.CanApplyDamage;
+        bool _shouldApply = CanApplyDamageProvider != null
+            && (CanApplyDamageProvider.CanApplyDamage & Side) != 0;
 
         if (CanApplyDamage != _shouldApply)
         {

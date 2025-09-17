@@ -15,15 +15,6 @@ public class ActionBehaviour : StateMachineBehaviour
         LeftSlash = 7,
     }
 
-    [System.Flags]
-    public enum AttackSide
-    {
-        None = 0,
-        Right = 1 << 0,
-        Left = 1 << 1,
-        Both = Right | Left
-    }
-
     public event UnityAction<ActionBehaviour> OnActionStateUpdate = null;
 
     [SerializeField] private bool canMoveDuringThisAnimation = true;

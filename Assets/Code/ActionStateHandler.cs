@@ -12,7 +12,7 @@ public class ActionStateHandler : IDisposable
     private List<ActionBehaviour> ongoingActions = null;
 
     public bool CanMove { get; private set; } = true;
-    public ActionBehaviour.AttackSide CanApplyMeleeDamage { get; private set; } = ActionBehaviour.AttackSide.None;
+    public AttackSide CanApplyMeleeDamage { get; private set; } = AttackSide.None;
     public bool IsAnyActionInProgress => ongoingActions != null && ongoingActions.Count > 0;
 
     public ActionStateHandler(Animator _animator)
@@ -53,7 +53,7 @@ public class ActionStateHandler : IDisposable
         }
 
         bool _canMove = true;
-        ActionBehaviour.AttackSide _canApplyMeleeDamage = ActionBehaviour.AttackSide.None;
+        AttackSide _canApplyMeleeDamage = AttackSide.None;
         int _ongoingCount = ongoingActions.Count;
 
         for (int i = 0; i < _ongoingCount; i++)
