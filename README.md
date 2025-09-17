@@ -24,6 +24,8 @@ Gameplay implementation example and graphics preview:
 
 Characters, weapons, potions, textures, and effects were created by me. The scripts in this repository include the input management system, character controls, equipment management, the pickup system, character stat display, and much more.
 
+[Youtube Video](https://youtu.be/RQnvffqRDvA)
+
 <img src="https://github.com/Daniel1x/Examples/blob/main/Assets/Content/Preview/t_Preview9.png" alt="Zdjęcie 9" width="500"/>
 
 Utilities example:
