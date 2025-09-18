@@ -9,7 +9,7 @@ public class UnitCharacterController : UnitCharacterController<CharacterInputPro
 }
 
 [RequireComponent(typeof(CharacterController), typeof(UnitStats))]
-public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, ICanApplyDamage, IRequiresCharacterInputProvider<T> where T : CharacterInputProvider
+public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, IRequiresCharacterInputProvider<T> where T : CharacterInputProvider
 {
     [System.Serializable]
     public class CharacterAudioSettings
@@ -71,7 +71,6 @@ public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, I
     }
 
     public event UnityAction<UnitCharacterController<T>> OnJumpPerformed = null;
-    public event Action OnCanApplyDamageStateUpdated = null;
 
     [Header("Player")]
     [SerializeField] protected float moveSpeed = 2.0f;
@@ -92,7 +91,7 @@ public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, I
     [Header("Attack")]
     [SerializeField] protected float attackRange = 0.25f;
     [SerializeField] protected LayerMask attackLayerMask = default;
-    [SerializeField, Min(0f)] protected float damage = 10f;
+    [SerializeField, Min(0f)] protected float handDamage = 1f;
 
     [Header("Player Grounded")]
     [SerializeField] protected bool grounded = true;
@@ -171,12 +170,8 @@ public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, I
         }
     }
 
-    public ActionBehaviour.ActionType TriggeredAction { get; private set; }
+    public ActionType TriggeredAction { get; private set; }
     public T InputProvider { get; set; }
-
-    public AttackSide CanApplyDamage => actionStateHandler != null 
-        ? actionStateHandler.CanApplyMeleeDamage 
-        : AttackSide.None;
 
     protected virtual void Awake()
     {
@@ -191,9 +186,7 @@ public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, I
 
         if (customEventReceiver != null)
         {
-            customEventReceiver.OnFootstepEvent += OnFootstep;
-            customEventReceiver.OnLandEvent += OnLand;
-            customEventReceiver.OnAttackPerformedEvent += OnAttackPerformed;
+            customEventReceiver.RegisterCustomReceiver(this);
         }
     }
 
@@ -201,14 +194,11 @@ public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, I
     {
         if (customEventReceiver != null)
         {
-            customEventReceiver.OnFootstepEvent -= OnFootstep;
-            customEventReceiver.OnLandEvent -= OnLand;
-            customEventReceiver.OnAttackPerformedEvent -= OnAttackPerformed;
+            customEventReceiver.UnregisterCustomReceiver(this);
         }
 
         if (actionStateHandler != null)
         {
-            actionStateHandler.OnActionStateChanged -= onActionStatusUpdated;
             actionStateHandler.Dispose();
             actionStateHandler = null;
         }
@@ -229,7 +219,6 @@ public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, I
         if (animator != null)
         {
             actionStateHandler = new ActionStateHandler(animator);
-            actionStateHandler.OnActionStateChanged += onActionStatusUpdated;
         }
 
         animIDSpeed = Animator.StringToHash("Speed");
@@ -240,11 +229,6 @@ public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, I
 
         jumpTimeoutDelta = jumpTimeout;
         fallTimeoutDelta = fallTimeout;
-    }
-
-    private void onActionStatusUpdated(ActionStateHandler _handler)
-    {
-        OnCanApplyDamageStateUpdated?.Invoke();
     }
 
     protected virtual void Update()
@@ -444,7 +428,7 @@ public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, I
         }
     }
 
-    public void Attack(ActionBehaviour.ActionType _type)
+    public void Attack(ActionType _type)
     {
         if (IsAnyActionBehaviourInProgress(out _) == false)
         {
@@ -462,109 +446,112 @@ public abstract class UnitCharacterController<T> : UnitAnimationEventReceiver, I
 
     public override void OnFootstep(AnimationEvent _animationEvent) => characterAudioSettings.OnFootstep(_animationEvent, transform, controller);
     public override void OnLand(AnimationEvent _animationEvent) => characterAudioSettings.OnLand(_animationEvent, transform, controller);
-    public override void OnAttackPerformed(AnimationEvent _animationEvent) => handleAttackEvent(_animationEvent);
-
-    protected void handleAttackEvent(AnimationEvent _animationEvent)
+    public override void OnCustom(AnimationEventData _data)
     {
-        if (_animationEvent == null || _animationEvent.stringParameter.IsNullEmptyOrWhitespace())
+        foreach (AnimationEventData.Action _action in _data.Actions)
         {
-            return; //No event keys defined
-        }
-
-        string[] _eventKeys = _animationEvent.stringParameter.Split(' ');
-
-        if (_eventKeys == null || _eventKeys.Length == 0)
-        {
-            return; //No event keys defined
-        }
-
-        const string _throwingKey = "Throw";
-
-        if (_eventKeys[0].Equals(_throwingKey, StringComparison.OrdinalIgnoreCase))
-        {
-            for (int i = 1; i < _eventKeys.Length; i++)
-            {
-                string _eventKey = _eventKeys[i];
-
-                if (_eventKey.IsNullEmptyOrWhitespace())
-                {
-                    continue;
-                }
-
-                Transform _socket = _getSocket(_eventKey);
-
-                if (_socket != null && ProjectilesManager.Instance != null)
-                {
-                    Vector3 _targetPosition = _socket.position + (transform.forward.WithY(0f).normalized * 10f);
-
-                    ProjectilesManager.Instance.SpawnGrenade(_socket.position, _targetPosition);
-                }
-            }
-
-            return; //Throwing attack - no hit detection
-        }
-
-        foreach (string _eventKey in _eventKeys)
-        {
-            if (_eventKey.IsNullEmptyOrWhitespace())
-            {
-                continue;
-            }
-
-            Transform _socket = _getSocket(_eventKey);
-
-            if (_socket == null)
-            {
-                continue; //Socket not found
-            }
-
-            if (checkHit(_socket.position, attackRange))
-            {
-                break; //Only register one hit per attack event
-            }
-        }
-
-        Transform _getSocket(string _socketName)
-        {
-            if (_socketName.IsNullEmptyOrWhitespace())
-            {
-                return null;
-            }
-
-            if (characterSocketsForAttacks.TryGetValue(_socketName, out Transform _socket) == false)
-            {
-                _socket = transform.FindChildTransformWithName(_socketName);
-                characterSocketsForAttacks.Add(_socketName, _socket);
-            }
-
-            return _socket;
+            handleAction(_action);
         }
     }
 
-    protected bool checkHit(Vector3 _position, float _range)
+    private void handleAction(AnimationEventData.Action _action)
     {
-        Collider[] _hitColliders = Physics.OverlapSphere(_position, _range, attackLayerMask, QueryTriggerInteraction.Ignore);
-
-        if (_hitColliders == null || _hitColliders.Length == 0)
+        switch (_action.ActionType)
         {
-            return false;
-        }
+            case ActionType.RightHandAttack:
 
-        for (int i = 0; i < _hitColliders.Length; i++)
-        {
-            IUnitStatsProvider _statsProvider = _hitColliders[i].GetComponentInParent<IUnitStatsProvider>();
-
-            if (_statsProvider != null && _statsProvider.CanReceiveDamage(damage))
-            {
-                if (VFXManager.Instance != null)
+                if (equipmentManager != null && equipmentManager.RightArmEquipment != null)
                 {
-                    VFXManager.Instance.SpawnVFX(VFXManager.VFXType.SmallExplosion, _position);
+                    equipmentManager.RightArmEquipment.UseEquipment(_action);
                 }
 
-                return true; //Only register one hit per attack event
-            }
+                break;
+
+            case ActionType.LeftHandAttack:
+
+                if (equipmentManager != null && equipmentManager.LeftArmEquipment != null)
+                {
+                    equipmentManager.LeftArmEquipment.UseEquipment(_action);
+                }
+
+                break;
+
+            case ActionType.BothHandsAttack:
+
+                if (equipmentManager != null)
+                {
+                    if (equipmentManager.RightArmEquipment != null)
+                    {
+                        equipmentManager.RightArmEquipment.UseEquipment(_action);
+                    }
+
+                    if (equipmentManager.LeftArmEquipment != null)
+                    {
+                        equipmentManager.LeftArmEquipment.UseEquipment(_action);
+                    }
+                }
+
+                break;
+
+            case ActionType.PunchAttack:
+                break;
+
+            case ActionType.ThrowAttack:
+
+                Transform _throwSocket = findRequiredSocket(_action.SocketName);
+
+                if (_throwSocket != null && ProjectilesManager.Instance != null)
+                {
+                    Vector3 _targetPosition = _throwSocket.position + (transform.forward.WithY(0f).normalized * 10f);
+
+                    ProjectilesManager.Instance.SpawnGrenade(_throwSocket.position, _targetPosition);
+                }
+
+                break;
+
+            case ActionType.AreaSpell:
+                break;
+
+            case ActionType.RightSlash:
+
+                if (equipmentManager != null && equipmentManager.RightArmEquipment != null)
+                {
+                    equipmentManager.RightArmEquipment.UseEquipment(_action);
+                }
+
+                break;
+
+            case ActionType.LeftSlash:
+
+                if (equipmentManager != null && equipmentManager.LeftArmEquipment != null)
+                {
+                    equipmentManager.LeftArmEquipment.UseEquipment(_action);
+                }
+
+                break;
+        }
+    }
+
+    protected Transform findRequiredSocket(string _socketName)
+    {
+        if (_socketName.IsNullEmptyOrWhitespace())
+        {
+            return null;
         }
 
-        return false;
+        if (characterSocketsForAttacks.TryGetValue(_socketName, out Transform _socket) == false)
+        {
+            _socket = transform.FindChildTransformWithName(_socketName);
+
+            if (_socket == null)
+            {
+                _socket = transform.FindChildTransformWithSimilarName(_socketName);
+            }
+
+            // Cache the result (even if null to avoid repeated searches)
+            characterSocketsForAttacks.Add(_socketName, _socket);
+        }
+
+        return _socket;
     }
 }

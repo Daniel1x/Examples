@@ -1,79 +1,101 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MeleeWeapon : IEquipment
 {
-    [SerializeField, Min(0)] private int damage = 10;
+    private const int MAX_OVERLAPPING_COLLIDERS = 100;
 
-    protected readonly HashSet<Collider> collisionsHandledInCurrentAttack = new HashSet<Collider>();
-    protected readonly HashSet<IDamageable> damageablesHitInCurrentAttack = new HashSet<IDamageable>();
-
-    protected override void onNewCollisionEnter(Collider _other)
+    public enum DamageZoneShape
     {
-        if (_other == null)
+        Sphere = 1,
+        Box = 2,
+    }
+
+    [SerializeField, Min(0)] private int damage = 10;
+    [SerializeField] private Transform damageCenter = null;
+    [SerializeField] private DamageZoneShape damageZoneShape = DamageZoneShape.Sphere;
+    [SerializeField] private float damageRadius = 1f;
+    [SerializeField] private Vector3 boxSize = Vector3.one;
+
+    public Transform DamageCenter => damageCenter != null ? damageCenter : transform;
+
+    private Collider[] colliders = new Collider[MAX_OVERLAPPING_COLLIDERS];
+
+    private void OnDrawGizmosSelected()
+    {
+        Color _defaultGizmosColor = Gizmos.color;
+        Gizmos.color = Color.red;
+
+        switch (damageZoneShape)
+        {
+            case DamageZoneShape.Sphere:
+                Gizmos.DrawWireSphere(DamageCenter.position, damageRadius);
+                Gizmos.color = Color.red.WithAlpha(0.1f);
+                Gizmos.DrawSphere(DamageCenter.position, damageRadius);
+                break;
+
+            case DamageZoneShape.Box:
+                //Make sure the box is drawn with the correct rotation
+                var _defaultMatrix = Gizmos.matrix;
+                Gizmos.matrix = Matrix4x4.TRS(DamageCenter.position, DamageCenter.rotation, Vector3.one);
+                Gizmos.DrawWireCube(Vector3.zero, boxSize);
+                Gizmos.color = Color.red.WithAlpha(0.1f);
+                Gizmos.DrawCube(Vector3.zero, boxSize);
+                Gizmos.matrix = _defaultMatrix;
+                break;
+        }
+
+        Gizmos.color = _defaultGizmosColor;
+    }
+
+    public override void UseEquipment(AnimationEventData.Action _action)
+    {
+        Transform _center = DamageCenter;
+
+        if (_center == null)
         {
             return;
         }
 
-        // If we are in the damage window, try to apply immediately (one-shot per attack window).
-        if (CanApplyDamage && !collisionsHandledInCurrentAttack.Contains(_other))
+        int _numColliders = 0;
+
+        switch (damageZoneShape)
         {
-            tryToApplyDamage(_other, false);
+            case DamageZoneShape.Sphere:
+                _numColliders = Physics.OverlapSphereNonAlloc(_center.position, damageRadius, colliders, DamageableLayerMask);
+                break;
+
+            case DamageZoneShape.Box:
+                _numColliders = Physics.OverlapBoxNonAlloc(_center.position, boxSize * 0.5f, colliders, _center.rotation, DamageableLayerMask);
+                break;
+        }
+
+        for (int i = 0; i < _numColliders; i++)
+        {
+            tryToApplyDamage(colliders[i]);
         }
     }
 
-    protected override void onCanApplyDamageStateChanged()
+    protected void tryToApplyDamage(Collider _collider)
     {
-        if (CanApplyDamage)
+        if (_collider == null)
         {
-            // When window opens, also process anything already overlapping.
-            pruneCollisionsInProgress();
-
-            if (collisionsInProgress.Count > 0)
-            {
-                for (int i = 0; i < collisionsInProgress.Count; i++)
-                {
-                    tryToApplyDamage(collisionsInProgress[i], true);
-                }
-            }
-        }
-        else // When attack ends, clear the list of already hit damageables.
-        {
-            collisionsHandledInCurrentAttack.Clear();
-            damageablesHitInCurrentAttack.Clear();
-        }
-    }
-
-    protected void tryToApplyDamage(Collider _collider, bool _checkIfContains)
-    {
-        if (_collider == null || CanApplyDamage == false)
-        {
-            return; // No damage can be applied
+            return;
         }
 
-        if (isTheSameLayerAsOwner(_collider))
+        IDamageableObject _damageable = _collider.GetComponent<IDamageableObject>();
+
+        if (_damageable != null)
         {
-            return; // Ignore collisions with same layer as owner
+            _damageable.CanReceiveDamage(gameObject, damage, true);
+            return;
         }
 
-        if (_checkIfContains == false || !collisionsHandledInCurrentAttack.Contains(_collider))
+        // If not found directly on the collider, try to find it in the parent hierarchy.
+        _damageable = _collider.GetComponentInParent<IDamageableObject>();
+
+        if (_damageable != null)
         {
-            collisionsHandledInCurrentAttack.Add(_collider);
+            _damageable.CanReceiveDamage(gameObject, damage, true);
         }
-
-        IDamageable _damageable = _collider.GetComponent<IDamageable>();
-
-        if (_damageable == null)
-        {
-            _damageable = _collider.GetComponentInParent<IDamageable>();
-        }
-
-        if (_damageable == null || damageablesHitInCurrentAttack.Contains(_damageable))
-        {
-            return; // No damageable found or already hit in this attack
-        }
-
-        _damageable.CanReceiveDamage(damage, true);
-        damageablesHitInCurrentAttack.Add(_damageable);
     }
 }

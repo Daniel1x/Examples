@@ -12,7 +12,6 @@ public class ActionStateHandler : IDisposable
     private List<ActionBehaviour> ongoingActions = null;
 
     public bool CanMove { get; private set; } = true;
-    public AttackSide CanApplyMeleeDamage { get; private set; } = AttackSide.None;
     public bool IsAnyActionInProgress => ongoingActions != null && ongoingActions.Count > 0;
 
     public ActionStateHandler(Animator _animator)
@@ -21,7 +20,6 @@ public class ActionStateHandler : IDisposable
         allActions = animator.GetBehaviours<ActionBehaviour>();
 
         int _actionsCount = allActions.Length;
-
         ongoingActions = new List<ActionBehaviour>(_actionsCount);
 
         for (int i = 0; i < _actionsCount; i++)
@@ -53,24 +51,20 @@ public class ActionStateHandler : IDisposable
         }
 
         bool _canMove = true;
-        AttackSide _canApplyMeleeDamage = AttackSide.None;
         int _ongoingCount = ongoingActions.Count;
 
         for (int i = 0; i < _ongoingCount; i++)
         {
-            if (_canMove && ongoingActions[i].CanMove == false)
+            if (ongoingActions[i].CanMove == false)
             {
                 _canMove = false;
+                break;
             }
-
-            _canApplyMeleeDamage |= ongoingActions[i].CanApplyMeleeDamage;
         }
 
-        if (_canMove != CanMove || _canApplyMeleeDamage != CanApplyMeleeDamage)
+        if (_canMove != CanMove)
         {
             CanMove = _canMove;
-            CanApplyMeleeDamage = _canApplyMeleeDamage;
-
             OnActionStateChanged?.Invoke(this);
         }
     }

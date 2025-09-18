@@ -81,7 +81,7 @@ public class UnitStats : MonoBehaviour, IUnitStatsProvider
         }
     }
 
-    public bool CanReceiveDamage(float _damage, bool _apply = true)
+    public bool CanReceiveDamage(GameObject _instigator, float _damage, bool _apply = true)
     {
         if (IsAlive == false || _damage == 0f)
         {
@@ -90,7 +90,7 @@ public class UnitStats : MonoBehaviour, IUnitStatsProvider
 
         if (_damage < 0f)
         {
-            return CanHeal(-_damage, _apply);
+            return CanHeal(_instigator, -_damage, _apply);
         }
 
         if (_apply == false)
@@ -124,7 +124,7 @@ public class UnitStats : MonoBehaviour, IUnitStatsProvider
         return true;
     }
 
-    public bool CanHeal(float _heal, bool _apply = true)
+    public bool CanHeal(GameObject _instigator, float _heal, bool _apply = true)
     {
         if (IsAlive == false || _heal == 0f)
         {
@@ -133,7 +133,7 @@ public class UnitStats : MonoBehaviour, IUnitStatsProvider
 
         if (_heal < 0f)
         {
-            return CanReceiveDamage(-_heal, _apply);
+            return CanReceiveDamage(_instigator, -_heal, _apply);
         }
 
         if (health.IsMax)

@@ -54,8 +54,8 @@ MonoBehaviour:
   xAngleRotation: 360
   damageableLayers:
     serializedVersion: 2
-    m_Bits: 192
-  damageAmount: 1
+    m_Bits: 1728
+  damageAmount: 5
   damageDecreasePerDistance:
     serializedVersion: 2
     m_Curve:
@@ -81,7 +81,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   explosionVFX: 0
-  explosionSFX: {fileID: 0}
+  explosionSFX: {fileID: 8300000, guid: cc2ebb89c6b32274185b7f4f4e69867e, type: 3}
   explosionSFXVolume: 1
   emissiveRenderers: {fileID: 7701057859586322949}
   emissiveColor: {r: 256, g: 0, b: 0, a: 1}

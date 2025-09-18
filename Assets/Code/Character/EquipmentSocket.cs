@@ -16,7 +16,7 @@ public class EquipmentSocket : MonoBehaviour
         private Transform assetParent = null;
 
         private int ownerLayer = -1;
-        private ICanApplyDamage canApplyDamageProvider = null;
+        private LayerMask damageableLayers = ~0;
         private AttackSide side = AttackSide.None;
 
         public bool IsEnabled
@@ -24,7 +24,11 @@ public class EquipmentSocket : MonoBehaviour
             get => isEnabled;
             set
             {
-                if (isEnabled == value) return;
+                if (isEnabled == value)
+                {
+                    return;
+                }
+
                 isEnabled = value;
 
                 if (Instance != null)
@@ -38,13 +42,13 @@ public class EquipmentSocket : MonoBehaviour
             }
         }
 
-        public AssetReferenceData(AssetReferenceGameObject _reference, Transform _parent, int _ownerLayer, ICanApplyDamage _iCanApplyDamage, AttackSide _side, bool _initialEnabled = false)
+        public AssetReferenceData(AssetReferenceGameObject _reference, Transform _parent, int _ownerLayer, LayerMask _damageableLayers, AttackSide _side, bool _initialEnabled = false)
         {
             Reference = _reference;
             assetParent = _parent;
             isEnabled = _initialEnabled;
             ownerLayer = _ownerLayer;
-            canApplyDamageProvider = _iCanApplyDamage;
+            damageableLayers = _damageableLayers;
             side = _side;
 
             EnsureSpawnedAsset();
@@ -94,7 +98,7 @@ public class EquipmentSocket : MonoBehaviour
 
             if (Equipment != null)
             {
-                Equipment.Initialize(ownerLayer, canApplyDamageProvider, side);
+                Equipment.Initialize(ownerLayer, damageableLayers, side);
             }
 
             Instance.SetActive(isEnabled);
@@ -102,21 +106,21 @@ public class EquipmentSocket : MonoBehaviour
     }
 
     private readonly Dictionary<AssetReferenceGameObject, AssetReferenceData> availableAssets = new();
-    private AssetReferenceData enabledAsset { get; set; } = null;
-
+    
+    public AssetReferenceData EnabledAsset { get; private set; } = null;
     public int OwnerLayer { get; private set; } = 0;
-    public ICanApplyDamage ICanApplyDamage { get; private set; } = null;
+    public LayerMask DamageableLayers { get ; private set; } = ~0;
     public AttackSide Side { get; set; } = AttackSide.None;
-
+    
     private void OnDestroy()
     {
         ReleaseAllInstances(true);
     }
 
-    public void Initialize(int _ownerLayer, ICanApplyDamage _canApplyDamage, AttackSide _side)
+    public void Initialize(int _ownerLayer, LayerMask _damageableLayers, AttackSide _side)
     {
         OwnerLayer = _ownerLayer;
-        ICanApplyDamage = _canApplyDamage;
+        DamageableLayers = _damageableLayers;
         Side = _side;
     }
 
@@ -134,7 +138,7 @@ public class EquipmentSocket : MonoBehaviour
             return;
         }
 
-        availableAssets.Add(_assetReference, new AssetReferenceData(_assetReference, transform, OwnerLayer, ICanApplyDamage, Side, _enabled));
+        availableAssets.Add(_assetReference, new AssetReferenceData(_assetReference, transform, OwnerLayer, DamageableLayers, Side, _enabled));
 
         if (_enabled)
         {
@@ -151,9 +155,9 @@ public class EquipmentSocket : MonoBehaviour
 
         if (availableAssets.TryGetValue(_assetReference, out var _data))
         {
-            if (enabledAsset == _data)
+            if (EnabledAsset == _data)
             {
-                enabledAsset = null;
+                EnabledAsset = null;
             }
 
             _data.ReleaseInstance();
@@ -166,10 +170,10 @@ public class EquipmentSocket : MonoBehaviour
         if (_assetReference == null)
         {
             // Disable current asset
-            if (enabledAsset != null)
+            if (EnabledAsset != null)
             {
-                enabledAsset.IsEnabled = false;
-                enabledAsset = null;
+                EnabledAsset.IsEnabled = false;
+                EnabledAsset = null;
             }
 
             return;
@@ -182,13 +186,13 @@ public class EquipmentSocket : MonoBehaviour
         }
         else
         {
-            if (enabledAsset != null && enabledAsset != _data)
+            if (EnabledAsset != null && EnabledAsset != _data)
             {
-                enabledAsset.IsEnabled = false;
+                EnabledAsset.IsEnabled = false;
             }
 
-            enabledAsset = _data;
-            enabledAsset.IsEnabled = true;
+            EnabledAsset = _data;
+            EnabledAsset.IsEnabled = true;
         }
     }
 
@@ -204,7 +208,7 @@ public class EquipmentSocket : MonoBehaviour
             availableAssets.Clear();
         }
 
-        enabledAsset = null;
+        EnabledAsset = null;
     }
 
     public static EquipmentSocket SetupSocket(Transform _parent, string _socketName, Vector3 _localPosition, Quaternion _localRotation)

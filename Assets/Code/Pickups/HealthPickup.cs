@@ -6,7 +6,7 @@ public class HealthPickup : Pickup
 
     public override bool OnPickup(UnitStats _unitStats)
     {
-        if (_unitStats.CanHeal(healthAmount, true))
+        if (_unitStats.CanHeal(gameObject, healthAmount, true))
         {
             visualizePickupCollected();
             return true;

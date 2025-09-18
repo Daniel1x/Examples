@@ -165,7 +165,7 @@ MonoBehaviour:
   attackLayerMask:
     serializedVersion: 2
     m_Bits: 0
-  damage: 10
+  handDamage: 1
   grounded: 1
   groundedOffset: -0.14
   groundedRadius: 0.28
@@ -290,14 +290,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65a6ca6b3fb8f98439d0431ed671495d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitEquipmentManager
-  characterController: {fileID: 7608415010627364069}
+  damageableLayers:
+    serializedVersion: 2
+    m_Bits: 640
   rightArmSocket:
     socket: {fileID: 826757503090354243}
   leftArmSocket:
     socket: {fileID: 8791558084238458106}
   armWeapons:
     assets:
+    - m_AssetGUID: 273a71227175f4c40ae3b437b06850ad
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
     - m_AssetGUID: c63d514d56cdf204dab400794b3b1561
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
+    - m_AssetGUID: 45ee96fedd37f6b4a9e90149ab43265d
       m_SubObjectName: 
       m_SubObjectType: 
       m_SubObjectGUID: 
@@ -307,11 +319,22 @@ MonoBehaviour:
       m_SubObjectType: 
       m_SubObjectGUID: 
       m_EditorAssetChanged: 0
+    - m_AssetGUID: 6d1ef4aeb6209a2469f656b6eae2b3a4
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
     - m_AssetGUID: 26055f885492a40498b6840b27c8862e
       m_SubObjectName: 
       m_SubObjectType: 
       m_SubObjectGUID: 
       m_EditorAssetChanged: 0
+    - m_AssetGUID: 72fbd802391902345bc8c4442afed37f
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
+  enableFirstEquipment: 0
 --- !u!114 &-2307423945487803951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -341,7 +364,7 @@ MonoBehaviour:
   attackLayerMask:
     serializedVersion: 2
     m_Bits: 0
-  damage: 10
+  handDamage: 1
   grounded: 1
   groundedOffset: -0.14
   groundedRadius: 0.28

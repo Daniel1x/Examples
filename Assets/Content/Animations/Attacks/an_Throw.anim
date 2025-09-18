@@ -62368,9 +62368,9 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.85
-    functionName: OnAttackPerformed
-    data: Throw hand_r
-    objectReferenceParameter: {fileID: 0}
+    functionName: OnEvent
+    data: 
+    objectReferenceParameter: {fileID: 11400000, guid: 5217a3966a4516447bfaa7365f961903, type: 2}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

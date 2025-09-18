@@ -13,7 +13,7 @@ public class EnemyUnit : CharacterInputProvider
     [SerializeField, Min(0f)] private float attackRange = 2f;
     [SerializeField, MinMaxSlider(0f, 20f)] private MinMax throwAttackRange = new MinMax(3f, 10f);
     [SerializeField, Min(0f)] private float attackCooldown = 2f;
-    [SerializeField] private ActionBehaviour.ActionType[] availableAttacks = new ActionBehaviour.ActionType[0];
+    [SerializeField] private ActionType[] availableAttacks = new ActionType[0];
 
     private UnitCharacterController controller = null;
     private UnitStats unitStats = null;
@@ -117,17 +117,17 @@ public class EnemyUnit : CharacterInputProvider
             return;
         }
 
-        ActionBehaviour.ActionType _action;
+        ActionType _action;
 
         if (_canThrow && (unitStats == null || unitStats.CanUseMana(throwManaCost)))
         {
-            _action = ActionBehaviour.ActionType.ThrowAttack;
+            _action = ActionType.ThrowAttack;
         }
         else
         {
             _action = availableAttacks != null && availableAttacks.Length > 0
                 ? availableAttacks.GetRandom()
-                : ActionBehaviour.ActionType.BothHandsAttack;
+                : ActionType.BothHandsAttack;
         }
 
         controller.Attack(_action);

@@ -12,7 +12,7 @@ public class UnitEquipmentManager : MonoBehaviour
         public IAssetListProvider AssetListProvider { get; private set; } = null;
         public EquipmentSocket Socket { get => socket; private set => socket = value; }
 
-        public void Initialize(IAssetListProvider _provider, int _ownerLayer, ICanApplyDamage _canApplyDamage, AttackSide _side)
+        public void Initialize(IAssetListProvider _provider, int _ownerLayer, LayerMask _damageableLayers, AttackSide _side, bool _firstAsEnabled = false)
         {
             if (socket == null)
             {
@@ -20,7 +20,7 @@ public class UnitEquipmentManager : MonoBehaviour
                 return;
             }
 
-            socket.Initialize(_ownerLayer, _canApplyDamage, _side);
+            socket.Initialize(_ownerLayer, _damageableLayers, _side);
             AssetListProvider = _provider;
 
             if (AssetListProvider == null)
@@ -37,20 +37,29 @@ public class UnitEquipmentManager : MonoBehaviour
 
             for (int i = 0; i < _assets.Count; i++)
             {
-                socket.AddAssetReference(_assets[i], false);
+                socket.AddAssetReference(_assets[i], i == 0 && _firstAsEnabled);
             }
         }
     }
 
-    [SerializeField] private ThirdPersonController characterController = null;
+    [SerializeField] private LayerMask damageableLayers = ~0;
     [SerializeField] private SocketSetup rightArmSocket = new();
     [SerializeField] private SocketSetup leftArmSocket = new();
     [SerializeField] private AssetListProvider armWeapons = new();
+    [SerializeField] private bool enableFirstEquipment = false;
 
     public int OwnerLayer { get; private set; } = default;
 
     private int currentRightArmIndex = -1;
     private int currentLeftArmIndex = -1;
+
+    public IEquipment RightArmEquipment => rightArmSocket != null && rightArmSocket.Socket != null && rightArmSocket.Socket.EnabledAsset != null
+            ? rightArmSocket.Socket.EnabledAsset.Equipment
+            : null;
+
+    public IEquipment LeftArmEquipment => leftArmSocket != null && leftArmSocket.Socket != null && leftArmSocket.Socket.EnabledAsset != null
+            ? leftArmSocket.Socket.EnabledAsset.Equipment
+            : null;
 
     private void Start()
     {
@@ -66,8 +75,11 @@ public class UnitEquipmentManager : MonoBehaviour
     {
         OwnerLayer = gameObject.layer;
 
-        rightArmSocket.Initialize(armWeapons, OwnerLayer, characterController, AttackSide.Right);
-        leftArmSocket.Initialize(armWeapons, OwnerLayer, characterController, AttackSide.Left);
+        // Make sure damageable layers do not include the owner's layer
+        damageableLayers &= ~(1 << OwnerLayer);
+
+        rightArmSocket.Initialize(armWeapons, OwnerLayer, damageableLayers, AttackSide.Right, enableFirstEquipment);
+        leftArmSocket.Initialize(armWeapons, OwnerLayer, damageableLayers, AttackSide.Left, enableFirstEquipment);
     }
 
     public void ReleaseAllSockets()
@@ -81,16 +93,6 @@ public class UnitEquipmentManager : MonoBehaviour
         {
             leftArmSocket.Socket.ReleaseAllInstances(true);
         }
-    }
-
-    public void OnNewAttackStarted()
-    {
-
-    }
-
-    public void OnAttackFinished()
-    {
-
     }
 
     [ActionButton]

@@ -1,5 +1,49 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1999386848714930470
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2467924745771754205}
+  - component: {fileID: 7980288585456733783}
+  m_Layer: 6
+  m_Name: Socket_Hand_R
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2467924745771754205
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999386848714930470}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.44790822, y: 0.57247245, z: 0.5310657, w: 0.43545696}
+  m_LocalPosition: {x: 0.15, y: -0.06, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1538583558081394435}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7980288585456733783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999386848714930470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4551bb9516e349d418cf9859172d8f66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentSocket
 --- !u!1 &4344494756335765692
 GameObject:
   m_ObjectHideFlags: 0
@@ -14,6 +58,7 @@ GameObject:
   - component: {fileID: 4413072807755698521}
   - component: {fileID: 3748915715349785421}
   - component: {fileID: 2897857812742349335}
+  - component: {fileID: 2403581993871382537}
   m_Layer: 7
   m_Name: prefab_Devil
   m_TagString: Untagged
@@ -141,7 +186,7 @@ MonoBehaviour:
   attackLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  damage: 10
+  handDamage: 1
   grounded: 1
   groundedOffset: -0.14
   groundedRadius: 0.28
@@ -178,6 +223,77 @@ MonoBehaviour:
   staminaRunCost: 1
   staminaUnlockThreshold: 1
   manaRegenSpeed: 0.25
+--- !u!114 &2403581993871382537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4344494756335765692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65a6ca6b3fb8f98439d0431ed671495d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitEquipmentManager
+  damageableLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  rightArmSocket:
+    socket: {fileID: 7980288585456733783}
+  leftArmSocket:
+    socket: {fileID: 4197318763687580701}
+  armWeapons:
+    assets:
+    - m_AssetGUID: 45ee96fedd37f6b4a9e90149ab43265d
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
+  enableFirstEquipment: 1
+--- !u!1 &6893982116917233998
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7382635651200406037}
+  - component: {fileID: 4197318763687580701}
+  m_Layer: 6
+  m_Name: Socket_Hand_L
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7382635651200406037
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6893982116917233998}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.43545687, y: -0.5310651, z: 0.5724733, w: 0.44790787}
+  m_LocalPosition: {x: -0.15, y: 0.06, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7269656418344179729}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4197318763687580701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6893982116917233998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4551bb9516e349d418cf9859172d8f66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentSocket
 --- !u!1001 &5349957742756390711
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -580,12 +696,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -5846270692196909274, guid: ad2713db1bfeddb49a1f57322132e1da, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7382635651200406037}
+    - targetCorrespondingSourceObject: {fileID: -2349476437193732044, guid: ad2713db1bfeddb49a1f57322132e1da, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2467924745771754205}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ad2713db1bfeddb49a1f57322132e1da, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1587838748352525736}
   m_SourcePrefab: {fileID: 100100000, guid: ad2713db1bfeddb49a1f57322132e1da, type: 3}
+--- !u!4 &1538583558081394435 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -2349476437193732044, guid: ad2713db1bfeddb49a1f57322132e1da, type: 3}
+  m_PrefabInstance: {fileID: 5349957742756390711}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5116009913613900390 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ad2713db1bfeddb49a1f57322132e1da, type: 3}
@@ -606,6 +733,11 @@ MonoBehaviour:
 --- !u!4 &5599213785914343644 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ad2713db1bfeddb49a1f57322132e1da, type: 3}
+  m_PrefabInstance: {fileID: 5349957742756390711}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7269656418344179729 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -5846270692196909274, guid: ad2713db1bfeddb49a1f57322132e1da, type: 3}
   m_PrefabInstance: {fileID: 5349957742756390711}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8448826061704335658

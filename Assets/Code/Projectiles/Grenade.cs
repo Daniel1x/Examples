@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(Collider))]
-public class Grenade : ObjectSpawnedByPool, IProjectileBehaviour
+public class Grenade : ObjectSpawnedByPool, IProjectileBehaviour, IDamageableObject
 {
     private const int MAX_COLLIDERS = 50;
     private const string EMISSIVE_COLOR_PROPERTY = "_Emissive";
@@ -92,6 +92,16 @@ public class Grenade : ObjectSpawnedByPool, IProjectileBehaviour
         updateEmissiveAnimation();
     }
 
+    public bool CanReceiveDamage(GameObject _instigator, float _damage, bool _apply = true)
+    {
+        if (_apply && hasExploded == false)
+        {
+            explode();
+        }
+
+        return false; // Grenade cannot receive damage
+    }
+
     public void Initialize(Vector3 _start, Vector3 _target)
     {
         startPosition = _start;
@@ -174,16 +184,28 @@ public class Grenade : ObjectSpawnedByPool, IProjectileBehaviour
                     continue;
                 }
 
-                IDamageable _damageable = _collider.GetComponent<IDamageable>();
+                if (_collider.gameObject == gameObject)
+                {
+                    continue; // Skip self to avoid self-damage
+                }
+
+                // Try to get IDamageableObject from collider
+                IDamageableObject _damageable = _collider.GetComponent<IDamageableObject>();
 
                 if (_damageable == null)
                 {
-                    continue;
+                    // Try to get IDamageableObject from parent hierarchy
+                    _damageable = _collider.GetComponentInParent<IDamageableObject>();
+
+                    if (_damageable == null)
+                    {
+                        continue; // No damageable found
+                    }
                 }
 
                 Vector3 _contactPoint = _collider.ClosestPoint(transform.position);
                 float _finalDamage = getAdjustedDamage(_contactPoint);
-                _damageable.CanReceiveDamage(_finalDamage);
+                _damageable.CanReceiveDamage(gameObject, _finalDamage);
             }
         }
 
