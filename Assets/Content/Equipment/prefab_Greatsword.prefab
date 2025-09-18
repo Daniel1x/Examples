@@ -53,8 +53,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.031555176, y: 1.7329102, z: 0.16113281}
-  m_Center: {x: -0.013702393, y: 1.2467041, z: 0.1053772}
+  m_Size: {x: 0.2, y: 2, z: 0.4}
+  m_Center: {x: 0, y: 1.15, z: 0}
 --- !u!114 &1527472838166550278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f5dec3f8c8cb314589d0835a6e62087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeEquipment
-  damage: 2
+  damage: 5
 --- !u!1001 &2749586060209380447
 PrefabInstance:
   m_ObjectHideFlags: 0

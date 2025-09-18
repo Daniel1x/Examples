@@ -232,6 +232,7 @@ MonoBehaviour:
   hpRegenSpeed: 1
   staminaRegenSpeed: 1
   staminaRunCost: 2
+  staminaUnlockThreshold: 0.25
   manaRegenSpeed: 1
 --- !u!114 &-7788329386770026769
 MonoBehaviour:
@@ -296,7 +297,17 @@ MonoBehaviour:
     socket: {fileID: 8791558084238458106}
   armWeapons:
     assets:
+    - m_AssetGUID: c63d514d56cdf204dab400794b3b1561
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
     - m_AssetGUID: a5fbe6b684513e844bcb8b3ed323511f
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
+    - m_AssetGUID: 26055f885492a40498b6840b27c8862e
       m_SubObjectName: 
       m_SubObjectType: 
       m_SubObjectGUID: 
