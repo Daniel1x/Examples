@@ -1,19 +1,20 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using static ExampleBehaviourClass;
 
-///<summary>This class doesn't do much, but it shows the style in which I write code.</summary>
+/// <summary>
+/// This class doesn't do much, but it shows the style in which I write code.
+/// </summary>
 public class ExampleBehaviourClass : MonoBehaviour
 {
     #region Data types, structs and classes
 
-    public interface EnumIDContainer<EnumType> where EnumType : System.Enum
+    public interface IEnumIdContainer<TEnum> where TEnum : System.Enum
     {
-        public EnumType ID { get; set; }
+        TEnum Id { get; set; }
     }
 
-    public enum DataType
+    public enum DataState
     {
         Default = 0,
         State1 = 1,
@@ -21,24 +22,35 @@ public class ExampleBehaviourClass : MonoBehaviour
     }
 
     [System.Serializable]
-    public struct ExampleStruct<Data> : EnumIDContainer<DataType>
+    public struct ExampleStruct<TData> : IEnumIdContainer<DataState>
     {
-        [SerializeField] private DataType dataType;
-        [SerializeField] private Data type;
+        [SerializeField] private DataState dataState;
+        [SerializeField] private TData data;
 
-        public DataType ID { get => dataType; set => dataType = value; }
+        public DataState Id
+        {
+            get => dataState;
+            set => dataState = value;
+        }
+
+        public TData Data => data;
     }
 
     [System.Serializable]
-    public class ExampleDataClass<EnumType, DataType> : EnumIDContainer<EnumType> where EnumType : System.Enum
+    public class ExampleData<TEnum, TData> : IEnumIdContainer<TEnum> where TEnum : System.Enum
     {
         public string Description = string.Empty;
 
-        [SerializeField] private EnumType mode = default;
-        [SerializeField] private DataType data = default;
+        [SerializeField] private TEnum id = default;
+        [SerializeField] private TData data = default;
 
-        public EnumType ID { get => mode; set => mode = value; }
-        public DataType Data => data;
+        public TEnum Id
+        {
+            get => id;
+            set => id = value;
+        }
+
+        public TData Data => data;
     }
 
     public abstract class SequenceContainer : ScriptableObject
@@ -49,25 +61,28 @@ public class ExampleBehaviourClass : MonoBehaviour
 
     #endregion
 
-    public static event UnityAction<ExampleBehaviourClass> OnNewBehaviourCreated = null;
-    public static event UnityAction<ExampleBehaviourClass> OnSequenceStarted = null;
-    public static event UnityAction<ExampleBehaviourClass> OnSequenceFinished = null;
+    public static event UnityAction<ExampleBehaviourClass> OnNewBehaviourCreated;
+    public static event UnityAction<ExampleBehaviourClass> OnSequenceStarted;
+    public static event UnityAction<ExampleBehaviourClass> OnSequenceFinished;
 
-    private static ExampleBehaviourClass lastActiveInstance = null;
+    private static ExampleBehaviourClass lastActiveInstance;
+
+    public static ExampleBehaviourClass LastActiveInstance => lastActiveInstance;
 
     public ExampleStruct<SequenceContainer> Struct = new();
 
-    [SerializeField] private ExampleDataClass<DataType, float> someFloatData = new();
-    [SerializeField] private ExampleDataClass<DataType, int> someIntData = new();
+    [Header("Data")]
+    [SerializeField] private ExampleData<DataState, float> someFloatData = new();
+    [SerializeField] private ExampleData<DataState, int> someIntData = new();
 
     [Header("Sequences")]
     [SerializeField] private SequenceContainer[] startSequences = new SequenceContainer[] { };
     [ReadOnlyProperty, SerializeField] private string activeSequenceDescription = string.Empty;
 
-    private Coroutine startSequenceRoutine = null;
+    private Coroutine startSequenceRoutine;
 
-    public ExampleDataClass<DataType, float> SomeFloatData => someFloatData;
-    public ExampleDataClass<DataType, int> SomeIntData => someIntData;
+    public ExampleData<DataState, float> SomeFloatData => someFloatData;
+    public ExampleData<DataState, int> SomeIntData => someIntData;
     public bool IsStartSequenceInProgress => startSequenceRoutine != null;
 
     public string SequenceDescription
@@ -78,7 +93,7 @@ public class ExampleBehaviourClass : MonoBehaviour
             activeSequenceDescription = value;
 
 #if UNITY_EDITOR
-            if (value.IsNullEmptyOrWhitespace() == false)
+            if (!string.IsNullOrWhiteSpace(value))
             {
                 MyLog.Log($"New active sequence: {activeSequenceDescription}");
             }
@@ -96,6 +111,14 @@ public class ExampleBehaviourClass : MonoBehaviour
         OnNewBehaviourCreated?.Invoke(this);
     }
 
+    private void OnDestroy()
+    {
+        if (lastActiveInstance == this)
+        {
+            lastActiveInstance = null;
+        }
+    }
+
     private void OnEnable()
     {
         lastActiveInstance = this;
@@ -107,23 +130,11 @@ public class ExampleBehaviourClass : MonoBehaviour
         stopStartSequence();
     }
 
-    public IEnumerator WaitForStartSequenceToCompltete(bool _useWaiter)
+    public IEnumerator WaitForStartSequenceToComplete()
     {
-        if (IsStartSequenceInProgress == false)
+        while (IsStartSequenceInProgress)
         {
-            yield break;
-        }
-
-        if (_useWaiter)
-        {
-            yield return new WaitWhile(() => IsStartSequenceInProgress);
-        }
-        else
-        {
-            while (IsStartSequenceInProgress)
-            {
-                yield return null;
-            }
+            yield return null;
         }
     }
 
@@ -142,13 +153,13 @@ public class ExampleBehaviourClass : MonoBehaviour
     {
         stopStartSequence();
 
-        startSequenceRoutine = StartCoroutine(_handleStart());
+        startSequenceRoutine = StartCoroutine(HandleStart());
 
-        IEnumerator _handleStart()
+        IEnumerator HandleStart()
         {
             OnSequenceStarted?.Invoke(this);
 
-            _handleSequences(startSequences);
+            yield return _handleSequences(startSequences);
 
             if (_additionalSequences != null)
             {
@@ -170,14 +181,16 @@ public class ExampleBehaviourClass : MonoBehaviour
 
 public static class ExampleBehaviourClassExtensions
 {
-    public static IEnumerator HandleSequences(this SequenceContainer[] _sequences, System.Action<SequenceContainer> _onSequenceStarted = null)
+    public static IEnumerator HandleSequences(
+        this ExampleBehaviourClass.SequenceContainer[] _sequences,
+        System.Action<ExampleBehaviourClass.SequenceContainer> _onSequenceStarted = null)
     {
         if (_sequences == null)
         {
             yield break;
         }
 
-        foreach (SequenceContainer _sequence in _sequences)
+        foreach (var _sequence in _sequences)
         {
             if (_sequence == null)
             {
