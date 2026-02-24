@@ -5,20 +5,15 @@ In this repository you will find examples of code, ui elements, multiplayer inpu
 
 This repository also includes an internal submodule with [Core](https://github.com/Daniel1x/Core) scripts and tools that I created and use across multiple projects.
 
-Example class:
+Example interfaces and classes created for my personal project:
 
-[ExampleBehaviourClass](https://github.com/Daniel1x/Examples/blob/main/Assets/Code/ExampleBehaviourClass.cs)
+[GridNode](https://github.com/Daniel1x/Core/blob/main/Maze/Nodes/GridNode.cs) is a fundamental object for various systems.
 
-Tools and editor extensions ([Core](https://github.com/Daniel1x/Core)):
+[IGridType](https://github.com/Daniel1x/Core/blob/main/Maze/Interfaces/IGridType.cs) contains interfaces required for creation for grid.
 
-[TextureSaver](https://github.com/Daniel1x/Core/blob/main/Tools/TextureSaver/TextureSaver.cs) Runtime/editor utility for capturing Texture / RenderTexture data and writing it to disk (e.g. PNG/EXR) with optional resizing, color-space handling and format selection. Provides a simple high-level entry point for export operations.
+[IPolygon](https://github.com/Daniel1x/Core/blob/main/Maze/Interfaces/IPolygon.cs) contains interfaces for shape properties.
 
-[TextureSaverUtilities](https://github.com/Daniel1x/Core/blob/main/Tools/TextureSaver/Editor/TextureSaverUtilities.cs) Helper/static functions used by TextureSaver (e.g. path resolution, temporary RT creation, format conversion, CPU read-back safety, filename sanitizing). Keeps low-level implementation details decoupled from the main saver logic.
-
-[TextureSaverEditor](https://github.com/Daniel1x/Core/blob/main/Tools/TextureSaver/Editor/TextureSaverEditor.cs) Custom editor/window tools that provide a user interface for selecting textures, configuring output settings, and triggering save/export actions within the editor. Adds quality-enhancing features such as saving textures rendered from an image component and 9-slice optimization.
-
-[AnimationExtensions](https://github.com/Daniel1x/Core/blob/main/Extensions/AnimationExtensions.cs)
-[RenderTextureExtensions](https://github.com/Daniel1x/Core/blob/main/Extensions/RenderTextureExtensions.cs)
+[ISelectionGroup](https://github.com/Daniel1x/Core/blob/main/Maze/Interfaces/ISelectionGroup.cs) includes interfaces and default implementation to handle setting selection (such as difficulty level, maze type, etc.), providing a flexible number of types and options.
 
 Gameplay implementation example and graphics preview:
 
