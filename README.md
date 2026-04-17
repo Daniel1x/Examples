@@ -7,6 +7,8 @@ This repository also includes an internal submodule with [Core](https://github.c
 
 Example interfaces and classes created for my personal project:
 
+[Shape Maze](https://www.youtube.com/shorts/lEQnYZKI75Q) - Personal project, made entirely by me.
+
 [GridNode](https://github.com/Daniel1x/Core/blob/main/Maze/Nodes/GridNode.cs) is a fundamental object for various systems.
 
 [IGridType](https://github.com/Daniel1x/Core/blob/main/Maze/Interfaces/IGridType.cs) contains interfaces required for creation for grid.
